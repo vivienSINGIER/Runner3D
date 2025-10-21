@@ -8,19 +8,6 @@ class SphereCollider;
 
 class Collider 
 {
-private:
-    friend class PhysicsSystem;
-    
-protected:
-    GameObject* m_pOwner = nullptr;
-    
-    bool m_rigidBody = true;
-    std::vector<Collider*> m_collidingEntities;
-    bool IsAlreadyColliding(Collider* pOther);
-
-    virtual void RepulseBox    (BoxCollider* pOther)    = 0;
-    virtual void RepulseSphere (SphereCollider* pOther) = 0;
-    
 public:
     Collider() = default;
     virtual ~Collider() = default;
@@ -33,6 +20,21 @@ public:
     virtual void OnCollisionEnter(Collider* pOther);
     virtual void OnCollisionStay (Collider* pOther);
     virtual void OnCollisionExit (Collider* pOther);
+    
+protected:
+    GameObject* m_pOwner = nullptr;
+    
+    bool m_rigidBody = true;
+    std::vector<Collider*> m_collidingEntities;
+    bool IsAlreadyColliding(Collider* pOther);
+
+    virtual void RepulseBox    (BoxCollider* pOther)    = 0;
+    virtual void RepulseSphere (SphereCollider* pOther) = 0;
+
+private:
+    bool m_isActiveCollider = true;
+    
+    friend class PhysicsSystem;
 };
 
 #endif

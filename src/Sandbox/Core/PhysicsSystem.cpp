@@ -15,6 +15,8 @@ void PhysicsSystem::PhysicsUpdate()
 
     for (Collider* pCollider : colliders)
     {
+        if (pCollider->m_isActiveCollider == false) continue;
+        
         for (Collider* pOther : colliders)
         {
             if (pCollider == pOther) continue;
