@@ -1,8 +1,12 @@
 #include "pch.h"
 
+
+#include "Runner3D.h"
+#include "Core/GameManager.h"
+
 int main()
 {
-    //Window creation
+    /*/Window creation
     Window window(L"Test", 1920, 1080);
 
     //Camera creation
@@ -91,7 +95,12 @@ int main()
         dir *= 0.016f;
         
         camera.Translate(dir);
+    
         
-    }
+    }*/
+    GameManager::Get()->Init(L"3D Runner", 1280, 720);
+    GameManager::Get()->AddScene<Runner3D>();
+    GameManager::Get()->SetCurrentScene<Runner3D>();
+    GameManager::Get()->GameLoop();
     return 0;
 }

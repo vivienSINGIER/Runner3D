@@ -9,6 +9,7 @@
 #include <time.h>
 
 #include "GameCamera.h"
+#include "Tween.hpp"
 
 GameManager* GameManager::s_pInstance = nullptr;
 
@@ -59,6 +60,8 @@ void GameManager::GameLoop()
         
         if (m_pCurrentScene->m_isPaused == false) m_physicsSystem.PhysicsUpdate();
         m_pCurrentScene->Update(m_deltatime);
+        
+        TweenSystem::Update(m_deltatime);
     }
 }
 
