@@ -34,7 +34,7 @@ void Renderer::Destroy()
 
 void Renderer::SetupDefaultLighting()
 {
-	gce::LightManager::SetLightsProperties(8.0f, 100.0f, 2.0f, 32.0f, 0.1f);
+	gce::LightManager::SetLightsProperties(8.0f, 100.0f, 2.0f, 32.0f, 0.85f);
 	gce::LightData directionalLight = gce::LightManager::CreateDirectionalLight(LIGHT_DIR, gce::Vector4(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 1.0f);
 	gce::LightManager::AddLight(directionalLight);
 }

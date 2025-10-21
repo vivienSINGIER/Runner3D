@@ -39,8 +39,8 @@ void GameManager::Init(std::wstring_view title, uint32 width, uint32 height)
     m_pWindow = new Window(title, width, height);
     
     camera = new Camera(CameraType::PERSPECTIVE);
-    camera->SetPosition({0.0f, 20.0f, -20.0f});
-    camera->SetRotation({45.0f, 0.0f, 0.0f});
+    camera->SetPosition({5.0f, 5.0f, -5.0f});
+    camera->SetRotation({30.0f, -45.0f, 0.0f});
     camera->SetFOV(gce::PI/4.0f);
     camera->SetFarPlane(500.0f);
     camera->SetNearPlane(0.001f);

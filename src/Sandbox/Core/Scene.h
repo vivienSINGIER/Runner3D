@@ -20,10 +20,11 @@ public:
     template <class ObjectClass> std::vector<GameObject*> GetAllObjects();
     template <class ComponentClass> std::vector<ComponentClass*> GetAllComponents();
     Text* CreateText(std::wstring const& text);
-    
-private:
+
+protected:
     bool m_isPaused = true;
     
+private:
     std::vector<GameObject*> m_gameObjects;
     std::vector<Text*> m_uiElements;
 
