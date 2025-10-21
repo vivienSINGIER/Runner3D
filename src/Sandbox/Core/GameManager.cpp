@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "Tween.hpp"
+
 GameManager* GameManager::s_pInstance = nullptr;
 
 GameManager::GameManager() : chrono()
@@ -60,9 +62,12 @@ void GameManager::GameLoop()
         m_pWindow->End();
 
         m_pWindow->Display();
+
         
         if (m_pCurrentScene->m_isPaused == false) m_physicsSystem.PhysicsUpdate();
         m_pCurrentScene->Update(m_deltatime);
+        
+        TweenSystem::Update(m_deltatime);
     }
 }
 
