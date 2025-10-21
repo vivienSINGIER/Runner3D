@@ -4,10 +4,22 @@
 
 #include "Runner3D.h"
 #include "Block.h"
+#include "Core/GameCamera.h"
+#include "Core/GameManager.h"
 
 void Runner3D::Init()
 {
     m_isPaused = false;
+    GameCamera* cam = GameManager::Get()->GetGameCamera();
+    
+    cam->SetPosition({0.0f, 20.0f, -20.0f});
+    cam->SetRotation({45.0f, 0.0f, 0.0f});
+    cam->SetPosition({5.0f, 5.0f, -5.0f});
+    cam->SetRotation({30.0f, -45.0f, 0.0f});
+    cam->SetFOV(gce::PI/4.0f);
+    cam->SetFarPlane(500.0f);
+    cam->SetNearPlane(0.001f);
+    
     for (int i = 0; i < 10; i++)
     {
         Block* block1 = CreateObject<Block>();

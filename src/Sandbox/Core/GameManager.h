@@ -13,7 +13,6 @@ class GameManager
 {
 public:
     Chrono chrono;
-    GameCamera* m_pGameCamera;
         
     void Init(std::wstring_view title, uint32 width, uint32 height, CameraType type);
     void GameLoop();
@@ -25,10 +24,12 @@ public:
     static GameManager* Get();
     float32 Deltatime();
     Window* GetWindow();
+    GameCamera* GetGameCamera() { return m_pGameCamera; }
     
 private:
     static GameManager* s_pInstance;
     PhysicsSystem m_physicsSystem;
+    GameCamera* m_pGameCamera;
 
     float32 m_deltatime = 0.0f;
 

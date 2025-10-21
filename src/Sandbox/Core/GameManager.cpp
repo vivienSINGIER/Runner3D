@@ -67,6 +67,6 @@ void GameManager::GameLoop()
 
 float32 GameManager::Deltatime() { return m_deltatime; }
 
-Window* GameManager::GetWindow() { return m_pWindow;   }
+Window* GameManager::GetWindow() { return m_pGameCamera->GetWindow(); }
 
 #endif

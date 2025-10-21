@@ -17,6 +17,7 @@ public:
     void Display();
 
     bool IsWindowOpen();
+    Window* GetWindow() { return m_pWindow; }
     
     //Transform Methods
     gce::Vector3f32 GetPosition();
