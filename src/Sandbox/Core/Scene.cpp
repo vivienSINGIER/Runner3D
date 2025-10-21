@@ -31,7 +31,7 @@ void Scene::Update(float32 deltatime)
     
     for (GameObject* object : m_gameObjects)
     {
-        object->Update(deltatime);
+        if (object->IsActive()) object->Update(deltatime);
     }
 
     for (int i = 0; i < m_gameObjects.size(); i++ )

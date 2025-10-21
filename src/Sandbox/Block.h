@@ -12,12 +12,13 @@ class Block : public GameObject, public BoxCollider
 public:
     Block();
     ~Block() = default;
-    void Init();
+    void Init(gce::Vector3f32 pos);
     void Uninit();
     void Update(float32 deltaTime) override;
 private:
-    Chrono* transitAnim = nullptr;
-    bool isTransited;
+    Chrono* m_transitAnim = nullptr;
+    gce::Vector3f32 m_firstPos;
+    bool m_isTransited;
 };
 
 
