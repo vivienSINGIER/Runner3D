@@ -1,0 +1,38 @@
+#include "pch.h"
+#ifndef GAMEOBJECT_CPP_DEFINED
+#define GAMEOBJECT_CPP_DEFINED
+
+#include "GameObject.h"
+#include "GC-simple-render/Window.h"
+
+GameObject::GameObject() : m_name("") {}
+
+GameObject::~GameObject()
+{
+    
+}
+
+void GameObject::Update(float32 deltatime)
+{
+    m_mesh->SetPosition(m_transform.position);
+    m_mesh->SetScale(m_transform.scale);
+    m_mesh->SetRotation(m_transform.rotation);
+}
+
+void GameObject::Render(Window* window)
+{
+    if (m_mesh == nullptr) return;
+    window->Draw(*m_mesh);
+}
+
+void GameObject::ToDestroy()
+{
+    toDestroy = true;
+}
+
+void GameObject::SetName(std::string newName)
+{
+    m_name = newName;
+}
+
+#endif

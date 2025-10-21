@@ -1,0 +1,143 @@
+#include "pch.h"
+#ifndef BOX_COLLIDER_CPP_DEFINED
+#define BOX_COLLIDER_CPP_DEFINED
+
+#include "BoxCollider.h"
+
+#include "GameObject.h"
+#include "SphereCollider.h"
+#include "Maths/MathsFunctions.hpp"
+
+BoxCollider::BoxCollider(gce::Vector3f32 centre, gce::Vector3f32 size) : centre(centre), size(size) {}
+
+bool BoxCollider::IsColliding(Collider* pOther)
+{
+    BoxCollider* oB = dynamic_cast<BoxCollider*>(pOther);
+    if (oB != nullptr) return BoxToBox(oB);
+
+    SphereCollider* oS = dynamic_cast<SphereCollider*>(pOther);
+    if (oS != nullptr) return BoxToSphere(oS);
+}
+
+bool BoxCollider::BoxToBox(BoxCollider* pOther)
+{
+    BoxCollider* o = pOther;
+    if (o == nullptr) return false;
+    
+    float32 minRadius = gce::Sqrt(gce::Pow(size.x / 2.0f, 2) + gce::Pow(size.y / 2.0f, 2) + gce::Pow(size.z / 2.0f, 2));
+    
+    float32 oMinRadius = gce::Sqrt(gce::Pow(o->size.x / 2.0f, 2) + gce::Pow(o->size.y / 2.0f, 2) + gce::Pow(o->size.z / 2.0f, 2));
+
+    float32 distance = gce::Sqrt(gce::Pow(centre.x - o->centre.x, 2) + gce::Pow(centre.y - o->centre.y, 2) + gce::Pow(centre.z - o->centre.z, 2));
+
+    if (distance > minRadius  + oMinRadius ) return false;
+
+    gce::Vector3f32 half(size.x / 2.f, size.y / 2.f, size.z / 2.f);
+    gce::Vector3f32 oHalf(o->size.x / 2.f, o->size.y / 2.f, o->size.z / 2.f);
+
+    int intersectTotal = 0;
+    intersectTotal += (gce::Abs(centre.x - o->centre.x) <= half.x + oHalf.x) ? 1 : 0;
+    intersectTotal += (gce::Abs(centre.y - o->centre.y) <= half.y + oHalf.y) ? 1 : 0;
+    intersectTotal += (gce::Abs(centre.z - o->centre.z) <= half.z + oHalf.z) ? 1 : 0;
+
+    return intersectTotal == 3;
+}
+
+bool BoxCollider::BoxToSphere(SphereCollider* pOther)
+{
+    SphereCollider* o = pOther;
+    if (o == nullptr) return false;
+    
+    float32 minRadius = gce::Sqrt(gce::Pow(size.x / 2.0f, 2) + gce::Pow(size.y / 2.0f, 2) + gce::Pow(size.z / 2.0f, 2));
+    float32 distance = gce::Sqrt(gce::Pow(centre.x - o->centre.x, 2) + gce::Pow(centre.y - o->centre.y, 2) + gce::Pow(centre.z - o->centre.z, 2));
+
+    if (distance > minRadius + o->radius) return false;
+    float32 closestX = gce::Clamp(o->centre.x, centre.x - size.x / 2.f, centre.x + size.x / 2.f);
+    float32 closestY = gce::Clamp(o->centre.y, centre.y - size.y / 2.f, centre.y + size.y / 2.f);
+    float32 closestZ = gce::Clamp(o->centre.z, centre.z - size.z / 2.f, centre.z + size.z / 2.f);
+
+    distance = gce::Sqrt(gce::Pow(closestX - o->centre.x, 2) + gce::Pow(closestY - o->centre.y, 2) + gce::Pow(closestZ - o->centre.z, 2));
+    
+    return distance < o->radius;
+}
+
+void BoxCollider::RepulseBox(BoxCollider* o)
+{
+    gce::Vector3f32 minA = gce::Vector3f32(centre.x - size.x / 2.f, centre.y - size.y / 2.f, centre.z - size.z / 2.f);
+    gce::Vector3f32 maxA = gce::Vector3f32(centre.x + size.x / 2.f, centre.y + size.y / 2.f, centre.z + size.z / 2.f);
+
+    gce::Vector3f32 minB = gce::Vector3f32(o->centre.x - o->size.x / 2.f, o->centre.y - o->size.y / 2.f, o->centre.z - o->size.z / 2.f);
+    gce::Vector3f32 maxB = gce::Vector3f32(o->centre.x + o->size.x / 2.f, o->centre.y + o->size.y / 2.f, o->centre.z + o->size.z / 2.f);
+
+    float32 overlapX = gce::Min(maxA.x, maxB.x) - gce::Max(minA.x, minB.x);
+    float32 overlapY = gce::Min(maxA.y, maxB.y) - gce::Max(minA.y, minB.y);
+    float32 overlapZ = gce::Min(maxA.z, maxB.z) - gce::Max(minA.z, minB.z);
+
+    float minOverlap = abs(overlapX);
+    int overlapIndex = 0;
+
+    if (abs(overlapY) < minOverlap)
+    {
+        minOverlap = overlapY;
+        overlapIndex = 1;
+    }
+    if (abs(overlapZ) < minOverlap)
+    {
+        minOverlap = overlapZ;
+        overlapIndex = 2;
+    }
+
+    float push = 0.0f;
+    
+    switch (overlapIndex)
+    {
+    case 0:
+        push = (centre.x < o->centre.x) ? -overlapX : overlapX;
+        if (o->m_rigidBody == true)
+        {
+            push /= 2.0f;
+            o->m_pOwner->m_transform.Translate(gce::Vector3f32(-push, 0.0f, 0.0f));
+        }
+        m_pOwner->m_transform.Translate(gce::Vector3f32(push, 0.0f, 0.0f));
+        break;
+    case 1:
+        push = (centre.y < o->centre.y) ? -overlapY : overlapY;
+        if (o->m_rigidBody == true)
+        {
+            push /= 2.0f;
+            o->m_pOwner->m_transform.Translate(gce::Vector3f32(0.0f, -push, 0.0f));
+        }
+        m_pOwner->m_transform.Translate(gce::Vector3f32(0.0f, push, 0.0f));
+        break;
+    case 2:
+        push = (centre.z < o->centre.z) ? -overlapZ : overlapZ;
+        if (o->m_rigidBody == true)
+        {
+            push /= 2.0f;
+            o->m_pOwner->m_transform.Translate(gce::Vector3f32(0.0f, 0.0f, -push));
+        }
+        m_pOwner->m_transform.Translate(gce::Vector3f32(0.0f, 0.0f, push));
+        break;
+    }
+}
+
+void BoxCollider::RepulseSphere(SphereCollider* o)
+{
+    float32 closestX = gce::Clamp(o->centre.x, centre.x - size.x / 2.f, centre.x + size.x / 2.f);
+    float32 closestY = gce::Clamp(o->centre.y, centre.y - size.y / 2.f, centre.y + size.y / 2.f);
+    float32 closestZ = gce::Clamp(o->centre.z, centre.z - size.z / 2.f, centre.z + size.z / 2.f);
+
+    gce::Vector3f32 dir = o->centre - gce::Vector3f32(closestX, closestY, closestZ);
+    float32 distance = gce::Sqrt(gce::Pow(closestX - o->centre.x, 2) + gce::Pow(closestY - o->centre.y, 2) + gce::Pow(closestZ - o->centre.z, 2));
+    dir = (distance > 0) ? dir / distance : gce::Vector3f32(1.0f, 0.0f, 1.0f);
+
+    gce::Vector3f32 push = dir * (o->radius - distance);
+    if (o->m_rigidBody == true)
+    {
+        push /= 2.0f;
+        o->m_pOwner->m_transform.Translate(push);
+    }
+    m_pOwner->m_transform.Translate(-push);
+}
+
+#endif
