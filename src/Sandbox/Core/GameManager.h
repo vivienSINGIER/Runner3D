@@ -7,17 +7,17 @@
 #include "PhysicsSystem.h"
 
 class Scene;
-
+class GameCamera;
 
 class GameManager
 {
 public:
     Chrono chrono;
-    Camera* camera;
-
-    void Init(std::wstring_view title, uint32 width, uint32 height);
+    GameCamera* m_pGameCamera;
+        
+    void Init(std::wstring_view title, uint32 width, uint32 height, CameraType type);
     void GameLoop();
-
+    
     template <class SceneClass> static SceneClass* AddScene();
     template <class SceneClass> static bool SetCurrentScene();
     Scene* GetCurrentScene() const { return m_pCurrentScene; }
@@ -28,7 +28,6 @@ public:
     
 private:
     static GameManager* s_pInstance;
-    Window* m_pWindow;
     PhysicsSystem m_physicsSystem;
 
     float32 m_deltatime = 0.0f;

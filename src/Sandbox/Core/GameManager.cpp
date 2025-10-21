@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "GameCamera.h"
+
 GameManager* GameManager::s_pInstance = nullptr;
 
 GameManager::GameManager() : chrono()
@@ -32,16 +34,10 @@ GameManager* GameManager::Get()
     return s_pInstance;
 }
 
-void GameManager::Init(std::wstring_view title, uint32 width, uint32 height)
+void GameManager::Init(std::wstring_view title, uint32 width, uint32 height, CameraType type)
 {
-    m_pWindow = new Window(title, width, height);
-    
-    camera = new Camera(CameraType::PERSPECTIVE);
-    camera->SetPosition({0.0f, 20.0f, -20.0f});
-    camera->SetRotation({45.0f, 0.0f, 0.0f});
-    camera->SetFOV(gce::PI/4.0f);
-    camera->SetFarPlane(500.0f);
-    camera->SetNearPlane(0.001f);
+    m_pGameCamera = new GameCamera();
+    m_pGameCamera->Init(title, width, height, type);
 
     srand(time(NULL));
 }
@@ -49,17 +45,17 @@ void GameManager::Init(std::wstring_view title, uint32 width, uint32 height)
 void GameManager::GameLoop()
 {
     chrono.Start();
-    while (m_pWindow->IsOpen())
+    while (m_pGameCamera->IsWindowOpen())
     {
         m_deltatime = chrono.Reset();
 
         if (m_pCurrentScene == nullptr) continue;
         
-        m_pWindow->Begin(*camera);
-        m_pCurrentScene->Draw(m_pWindow);
-        m_pWindow->End();
+        m_pGameCamera->Begin();
+        m_pCurrentScene->Draw(m_pGameCamera);
+        m_pGameCamera->End();
 
-        m_pWindow->Display();
+        m_pGameCamera->Display();
         
         if (m_pCurrentScene->m_isPaused == false) m_physicsSystem.PhysicsUpdate();
         m_pCurrentScene->Update(m_deltatime);

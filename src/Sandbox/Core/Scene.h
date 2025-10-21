@@ -4,6 +4,7 @@
 class Text;
 
 class GameObject;
+class GameCamera;
 
 class Scene
 {
@@ -12,7 +13,7 @@ public:
     virtual ~Scene();
     
     virtual void Update(float32 deltatime);
-    void Draw(Window* pWindow);
+    void Draw(GameCamera* pGameCamera);
 
     virtual void Init() = 0;
 
