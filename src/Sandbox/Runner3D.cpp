@@ -8,22 +8,22 @@
 void Runner3D::Init()
 {
     m_isPaused = false;
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 30; i++)
     {
         Block* block1 = CreateObject<Block>();
         block1->Init();
-        block1->m_transform.SetPosition(gce::Vector3f32(0.0f, 0.0f, (float32)i));
+        block1->m_transform.SetPosition(gce::Vector3f32(-1.0f, 0.0f, (float32)i));
         block1->SetName("Block");
 
         Block* block2 = CreateObject<Block>();
         block2->Init();
-        block2->m_transform.SetPosition(gce::Vector3f32(-1.0f, 0.0f, (float32)i));
+        block2->m_transform.SetPosition(gce::Vector3f32(0.0f, 0.0f, (float32)i + 1.f));
         block2->SetName("Block");
         
         Block* block3 = new Block();
         block3 = CreateObject<Block>();
         block3->Init();
-        block3->m_transform.SetPosition(gce::Vector3f32(-2.0f, 0.0f,(float32)i));
+        block3->m_transform.SetPosition(gce::Vector3f32(1.0f, 0.0f,(float32)i));
         block3->SetName("Block");
     }
 }

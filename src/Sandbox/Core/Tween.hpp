@@ -15,7 +15,7 @@ enum Function
 class Tween
 {
 public:
-    inline static void StartDuration(float32 duration, Function typeFunction, Geometry* pOwnerTransform, bool reverse);
+    inline void StartDuration(float32 duration, Function typeFunction, Geometry* pOwnerTransform, bool reverse);
 
 private:
     Tween(gce::Vector3f32 const& start, gce::Vector3f32 const& end, float32(* const pFunction)(float32));
@@ -24,25 +24,24 @@ private:
     float32(* function)(float32)  = nullptr;
 
     struct infoTween { float32 mDuration; float32 mElapsed = 0.f; Function mTypeFunction; Geometry* mOwnerTransform; bool mReverse; };
-    static infoTween* mTween;
+    infoTween* mTween;
     
     friend class TweenSystem;
 };
 
 class TweenSystem
 {
-    static float32 dt;
-    static gce::Vector<Tween*> tweens;
 
-    static float32 GetDeltaTime() { return dt; }; 
 public:
     inline static Tween* Create(gce::Vector3f32 const& pStart, gce::Vector3f32 const& pEnd, float32(* const pFunction)(float32) );
     inline static void Update(float32 deltaTime);
-};
 
-Tween::infoTween* Tween::mTween = nullptr;
-gce::Vector<Tween*> TweenSystem::tweens;
-float32 TweenSystem::dt = 0.f;
+private:
+    inline static float32 dt;
+    inline static gce::Vector<Tween*> tweens;
+
+    static float32 GetDeltaTime() { return dt; }; 
+};
 
 inline Tween::Tween(gce::Vector3f32 const&  pStart, gce::Vector3f32 const& pEnd, float32(* const pFunction)(float32))
 {
@@ -101,7 +100,11 @@ public:
     static float32 easingIn_linear(float32 x) { return x; }
     static float32 easingOut_linear(float32 x) { return x; }
     static float32 easingInAndOut_linear(float32 x) { return x; }
-
+    
+    static float32 easingIn_Quad(float32 const x) { return x * x; }
+    static float32 easingOut_Quad(float32 const x) { return 1.0f - (1.0f - x) * (1.0f - x); }
+    static float32 easingInOut_Quad(float32 const x) { return x < 0.5f ? 2.0f * x * x : (4.0f - 2.0f * x) * x - 1.0f; }
+    
     static float32 easingIn_cubic(float32 x) { return x * x * x; }
     static float32 easingOut_cubic(float32 x) { return x * x * x; }
     static float32 easingInAndOut_cubic(float32 x) { return x * x * x * x; }

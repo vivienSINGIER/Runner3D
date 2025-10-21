@@ -49,7 +49,7 @@ void Scene::Draw(Window* pWindow)
 {
     for (GameObject* object : m_gameObjects)
     {
-        object->Render(pWindow);
+        if (object->IsActive()) object->Render(pWindow);
     }
     for (Text* text : m_uiElements)
     {
