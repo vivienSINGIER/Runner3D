@@ -46,13 +46,12 @@ void Block::Update(float32 deltatime)
         Start();
         return;
     }
-    m_transform.Translate(gce::Vector3f32(0.f, 0.f, -m_speed * deltatime));
     gce::Vector3f32 pos = m_transform.position;
     if (pos.z <= -1.f && !m_isTransited && m_isActive)
     {
         transitionTween = TweenSystem::Create(pos, 
             gce::Vector3f32(pos.x, pos.y - 1.f, pos.z - 2.f), 
-            Interpolation::easingOut_Quad);
+            Interpolation::easingIn_linear);
         transitionTween->StartDuration(0.5f, Function::Position, &m_transform, false);
         m_isTransited = true;
         m_endAnim->Reset();
@@ -62,6 +61,7 @@ void Block::Update(float32 deltatime)
         m_isTransited = false;
         m_isActive = false;
     }
+    if (!m_isTransited) m_transform.Translate(gce::Vector3f32(0.f, 0.f, -m_speed * deltatime));
 }
 
 bool Block::Start()

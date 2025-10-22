@@ -37,8 +37,6 @@ GameManager* GameManager::Get()
 
 void GameManager::Init(std::wstring_view title, uint32 width, uint32 height, CameraType type)
 {   
-    //SetPosition({5.0f, 5.0f, -2.5f});
-    //camera->SetRotation({30.0f, -45.0f, 0.0f});
     m_pGameCamera = new GameCamera();
     m_pGameCamera->Init(title, width, height, type);
 
