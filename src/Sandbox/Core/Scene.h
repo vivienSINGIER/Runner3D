@@ -4,6 +4,7 @@
 class Text;
 
 class GameObject;
+class GameCamera;
 
 class Scene
 {
@@ -12,9 +13,10 @@ public:
     virtual ~Scene();
     
     virtual void Update(float32 deltatime);
-    void Draw(Window* pWindow);
+    void Draw(GameCamera* pGameCamera);
 
     virtual void Init() = 0;
+    virtual void Uninit() = 0;
 
     template <class ObjectClass> ObjectClass* CreateObject();
     template <class ObjectClass> std::vector<GameObject*> GetAllObjects();

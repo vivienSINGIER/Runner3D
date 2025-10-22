@@ -2,6 +2,7 @@
 #define GAMEOBJECT_H_DEFINED
 
 class Scene;
+class GameCamera;
 
 class GameObject
 {
@@ -13,7 +14,7 @@ public:
     virtual ~GameObject();
 
     virtual void Update(float32 deltatime);
-    void Render(Window* window);
+    void Render(GameCamera* pGameCamera);
     void ToDestroy();
     
     bool IsActive() { return m_isActive;}
@@ -31,6 +32,7 @@ protected:
 
 private:
     friend class Scene;
+    friend class PhysicsSystem;
     
 };
 

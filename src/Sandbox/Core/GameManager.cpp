@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "GameCamera.h"
 #include "Tween.hpp"
 
 GameManager* GameManager::s_pInstance = nullptr;
@@ -34,16 +35,12 @@ GameManager* GameManager::Get()
     return s_pInstance;
 }
 
-void GameManager::Init(std::wstring_view title, uint32 width, uint32 height)
-{
-    m_pWindow = new Window(title, width, height);
-    
-    camera = new Camera(CameraType::PERSPECTIVE);
-    camera->SetPosition({5.0f, 5.0f, -2.5f});
-    camera->SetRotation({30.0f, -45.0f, 0.0f});
-    camera->SetFOV(gce::PI/2.f);
-    camera->SetFarPlane(500.0f);
-    camera->SetNearPlane(0.001f);
+void GameManager::Init(std::wstring_view title, uint32 width, uint32 height, CameraType type)
+{   
+    //SetPosition({5.0f, 5.0f, -2.5f});
+    //camera->SetRotation({30.0f, -45.0f, 0.0f});
+    m_pGameCamera = new GameCamera();
+    m_pGameCamera->Init(title, width, height, type);
 
     srand(time(NULL));
 }
@@ -51,19 +48,19 @@ void GameManager::Init(std::wstring_view title, uint32 width, uint32 height)
 void GameManager::GameLoop()
 {
     chrono.Start();
-    while (m_pWindow->IsOpen())
+    while (m_pGameCamera->IsWindowOpen())
     {
         m_deltatime = chrono.Reset();
 
         if (m_pCurrentScene == nullptr) continue;
         
-        m_pWindow->Begin(*camera);
-        m_pCurrentScene->Draw(m_pWindow);
-        m_pWindow->End();
+        m_pGameCamera->Begin();
+        m_pCurrentScene->Draw(m_pGameCamera);
+        m_pGameCamera->End();
+
+        m_pGameCamera->Display();
         
-        m_pWindow->Display();
-        
-        if (m_pCurrentScene->m_isPaused == false) m_physicsSystem.PhysicsUpdate();
+        if (m_pCurrentScene->m_isPaused == false) m_physicsSystem.PhysicsUpdate(m_deltatime);
         m_pCurrentScene->Update(m_deltatime);
         
         TweenSystem::Update(m_deltatime);
@@ -73,6 +70,6 @@ void GameManager::GameLoop()
 
 float32 GameManager::Deltatime() { return m_deltatime; }
 
-Window* GameManager::GetWindow() { return m_pWindow;   }
+Window* GameManager::GetWindow() { return m_pGameCamera->GetWindow(); }
 
 #endif

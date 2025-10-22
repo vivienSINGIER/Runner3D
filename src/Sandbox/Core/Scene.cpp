@@ -3,6 +3,8 @@
 #define SCENE_CPP_DEFINED
 
 #include "Scene.h"
+
+#include "GameCamera.h"
 #include "GC-simple-render/Window.h"
 #include "GameObject.h"
 #include "GC-simple-render/Text.h"
@@ -45,16 +47,16 @@ void Scene::Update(float32 deltatime)
     }
 }
 
-void Scene::Draw(Window* pWindow)
+void Scene::Draw(GameCamera* pGameCamera)
 {
     for (GameObject* object : m_gameObjects)
     {
-        if (object->IsActive()) object->Render(pWindow);
+        if (object->IsActive()) object->Render(pGameCamera);
     }
     for (Text* text : m_uiElements)
     {
         if (text == nullptr) continue;
-        pWindow->DrawText(*text);
+        pGameCamera->DrawText(*text);
     }
 }
 

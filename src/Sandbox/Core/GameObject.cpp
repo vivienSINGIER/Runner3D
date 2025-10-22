@@ -3,6 +3,8 @@
 #define GAMEOBJECT_CPP_DEFINED
 
 #include "GameObject.h"
+
+#include "GameCamera.h"
 #include "GC-simple-render/Window.h"
 
 GameObject::GameObject() : m_name("") {}
@@ -19,10 +21,10 @@ void GameObject::Update(float32 deltatime)
     m_mesh->SetRotation(m_transform.rotation);
 }
 
-void GameObject::Render(Window* window)
+void GameObject::Render(GameCamera* pGameCamera)
 {
     if (m_mesh == nullptr) return;
-    window->Draw(*m_mesh);
+    pGameCamera->Draw(*m_mesh);
 }
 
 void GameObject::ToDestroy()

@@ -2,6 +2,7 @@
 
 
 #include "Runner3D.h"
+#include "Test/TestScene.h"
 #include "Core/GameManager.h"
 
 int main()
@@ -98,9 +99,9 @@ int main()
     
         
     }*/
-    GameManager::Get()->Init(L"3D Runner", 1280, 720);
-    GameManager::Get()->AddScene<Runner3D>();
-    GameManager::Get()->SetCurrentScene<Runner3D>();
+    GameManager::Get()->Init(L"3D Runner", 1280, 720, CameraType::PERSPECTIVE);
+    GameManager::Get()->AddScene<TestScene>();
+    GameManager::Get()->SetCurrentScene<TestScene>();
     GameManager::Get()->GameLoop();
     return 0;
 }
