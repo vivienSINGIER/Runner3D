@@ -19,9 +19,11 @@ private:
     Player* player = nullptr;
     gce::Vector<Block*> m_vectBlocks;
 
-    Chrono* m_timeSpawning = nullptr;
-    Block* m_createBlock[3] = { nullptr, nullptr, nullptr };
-    
+    Block* m_lastBlockInCol[3] = { nullptr, nullptr, nullptr };
+
+    float m_spawnZ = 20.f;
+    float m_blockLength = 1.f;
+
     void SpawnBlock(uint8 col);
 };
 

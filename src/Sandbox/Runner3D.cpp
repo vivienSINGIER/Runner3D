@@ -6,27 +6,19 @@
 #include "Block.h"
 #include "Spike.h"
 
+#define SPEED 5.f
+
 void Runner3D::Init()
 {
     m_isPaused = false;
     for (int i = 0; i < 120; i++)
     {
         Block* block = CreateObject<Block>();
-        block->Init(gce::Vector3f32(0.f, 1.f, 30.f));
+        block->Init(gce::Vector3f32(0.f, 1.f, 30.f), SPEED);
         block->SetName("Block");
         
         m_vectBlocks.PushBack(block);
     }
-    
-    /*Spike* spike = CreateObject<Spike>();
-    spike->Init(gce::Vector3f32(1.0f, 1.0f,3 + 29.f));
-    spike->SetName("Spike");
-
-    
-    Spike* spike2 = CreateObject<Spike>();
-    spike2->Init(gce::Vector3f32(-1.0f, 1.0f,3 + 2.f));
-    spike2->SetName("Spike");*/
-    
 }
 
 void Runner3D::Uninit()
@@ -37,16 +29,22 @@ void Runner3D::Uninit()
 void Runner3D::Update(float32 deltaTime)
 {
     Scene::Update(deltaTime);
-    for (int i = 0; i < 3; i++)
+
+    for (int i = 0; i < 3; ++i)
     {
-        if (m_createBlock[i] == nullptr)
+        Block* last = m_lastBlockInCol[i];
+
+        if (last == nullptr || !last->IsActive())
         {
             SpawnBlock(i);
             continue;
         }
-        if (m_createBlock[i]->Start() == true && m_createBlock[i]->m_transform.position.z <= 30.f - 0.5f)
+        
+        float lastFrontZ = last->m_transform.position.z + 1 / 2.f;
+        float offset = 0.05f;
+        if (lastFrontZ <= m_spawnZ + offset)
         {
-            m_createBlock[i] = nullptr;
+            SpawnBlock(i);
         }
     }
 }
@@ -55,14 +53,15 @@ void Runner3D::SpawnBlock(uint8 col)
 {
     for (Block* block : m_vectBlocks)
     {
-        if (block->IsActive() == false)
+        if (!block->IsActive())
         {
-            block->m_transform.SetPosition({(float32)col, 1.f, 30.f});
+            block->m_transform.SetPosition({(float)col, 1.f, m_spawnZ});
             block->SetActive(true);
-            m_createBlock[col] = block;
+            block->SetIsSpawning(true);
+
+            m_lastBlockInCol[col] = block;
             return;
         }
-        
     }
 }
 
