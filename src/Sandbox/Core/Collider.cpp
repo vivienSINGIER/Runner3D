@@ -37,7 +37,7 @@ bool Collider::RepulsePhysics(gce::Vector3f32& overlap, Collider* pOther)
     if (oCasted != nullptr) overlap *= 0.5f;
     
     casted->m_velocity -= overlap;
-    oCasted->m_velocity += overlap;
+    if (oCasted != nullptr) oCasted->m_velocity += overlap;
     
     return true;
 }

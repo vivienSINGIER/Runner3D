@@ -30,6 +30,7 @@ void TestBlock::Uninit()
 void TestBlock::Update(float32 deltaTime)
 {
     GameObject::Update(deltaTime);
+    centre = m_transform.position;
 }
 
 

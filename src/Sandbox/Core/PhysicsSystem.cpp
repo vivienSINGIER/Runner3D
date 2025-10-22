@@ -57,7 +57,7 @@ void PhysicsSystem::PhysicsUpdate(float deltaTime)
     CollisionCheck();
     for (PhysicsComponent* pC : physicsComponents)
     {
-        if (pC->m_pOwnerPhysics == nullptr) return;
+        if (pC->m_pOwnerPhysics == nullptr) continue;
         pC->m_pOwnerPhysics->m_transform.Translate(pC->m_velocity * deltaTime);
     }
 }

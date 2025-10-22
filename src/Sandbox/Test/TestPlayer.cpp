@@ -16,10 +16,10 @@ void TestPlayer::Init()
     m_mesh = mesh;
     m_transform.SetScale(gce::Vector3f32(1.0f, 1.0f, 1.f));
     m_transform.SetPosition(gce::Vector3f32(0.0f, 15.0f, 0.0f));
-    m_rigidBody = false;
+    m_rigidBody = true;
     m_pOwner = this;
     m_pOwnerPhysics = this;
-    m_isActiveCollider = false;
+    m_isActiveCollider = true;
 
     m_useGravity = true;
     
@@ -32,6 +32,7 @@ void TestPlayer::Uninit()
 void TestPlayer::Update(float32 deltaTime)
 {
     GameObject::Update(deltaTime);
+    centre = m_transform.position;
 }
 
 #endif
