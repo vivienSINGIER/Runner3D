@@ -1,6 +1,8 @@
 #ifndef PHYSICSCOMPONENT_H_DEFINED
 #define PHYSICSCOMPONENT_H_DEFINED
 
+class GameObject;
+
 class PhysicsComponent
 {
 public:
@@ -12,7 +14,7 @@ public:
         IMPULSE, FORCE
     };
     
-    void AddForce(gce::Vector3f32 const& force);
+    void AddForce(gce::Vector3f32 const& force, Force forceType);
     
 protected:
     float32 m_speed = 0.0f;
@@ -20,7 +22,7 @@ protected:
     gce::Vector3f32 m_velocity;
 
     bool m_useGravity = true;
-    float32 m_gravity = 981.0f;
+    float32 m_gravity = -0.981f;
     float32 m_mass = 1.0f;
 
     bool m_useMaxVelocityGlobal  = false;
@@ -29,13 +31,18 @@ protected:
     bool m_useMaxVelocityZ       = false;
 
     gce::Vector3f32 m_maxVelocities;
-    float32 m_globalMaxVelocity = 0.0f;
+    float32 m_globalMaxVelocity = 10.0f;
+
+    GameObject* m_pOwnerPhysics = nullptr;
     
 private:
     std::vector<std::pair<gce::Vector3f32, Force>> m_appliedForces;
     gce::Vector3f32 m_previousVelocity;
     
     friend class PhysicsSystem;
+    friend class BoxCollider;
+    friend class SphereCollider;
+    friend class Collider;
 };
 
 #endif

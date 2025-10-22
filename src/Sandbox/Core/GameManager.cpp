@@ -58,7 +58,7 @@ void GameManager::GameLoop()
 
         m_pGameCamera->Display();
         
-        if (m_pCurrentScene->m_isPaused == false) m_physicsSystem.PhysicsUpdate();
+        if (m_pCurrentScene->m_isPaused == false) m_physicsSystem.PhysicsUpdate(m_deltatime);
         m_pCurrentScene->Update(m_deltatime);
         
         TweenSystem::Update(m_deltatime);

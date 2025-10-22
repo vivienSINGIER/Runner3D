@@ -29,6 +29,7 @@ protected:
 
 private:
     friend class Scene;
+    friend class PhysicsSystem;
     
 };
 

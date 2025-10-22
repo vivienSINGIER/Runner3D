@@ -4,7 +4,7 @@
 
 #include "Block.h"
 
-Block::Block() : BoxCollider(gce::Vector3f32(), gce::Vector3f32(2.0f, 2.0f, 29.f))
+Block::Block() : BoxCollider(gce::Vector3f32(), gce::Vector3f32(1.0f, 1.0f, 1.f))
 {
     Geometry* mesh = new Cube();
     mesh->SetColor(gce::Vector3f32(0.52f, 0.77f, 0.74f));

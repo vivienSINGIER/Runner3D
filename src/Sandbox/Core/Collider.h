@@ -16,6 +16,7 @@ public:
 
     virtual bool IsColliding(Collider* pOther) = 0;
     virtual void Repulse    (Collider* pOther);
+    bool RepulsePhysics(gce::Vector3f32& totalOverlap, Collider* pOther);
     
     virtual void OnCollisionEnter(Collider* pOther);
     virtual void OnCollisionStay (Collider* pOther);
@@ -23,16 +24,16 @@ public:
     
 protected:
     GameObject* m_pOwner = nullptr;
+    bool m_isActiveCollider = true;
     
     bool m_rigidBody = true;
     std::vector<Collider*> m_collidingEntities;
     bool IsAlreadyColliding(Collider* pOther);
-
+    
     virtual void RepulseBox    (BoxCollider* pOther)    = 0;
     virtual void RepulseSphere (SphereCollider* pOther) = 0;
 
 private:
-    bool m_isActiveCollider = true;
     
     friend class PhysicsSystem;
 };

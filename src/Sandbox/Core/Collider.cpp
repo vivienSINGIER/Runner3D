@@ -4,6 +4,8 @@
 
 #include "Collider.h"
 #include "BoxCollider.h"
+#include "GameObject.h"
+#include "PhysicsComponent.h"
 #include "SphereCollider.h"
 
 bool Collider::IsAlreadyColliding(Collider* pOther)
@@ -22,6 +24,22 @@ void Collider::Repulse(Collider* pOther)
 
     SphereCollider* sphereCast = dynamic_cast<SphereCollider*>(pOther);
     if ((sphereCast == nullptr) == false) RepulseSphere(sphereCast);
+}
+
+bool Collider::RepulsePhysics(gce::Vector3f32& overlap, Collider* pOther)
+{
+    if (m_pOwner == nullptr) return false;
+    
+    PhysicsComponent* casted = dynamic_cast<PhysicsComponent*>(m_pOwner);
+    if (casted == nullptr) return false;
+    PhysicsComponent* oCasted = dynamic_cast<PhysicsComponent*>(pOther);
+
+    if (oCasted != nullptr) overlap *= 0.5f;
+    
+    casted->m_velocity -= overlap;
+    oCasted->m_velocity += overlap;
+    
+    return true;
 }
 
 void Collider::OnCollisionEnter(Collider* pOther)

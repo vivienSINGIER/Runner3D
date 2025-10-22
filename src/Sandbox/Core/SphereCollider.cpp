@@ -5,6 +5,7 @@
 #include "SphereCollider.h"
 #include "BoxCollider.h"
 #include "GameObject.h"
+#include "PhysicsComponent.h"
 #include "Maths/MathsFunctions.hpp"
 
 SphereCollider::SphereCollider(gce::Vector3f32 aCentre, float32 aRadius) : centre(aCentre), radius(aRadius)
@@ -23,6 +24,9 @@ void SphereCollider::RepulseBox(BoxCollider* o)
     dir = (distance > 0) ? dir / distance : gce::Vector3f32(1.0f, 0.0f, 1.0f);
 
     gce::Vector3f32 push = dir * (radius - distance);
+
+    if (RepulsePhysics(push, o)) return;
+    
     if (o->m_rigidBody == true)
     {
         push /= 2.0f;
@@ -38,6 +42,9 @@ void SphereCollider::RepulseSphere(SphereCollider* o)
     dir = (distance > 0) ? dir / distance : gce::Vector3f32(1.0f, 0.0f, 1.0f);
 
     gce::Vector3f32 push = dir * (radius - distance);
+
+    if (RepulsePhysics(push, o)) return;
+    
     if (o->m_rigidBody == true)
     {
         push /= 2.0f;
@@ -59,7 +66,18 @@ bool SphereCollider::IsColliding(Collider* pOther)
 bool SphereCollider::SphereToSphere(SphereCollider* pOther)
 {
     SphereCollider* o = pOther;
-    float32 distance = gce::Sqrt(gce::Pow(centre.x - o->centre.x, 2) + gce::Pow(centre.y - o->centre.y, 2) + gce::Pow(centre.z - o->centre.z, 2));
+    if (o == nullptr) return false;
+
+    gce::Vector3f32 pos = centre;
+    gce::Vector3f32 oPos = o->centre;
+    PhysicsComponent* casted = dynamic_cast<PhysicsComponent*>(GetOwner());
+    PhysicsComponent* oCasted = dynamic_cast<PhysicsComponent*>(o->GetOwner());
+    if (casted != nullptr)
+        pos += casted->m_velocity;
+    if (oCasted != nullptr)
+        oPos += oCasted->m_velocity;
+    
+    float32 distance = gce::Sqrt(gce::Pow(pos.x - oPos.x, 2) + gce::Pow(pos.y - oPos.y, 2) + gce::Pow(pos.z - oPos.z, 2));
 
     return (distance < radius + o->radius);
 }

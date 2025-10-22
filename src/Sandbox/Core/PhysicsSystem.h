@@ -6,7 +6,8 @@ class PhysicsSystem
 public:
     PhysicsSystem() = default;
     ~PhysicsSystem() = default;
-    void PhysicsUpdate();
+    void PhysicsUpdate(float deltaTime);
+    void CollisionCheck();
 };
 
 #endif

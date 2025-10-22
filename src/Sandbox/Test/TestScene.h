@@ -6,7 +6,11 @@
 class TestScene : public Scene
 {
 public:
-    void Init() override;
+    TestScene() = default;
+    ~TestScene() = default;
+    void Init();
+    void Uninit();
+    void Update(float32 deltaTime);
 };
 
 #endif
