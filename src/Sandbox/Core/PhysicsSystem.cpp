@@ -27,7 +27,7 @@ void PhysicsSystem::PhysicsUpdate()
                     pCollider->OnCollisionStay(pOther);
             }
             else
-            {
+            {  
                 if (pCollider->IsAlreadyColliding(pOther) == true)  pCollider->OnCollisionExit(pOther);
             }
         }

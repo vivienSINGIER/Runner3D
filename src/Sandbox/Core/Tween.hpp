@@ -15,7 +15,7 @@ enum Function
 class Tween
 {
 public:
-    inline void StartDuration(float32 duration, Function typeFunction, Geometry* pOwnerTransform, bool reverse);
+    inline void StartDuration(float32 duration, Function typeFunction, Transform* pOwnerTransform, bool reverse);
 
 private:
     Tween(gce::Vector3f32 const& start, gce::Vector3f32 const& end, float32(* const pFunction)(float32));
@@ -23,7 +23,7 @@ private:
     gce::Vector3f32 start, end;
     float32(* function)(float32)  = nullptr;
 
-    struct infoTween { float32 mDuration; float32 mElapsed = 0.f; Function mTypeFunction; Geometry* mOwnerTransform; bool mReverse; };
+    struct infoTween { float32 mDuration; float32 mElapsed = 0.f; Function mTypeFunction; Transform* mOwnerTransform; bool mReverse; };
     infoTween* mTween;
     
     friend class TweenSystem;
@@ -50,7 +50,7 @@ inline Tween::Tween(gce::Vector3f32 const&  pStart, gce::Vector3f32 const& pEnd,
     function = pFunction;
 }
 
-inline void Tween::StartDuration(float32 duration, Function typeFunction, Geometry* pOwnerTransform, bool reverse)
+inline void Tween::StartDuration(float32 duration, Function typeFunction, Transform* pOwnerTransform, bool reverse)
 {
     mTween = new infoTween();
     mTween->mDuration = duration;

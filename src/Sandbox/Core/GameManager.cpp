@@ -41,7 +41,7 @@ void GameManager::Init(std::wstring_view title, uint32 width, uint32 height)
     camera = new Camera(CameraType::PERSPECTIVE);
     camera->SetPosition({5.0f, 5.0f, -2.5f});
     camera->SetRotation({30.0f, -45.0f, 0.0f});
-    camera->SetFOV(gce::PI/2.0f);
+    camera->SetFOV(gce::PI/2.f);
     camera->SetFarPlane(500.0f);
     camera->SetNearPlane(0.001f);
 
@@ -60,14 +60,14 @@ void GameManager::GameLoop()
         m_pWindow->Begin(*camera);
         m_pCurrentScene->Draw(m_pWindow);
         m_pWindow->End();
-
+        
         m_pWindow->Display();
-
         
         if (m_pCurrentScene->m_isPaused == false) m_physicsSystem.PhysicsUpdate();
         m_pCurrentScene->Update(m_deltatime);
         
         TweenSystem::Update(m_deltatime);
+
     }
 }
 

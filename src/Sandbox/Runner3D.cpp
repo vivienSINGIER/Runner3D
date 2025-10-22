@@ -4,28 +4,29 @@
 
 #include "Runner3D.h"
 #include "Block.h"
+#include "Spike.h"
 
 void Runner3D::Init()
 {
     m_isPaused = false;
-    for (int i = 0; i < 30; i++)
+    for (int i = 0; i < 120; i++)
     {
-        Block* block1 = CreateObject<Block>();
-        block1->Init(gce::Vector3f32(-1.0f, 0.0f, 3 + (float32)i));
-        block1->
-        block1->SetName("Block");
-
-        Block* block2 = CreateObject<Block>();
-        block2->Init();
-        block2->m_transform.SetPosition(gce::Vector3f32(0.0f, 0.0f, 3 + (float32)i));
-        block2->SetName("Block");
+        Block* block = CreateObject<Block>();
+        block->Init(gce::Vector3f32(0.f, 1.f, 30.f));
+        block->SetName("Block");
         
-        Block* block3 = new Block();
-        block3 = CreateObject<Block>();
-        block3->Init();
-        block3->m_transform.SetPosition(gce::Vector3f32(1.0f, 0.0f,3 + (float32)i));
-        block3->SetName("Block");
+        m_vectBlocks.PushBack(block);
     }
+    
+    /*Spike* spike = CreateObject<Spike>();
+    spike->Init(gce::Vector3f32(1.0f, 1.0f,3 + 29.f));
+    spike->SetName("Spike");
+
+    
+    Spike* spike2 = CreateObject<Spike>();
+    spike2->Init(gce::Vector3f32(-1.0f, 1.0f,3 + 2.f));
+    spike2->SetName("Spike");*/
+    
 }
 
 void Runner3D::Uninit()
@@ -36,6 +37,33 @@ void Runner3D::Uninit()
 void Runner3D::Update(float32 deltaTime)
 {
     Scene::Update(deltaTime);
+    for (int i = 0; i < 3; i++)
+    {
+        if (m_createBlock[i] == nullptr)
+        {
+            SpawnBlock(i);
+            continue;
+        }
+        if (m_createBlock[i]->Start() == true && m_createBlock[i]->m_transform.position.z <= 30.f - 0.5f)
+        {
+            m_createBlock[i] = nullptr;
+        }
+    }
+}
+
+void Runner3D::SpawnBlock(uint8 col)
+{
+    for (Block* block : m_vectBlocks)
+    {
+        if (block->IsActive() == false)
+        {
+            block->m_transform.SetPosition({(float32)col, 1.f, 30.f});
+            block->SetActive(true);
+            m_createBlock[col] = block;
+            return;
+        }
+        
+    }
 }
 
 

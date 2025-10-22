@@ -17,6 +17,12 @@ public:
 
 private:
     Player* player = nullptr;
+    gce::Vector<Block*> m_vectBlocks;
+
+    Chrono* m_timeSpawning = nullptr;
+    Block* m_createBlock[3] = { nullptr, nullptr, nullptr };
+    
+    void SpawnBlock(uint8 col);
 };
 
 #endif
