@@ -16,7 +16,6 @@ public:
 
     virtual bool IsColliding(Collider* pOther) = 0;
     virtual void Repulse    (Collider* pOther);
-    bool RepulsePhysics(gce::Vector3f32& totalOverlap, Collider* pOther);
     
     virtual void OnCollisionEnter(Collider* pOther);
     virtual void OnCollisionStay (Collider* pOther);
