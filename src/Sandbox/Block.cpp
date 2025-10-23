@@ -23,6 +23,7 @@ void Block::Init(float32 speed)
     m_pOwner = this;
     m_rigidBody = false;
     m_isActive = false;
+    m_isActiveCollider = false;
 }
 
 void Block::Uninit()

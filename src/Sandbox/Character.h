@@ -14,6 +14,7 @@ public:
     void Update(float32 deltaTime);
     void Move(int8 dir);
     void Jump();
+    void Start();
 private:
     int8 col = 0.f;
 };

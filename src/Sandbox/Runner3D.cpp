@@ -37,6 +37,8 @@ void Runner3D::Init()
         m_vectBlocks.PushBack(block);
     }
 
+    m_firstBlock = m_vectBlocks[0];
+
     for (int i = 0; i < 30; i++)
     {
         Block* block = CreateObject<Lava>();
@@ -58,6 +60,9 @@ void Runner3D::Update(float32 deltaTime)
 { 
     Scene::Update(deltaTime);
     m_playerController->HandleInput();
+
+    if (m_firstBlock->m_transform.position.z < m_player->m_transform.position.z)
+        m_player->Start();
     
     Tile* tile = m_vectTiles[m_currentTile];
     if (tile->m_currentRow > 3)
@@ -75,7 +80,6 @@ void Runner3D::Update(float32 deltaTime)
     }
     
     float lastFrontZ = last->m_transform.position.z + 1.f;
-    // float offset = 0.02f;
     if (lastFrontZ <= 20.f)
     {
         HandleTileSpawn();

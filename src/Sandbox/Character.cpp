@@ -17,7 +17,7 @@ void Character::Init(gce::Vector3f32 pos)
     m_pOwner = this;
     m_pOwnerPhysics = this;
     m_isActiveCollider = true;
-    m_useGravity = true;
+    m_useGravity = false;
 }
 
 void Character::Update(float32 deltaTime)
@@ -35,7 +35,13 @@ void Character::Move(int8 dir)
 
 void Character::Jump()
 {
+    if (m_useGravity == false) return;
     AddForce({0.f, 2.f, 0.f}, Force::IMPULSE);
+}
+
+void Character::Start()
+{
+    m_useGravity = true;
 }
 
 #endif

@@ -68,12 +68,13 @@ void PhysicsSystem::CollisionCheck()
 
     for (Collider* pCollider : colliders)
     {
-        if (pCollider->m_isActiveCollider == false) continue;
-        // TODO Check if is active
+        if (pCollider->m_isActiveCollider == false)   continue;
+        if (pCollider->m_pOwner->IsActive() == false) continue;
         
         for (Collider* pOther : colliders)
         {
             if (pCollider == pOther) continue;
+            if (pOther->m_pOwner->IsActive() == false) continue;
             
             if (pCollider->IsColliding(pOther))
             {
