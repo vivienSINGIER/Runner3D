@@ -6,6 +6,7 @@
 #include "Block.h"
 #include "Core/GameCamera.h"
 #include "Core/GameManager.h"
+#include "nlohmann.hpp"
 
 void Runner3D::Init()
 {
@@ -17,28 +18,26 @@ void Runner3D::Init()
     cam->SetFOV(gce::PI/3.0f);
     cam->SetFarPlane(500.0f);
     cam->SetNearPlane(0.001f);
-    
-    for (int i = 0; i < 30; i++)
-    {
-        Block* block1 = CreateObject<Block>();
-        block1->Init();
-        block1->m_transform.SetPosition(gce::Vector3f32(0.0f, 0.0f, (float32)i));
-        block1->SetName("Block");
 
-        Block* block2 = CreateObject<Block>();
-        block2->Init();
-        block2->m_transform.SetPosition(gce::Vector3f32(1.0f, 0.0f, (float32)i));
-        block2->SetName("Block");
-        
-        Block* block3 = new Block();
-        block3 = CreateObject<Block>();
-        block3->Init();
-        block3->m_transform.SetPosition(gce::Vector3f32(2.0f, 0.0f,(float32)i));
-        block3->SetName("Block");
+    m_file = std::ifstream("../../res/JSON/tiles.json");
+    if (m_file.is_open()) {
+        nlohmann::json data = nlohmann::json::parse(m_file);
+
+        int8 tile = 5;
+        for (int i = 0; i < data["Tiles"][tile]["nbrBlock"]; i++)
+        {
+            Block* block1 = CreateObject<Block>();
+            block1->Init();
+            gce::Vector3f32 pos = gce::Vector3f32(data["Tiles"][tile]["blocks"][i]["placement"][0],
+                data["Tiles"][tile]["blocks"][i]["placement"][1],
+                data["Tiles"][tile]["blocks"][i]["placement"][2]);
+            block1->m_transform.SetPosition(pos);
+            block1->SetName("Block");
+        }
     }
 
     m_player = CreateObject<Character>();
-    m_player->Init({1.f, 2.f, 0.f});
+    m_player->Init({1.f, 3.f, 0.f});
     m_player->SetName("Player");
 
     m_playerController = new Controller();

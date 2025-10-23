@@ -4,6 +4,7 @@
 #include "Core/Scene.h"
 #include "Character.h"
 #include "Controller.h"
+#include <fstream>
 
 class Runner3D: public Scene
 {
@@ -17,6 +18,8 @@ public:
 private:
     Character* m_player = nullptr;
     Controller* m_playerController = nullptr;
+
+    std::ifstream m_file;
 };
 
 #endif

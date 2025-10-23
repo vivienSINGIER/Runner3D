@@ -11,11 +11,14 @@ public:
     ~Character() = default;
     void Init(gce::Vector3f32 pos);
     void Uninit();
-    void Update(float32 deltaTime);
+    void Update(float32 deltaTime) override;
+    void OnCollisionEnter(Collider* pOther) override;
     void Move(int8 dir);
     void Jump();
 private:
     int8 col = 0.f;
+    float32 m_speed = 100.f;
+    bool m_isGrounded = false;
 };
 
 #endif

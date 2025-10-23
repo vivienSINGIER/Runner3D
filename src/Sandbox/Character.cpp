@@ -4,26 +4,29 @@
 
 #include "Character.h"
 
-Character::Character() : BoxCollider(gce::Vector3f32(), gce::Vector3f32(0.75f, 0.75f, 0.75f)) {}
+Character::Character() : BoxCollider(gce::Vector3f32(), gce::Vector3f32(0.5f, 0.5f, 0.5f)) {}
 
 void Character::Init(gce::Vector3f32 pos) 
 {
     Geometry* cube = new Cube();
     cube->SetColor(gce::Vector3f32(1.f, 1.f, 1.f));
     m_mesh = cube;
-    m_transform.SetScale(gce::Vector3f32(0.75f, 0.75f, 0.75f));
+    m_transform.SetScale(gce::Vector3f32(0.5f, 0.5f, 0.5f));
     m_transform.SetPosition(pos);
     m_rigidBody = true;
     m_pOwner = this;
     m_pOwnerPhysics = this;
     m_isActiveCollider = true;
     m_useGravity = true;
+    m_gravity = -3.981f;
 }
 
 void Character::Update(float32 deltaTime)
 {
     GameObject::Update(deltaTime);
+    if (m_isGrounded) { m_speed = 0.f; m_transform.rotation.x = 0; }
     centre = m_transform.position;
+    m_transform.rotation.x = m_transform.rotation.x + deltaTime * m_speed ;
 }
 
 void Character::Move(int8 dir)
@@ -35,7 +38,21 @@ void Character::Move(int8 dir)
 
 void Character::Jump()
 {
-    AddForce({0.f, 2.f, 0.f}, Force::IMPULSE);
+    if (m_isGrounded)
+    {
+        AddForce({0.f, 4.f, 0.f}, Force::IMPULSE);
+        m_isGrounded = false;
+        m_speed = 200.f;
+    }
+}
+
+void Character::OnCollisionEnter(Collider* pOther)
+{
+    BoxCollider::OnCollisionEnter(pOther);
+    if (pOther->GetOwner()->GetName() == "Block")
+    {
+        if (pOther->GetOwner()->m_transform.position.y < m_transform.position.y) m_isGrounded = true;
+    }
 }
 
 #endif

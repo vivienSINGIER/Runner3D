@@ -1,0 +1,104 @@
+{
+  "Tiles": [
+    {
+      "full": false,
+      "nbrBlock": 15,
+      "blocks": [
+        { "placement": [0, 0, 0], "type": "Grass" },
+        { "placement": [1, 0, 0], "type": "Grass" },
+        { "placement": [2, 0, 0], "type": "Grass" },
+        { "placement": [1, 0, 1], "type": "Grass" },
+        { "placement": [0, 0, 2], "type": "Grass" },
+        { "placement": [1, 0, 2], "type": "Grass" },
+        { "placement": [2, 0, 2], "type": "Grass" },
+        { "placement": [0, 0, 3], "type": "Grass" },
+        { "placement": [2, 0, 3], "type": "Grass" },
+        { "placement": [0, 0, 4], "type": "Grass" },
+        { "placement": [1, 0, 4], "type": "Grass" },
+        { "placement": [2, 0, 4], "type": "Grass" },
+        { "placement": [0, 0, 5], "type": "Grass" },
+        { "placement": [1, 0, 5], "type": "Grass" },
+        { "placement": [2, 0, 5], "type": "Grass" }
+      ]
+    },
+    {
+      "full": false,
+      "nbrBlock": 12,
+      "blocks": [
+        { "placement": [0, 0, 0], "type": "Grass" },
+        { "placement": [1, 0, 0], "type": "Grass" },
+        { "placement": [2, 0, 0], "type": "Grass" },
+        { "placement": [0, 0, 1], "type": "Grass" },
+        { "placement": [0, 0, 2], "type": "Grass" },
+        { "placement": [0, 0, 3], "type": "Grass" },
+        { "placement": [0, 0, 4], "type": "Grass" },
+        { "placement": [1, 0, 4], "type": "Grass" },
+        { "placement": [2, 0, 4], "type": "Grass" },
+        { "placement": [0, 0, 5], "type": "Grass" },
+        { "placement": [1, 0, 5], "type": "Grass" },
+        { "placement": [2, 0, 5], "type": "Grass" }
+      ]
+    },
+    {
+      "full": false,
+      "nbrBlock": 12,
+      "blocks": [
+        { "placement": [0, 0, 0], "type": "Grass" },
+        { "placement": [1, 0, 0], "type": "Grass" },
+        { "placement": [2, 0, 0], "type": "Grass" },
+        { "placement": [2, 0, 1], "type": "Grass" },
+        { "placement": [2, 0, 2], "type": "Grass" },
+        { "placement": [2, 0, 3], "type": "Grass" },
+        { "placement": [0, 0, 4], "type": "Grass" },
+        { "placement": [1, 0, 4], "type": "Grass" },
+        { "placement": [2, 0, 4], "type": "Grass" },
+        { "placement": [0, 0, 5], "type": "Grass" },
+        { "placement": [1, 0, 5], "type": "Grass" },
+        { "placement": [2, 0, 5], "type": "Grass" }
+      ]
+    },
+    {
+      "full": true,
+      "nbrBlock": 12,
+      "blocks": [
+        { "full": true, "type": "Grass" }
+      ]
+    },
+    {
+      "full": false,
+      "nbrBlock": 14,
+      "blocks": [
+        { "placement": [0, 0, 0], "type": "Grass" },
+        { "placement": [1, 0, 0], "type": "Grass" },
+        { "placement": [2, 0, 0], "type": "Grass" },
+        { "placement": [0, 0, 1], "type": "Grass" },
+        { "placement": [2, 0, 1], "type": "Grass" },
+        { "placement": [0, 0, 2], "type": "Grass" },
+        { "placement": [2, 0, 2], "type": "Grass" },
+        { "placement": [0, 0, 3], "type": "Grass" },
+        { "placement": [2, 0, 3], "type": "Grass" },
+        { "placement": [0, 0, 4], "type": "Grass" },
+        { "placement": [2, 0, 4], "type": "Grass" },
+        { "placement": [0, 0, 5], "type": "Grass" },
+        { "placement": [1, 0, 5], "type": "Grass" },
+        { "placement": [2, 0, 5], "type": "Grass" }
+      ]
+    },
+    {
+      "full": false,
+      "nbrBlock": 10,
+      "blocks": [
+        { "placement": [0, 0, 0], "type": "Grass" },
+        { "placement": [1, 0, 0], "type": "Grass" },
+        { "placement": [2, 0, 0], "type": "Grass" },
+        { "placement": [1, 0, 1], "type": "Grass" },
+        { "placement": [1, 0, 2], "type": "Grass" },
+        { "placement": [1, 0, 3], "type": "Grass" },
+        { "placement": [1, 0, 4], "type": "Grass" },
+        { "placement": [0, 0, 5], "type": "Grass" },
+        { "placement": [1, 0, 5], "type": "Grass" },
+        { "placement": [2, 0, 5], "type": "Grass" }
+      ]
+    }
+  ]
+}
