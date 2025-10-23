@@ -18,15 +18,12 @@ public:
     void ToDestroy();
     
     void SetName(std::string newName);
-    void SetActive(bool newActive) { m_isActive = newActive; };
-    bool IsActive() const { return m_isActive; };
     std::string GetName() { return m_name; }
 
 protected:
     Geometry* m_mesh = nullptr;
     Scene* m_pScene = nullptr;
 
-    bool m_isActive = true;
     bool toDestroy = false;
     std::string m_name;
 
