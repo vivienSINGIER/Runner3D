@@ -16,6 +16,7 @@ GameObject::~GameObject()
 
 void GameObject::Update(float32 deltatime)
 {
+    if (m_mesh == nullptr) return;
     m_mesh->SetPosition(m_transform.position);
     m_mesh->SetScale(m_transform.scale);
     m_mesh->SetRotation(m_transform.rotation);

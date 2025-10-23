@@ -17,6 +17,8 @@ public:
     void Render(GameCamera* pGameCamera);
     void ToDestroy();
     
+    bool IsActive() { return m_isActive;}
+    void SetActive(bool active) { m_isActive = active;}
     void SetName(std::string newName);
     void SetActive(bool newActive) { m_isActive = newActive; };
     bool IsActive() const { return m_isActive; };
@@ -28,6 +30,7 @@ protected:
 
     bool m_isActive = true;
     bool toDestroy = false;
+    bool m_isActive = true;
     std::string m_name;
 
 private:

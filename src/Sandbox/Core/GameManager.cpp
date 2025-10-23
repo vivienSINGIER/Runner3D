@@ -36,7 +36,7 @@ GameManager* GameManager::Get()
 }
 
 void GameManager::Init(std::wstring_view title, uint32 width, uint32 height, CameraType type)
-{
+{   
     m_pGameCamera = new GameCamera();
     m_pGameCamera->Init(title, width, height, type);
 
@@ -62,6 +62,7 @@ void GameManager::GameLoop()
         m_pCurrentScene->Update(m_deltatime);
         
         TweenSystem::Update(m_deltatime);
+
     }
 }
 

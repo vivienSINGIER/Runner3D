@@ -55,4 +55,9 @@ void Character::OnCollisionEnter(Collider* pOther)
     }
 }
 
+void Character::Start()
+{
+    m_useGravity = true;
+}
+
 #endif

@@ -15,6 +15,7 @@ public:
     void OnCollisionEnter(Collider* pOther) override;
     void Move(int8 dir);
     void Jump();
+    void Start();
 private:
     int8 col = 0.f;
     float32 m_speed = 100.f;
