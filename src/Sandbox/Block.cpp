@@ -4,9 +4,9 @@
 
 #include "Block.h"
 
-Tween* transitionTween = nullptr;
+#include "Core/GameManager.h"
 
-Block::Block() : BoxCollider(gce::Vector3f32(), gce::Vector3f32(1.0f, 1.0f, 1.f))
+ Block::Block() : BoxCollider(gce::Vector3f32(), gce::Vector3f32(1.0f, 1.0f, 1.f))
 {
 }
 
@@ -22,6 +22,7 @@ void Block::Init(float32 speed)
     
     m_pOwner = this;
     m_rigidBody = false;
+    m_isActive = false;
 }
 
 void Block::Uninit()
@@ -43,8 +44,8 @@ void Block::Update(float32 deltatime)
 
 void Block::Start(uint8 col)
 {
-    m_transform.position = gce::Vector3f32((float32)col, 0.f, 28.f);
-    m_isSpawning = true;
+    m_transform.position = gce::Vector3f32((float32)col, 0.f, 20.f);
+    m_isActive = true;
 }
 
 #endif

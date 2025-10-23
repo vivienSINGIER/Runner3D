@@ -4,9 +4,9 @@
 
 #include "Spike.h"
 
-void Spike::Init(gce::Vector3f32 const& pos, float32 speed)
+void Spike::Init(float32 speed)
 {
-    Block::Init(pos, speed);
+    Block::Init(speed);
     m_mesh->SetColor(gce::Vector3f32(1.f, 0.f, 0.0f));
 }
 #endif

@@ -8,7 +8,7 @@ class Lava : public Block
 public:
     Lava() = default;
     ~Lava() = default;
-    void Init(gce::Vector3f32 const& pos, float32 speed) override;
+    void Init(float32 speed) override;
 };
 
 #endif

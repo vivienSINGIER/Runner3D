@@ -22,19 +22,9 @@ private:
 
     Block* m_lastBlockInCol =  nullptr;
 
-    int8 const m_tiles[5][4][3] = {{{0, 1, 0},{ 1, 1, 1}, {1, 0, 1}, {1, 1, 1}},
-        {{1, 0, 0}, {1, 0, 0}, {1, 0, 0}, {1, 1, 1}},
-        {{0, 0, 1}, {0, 0, 1}, {0, 0, 1}, {1, 1, 1}},
-        {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}, {1, 1, 1}},
-        {{1, 0, 1}, {1, 0, 1}, {1, 0, 1}, {1, 0, 1}}};
-
     std::vector<Tile*> m_vectTiles;
-
-    int8 m_currentLine = 0;
-    int8 m_currentTile = 0;
     
-    float m_spawnZ = 20.f;
-    float m_blockLength = 1.f;
+    int8 m_currentTile = 0;
 
     void HandleTileSpawn();
     template <class BlockClass>

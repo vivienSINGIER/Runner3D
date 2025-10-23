@@ -8,7 +8,7 @@ class Spike : public Block
 public:
     Spike() = default;
     ~Spike() = default;
-    void Init(gce::Vector3f32 const& pos, float32 speed) override;
+    void Init(float32 speed) override;
 };
 
 #endif
