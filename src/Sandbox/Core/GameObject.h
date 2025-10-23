@@ -17,6 +17,8 @@ public:
     void Render(GameCamera* pGameCamera);
     void ToDestroy();
     
+    bool IsActive() { return m_isActive;}
+    void SetActive(bool active) { m_isActive = active;}
     void SetName(std::string newName);
     std::string GetName() { return m_name; }
 
@@ -25,6 +27,7 @@ protected:
     Scene* m_pScene = nullptr;
 
     bool toDestroy = false;
+    bool m_isActive = false;
     std::string m_name;
 
 private:

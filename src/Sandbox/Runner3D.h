@@ -5,6 +5,9 @@
 #include "Character.h"
 #include "Controller.h"
 
+class Player;
+class Tile;
+
 class Runner3D: public Scene
 {
 public:
@@ -17,6 +20,21 @@ public:
 private:
     Character* m_player = nullptr;
     Controller* m_playerController = nullptr;
+    
+    Player* player = nullptr;
+    gce::Vector<Block*> m_vectBlocks;
+
+    Block* m_lastBlockInCol =  nullptr;
+
+    std::vector<Tile*> m_vectTiles;
+    
+    int8 m_currentTile = 0;
+
+    void HandleTileSpawn();
+    template <class BlockClass>
+    void SpawnBlock(uint8 col);
+    
+    void InitTiles();
 };
 
 #endif
