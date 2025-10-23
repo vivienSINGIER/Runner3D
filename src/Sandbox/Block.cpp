@@ -22,7 +22,7 @@ void Block::Init(gce::Vector3f32 const& pos, float32 speed)
     m_firstPos = pos;
     
     m_pOwner = this;
-    
+    m_isActive = false;
     m_rigidBody = false;
     m_isTransited = false;
     

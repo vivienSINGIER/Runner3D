@@ -7,9 +7,10 @@
 #include "Lava.h"
 #include "Spike.h"
 
-#define SPEED 5.f
 #include "Core/GameCamera.h"
 #include "Core/GameManager.h"
+
+#define SPEED 5.f
 
 void Runner3D::Init()
 {
@@ -21,6 +22,13 @@ void Runner3D::Init()
     cam->SetFOV(gce::PI/3.0f);
     cam->SetFarPlane(500.0f);
     cam->SetNearPlane(0.001f);
+
+    m_player = CreateObject<Character>();
+    m_player->Init({1.f, 200.f, 0.f});
+    m_player->SetName("Player");
+
+    m_playerController = new Controller();
+    m_playerController->Init(m_player);
 
     for (int h = 0; h < 2; h++)
     {
@@ -49,13 +57,6 @@ void Runner3D::Init()
         }
     }
     m_currentTile = rand() % 5;
-
-    m_player = CreateObject<Character>();
-    m_player->Init(gce::Vector3f32(1.f, 3.f, 0.f));
-    m_player->SetName("Player");
-
-    m_playerController = new Controller();
-    m_playerController->Init(m_player);
 }
 
 void Runner3D::Uninit()

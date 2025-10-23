@@ -27,7 +27,7 @@ protected:
     Scene* m_pScene = nullptr;
 
     bool toDestroy = false;
-    bool m_isActive = false;
+    bool m_isActive = true;
     std::string m_name;
 
 private:
