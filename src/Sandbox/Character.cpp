@@ -17,7 +17,7 @@ void Character::Init(gce::Vector3f32 pos)
     m_pOwner = this;
     m_pOwnerPhysics = this;
     m_isActiveCollider = true;
-    m_useGravity = true;
+    m_useGravity = false;
     m_gravity = -3.981f;
 }
 

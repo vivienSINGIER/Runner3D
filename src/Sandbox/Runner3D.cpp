@@ -66,6 +66,7 @@ void Runner3D::Init()
     {
         Block* block = CreateObject<Grass>();
         block->Init(5.f);
+        block->SetName("Block");
         m_vectBlocks.PushBack(block);
     }
 
@@ -75,6 +76,7 @@ void Runner3D::Init()
     {
         Block* block = CreateObject<Lava>();
         block->Init(5.f);
+        block->SetName("Block");
         m_vectBlocks.PushBack(block);
     }
 

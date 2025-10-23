@@ -10,5 +10,4 @@ public:
     ~Grass() = default;
     void Init(float32 speed) override;
 };
-
 #endif
