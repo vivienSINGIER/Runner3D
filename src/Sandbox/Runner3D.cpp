@@ -3,7 +3,6 @@
 #define RUNNER3D_CPP_DEFINED
 
 #include "Runner3D.h"
-#include "Block.h"
 #include "Grass.h"
 #include "Lava.h"
 #include "Spike.h"
@@ -50,6 +49,13 @@ void Runner3D::Init()
         }
     }
     m_currentTile = rand() % 5;
+
+    m_player = CreateObject<Character>();
+    m_player->Init(gce::Vector3f32(1.f, 3.f, 0.f));
+    m_player->SetName("Player");
+
+    m_playerController = new Controller();
+    m_playerController->Init(m_player);
 }
 
 void Runner3D::Uninit()
@@ -61,6 +67,7 @@ void Runner3D::Update(float32 deltaTime)
 {
     Scene::Update(deltaTime);
     m_playerController->HandleInput();
+    
     for (int i = 0; i < 3; ++i)
     {
         Block* last = m_lastBlockInCol[i];

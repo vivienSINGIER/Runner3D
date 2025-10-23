@@ -4,6 +4,7 @@
 #include "Core/Scene.h"
 #include "Character.h"
 #include "Controller.h"
+#include "Block.h"
 
 class Runner3D: public Scene
 {
@@ -15,7 +16,6 @@ public:
     void Update(float32 deltaTime);
 
 private:
-    Player* player = nullptr;
     gce::Vector<Block*> m_vectBlocks;
 
     Block* m_lastBlockInCol[3] = { nullptr, nullptr, nullptr };
