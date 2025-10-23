@@ -26,22 +26,6 @@ void Collider::Repulse(Collider* pOther)
     if ((sphereCast == nullptr) == false) RepulseSphere(sphereCast);
 }
 
-bool Collider::RepulsePhysics(gce::Vector3f32& overlap, Collider* pOther)
-{
-    if (m_pOwner == nullptr) return false;
-    
-    PhysicsComponent* casted = dynamic_cast<PhysicsComponent*>(m_pOwner);
-    if (casted == nullptr) return false;
-    PhysicsComponent* oCasted = dynamic_cast<PhysicsComponent*>(pOther);
-
-    if (oCasted != nullptr) overlap *= 0.5f;
-    
-    casted->m_velocity -= overlap;
-    if (oCasted != nullptr) oCasted->m_velocity += overlap;
-    
-    return true;
-}
-
 void Collider::OnCollisionEnter(Collider* pOther)
 {
     m_collidingEntities.push_back(pOther);   

@@ -17,8 +17,6 @@ void Runner3D::Init()
     m_isPaused = false;
     GameCamera* cam = GameManager::Get()->GetGameCamera();
     
-    cam->SetPosition({5.0f, 5.0f, -2.5f});
-    cam->SetRotation({30.0f, -45.0f, 0.0f});
     cam->SetPosition({5.0f, 5.0f, -5.0f});
     cam->SetRotation({30.0f, -45.0f, 0.0f});
     cam->SetFOV(gce::PI/3.0f);
@@ -62,7 +60,7 @@ void Runner3D::Uninit()
 void Runner3D::Update(float32 deltaTime)
 {
     Scene::Update(deltaTime);
-    
+    m_playerController->HandleInput();
     for (int i = 0; i < 3; ++i)
     {
         Block* last = m_lastBlockInCol[i];

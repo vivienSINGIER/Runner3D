@@ -1,10 +1,9 @@
 ﻿#ifndef RUNNER3D_H_DEFINED
 #define RUNNER3D_H_DEFINED
 
-#include "Block.h"
 #include "Core/Scene.h"
-
-class Player;
+#include "Character.h"
+#include "Controller.h"
 
 class Runner3D: public Scene
 {
@@ -33,6 +32,8 @@ private:
     float m_spawnZ = 20.f;
     float m_blockLength = 1.f;
 
+    Character* m_player = nullptr;
+    Controller* m_playerController = nullptr;
     void SpawnBlock(uint8 col);
 };
 

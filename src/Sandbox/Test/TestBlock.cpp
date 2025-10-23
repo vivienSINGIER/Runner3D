@@ -4,7 +4,7 @@
 
 #include "TestBlock.h"
 
-TestBlock::TestBlock() : BoxCollider(gce::Vector3f32(), gce::Vector3f32(1.0f, 1.0f, 1.f))
+TestBlock::TestBlock() : BoxCollider(gce::Vector3f32(), gce::Vector3f32(1.0f, 1.0f, 1.0f))
 {
     
 }
@@ -18,8 +18,6 @@ void TestBlock::Init()
     m_rigidBody = false;
     m_pOwner = this;
     m_isActiveCollider = false;
-
-    
 }
 
 void TestBlock::Uninit()

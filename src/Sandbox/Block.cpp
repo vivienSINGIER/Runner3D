@@ -38,6 +38,7 @@ void Block::Uninit()
 void Block::Update(float32 deltatime)
 {
     GameObject::Update(deltatime);
+    centre = m_transform.position;
 
     if (m_isSpawning)
     {
