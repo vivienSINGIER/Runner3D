@@ -7,6 +7,7 @@
 #include "Grass.h"
 #include "Lava.h"
 #include "Spike.h"
+#include "Tile.h"
 
 #define SPEED 5.f
 #include "Core/GameCamera.h"
@@ -24,33 +25,7 @@ void Runner3D::Init()
     cam->SetFOV(gce::PI/3.0f);
     cam->SetFarPlane(500.0f);
     cam->SetNearPlane(0.001f);
-
-    for (int h = 0; h < 2; h++)
-    {
-        for (int i = 0; i < 5; i++)
-        {
-            for (int j = 0; j < 4; j++)
-            {
-                for (int k = 0; k < 3; k++)
-                {
-                    if (m_tiles[i][j][k] == 1)
-                    {
-                        Grass* block = CreateObject<Grass>();
-                        block->Init(gce::Vector3f32(0.f, 1.f, 30.f), SPEED);
-                        block->SetName("Block");
-                        m_vectBlocks.PushBack(block);
-                    }
-                    else if (m_tiles[i][j][k] == 0)
-                    {
-                        Lava* block = CreateObject<Lava>();
-                        block->Init(gce::Vector3f32(0.f, 1.f, 30.f), SPEED);
-                        block->SetName("Block");
-                        m_vectBlocks.PushBack(block);
-                    }
-                }
-            }
-        }
-    }
+    
     m_currentTile = rand() % 5;
 }
 
@@ -63,74 +38,120 @@ void Runner3D::Update(float32 deltaTime)
 {
     Scene::Update(deltaTime);
     
-    for (int i = 0; i < 3; ++i)
-    {
-        Block* last = m_lastBlockInCol[i];
+    Block* last = m_lastBlockInCol;
 
-        if (last == nullptr || !last->IsActive())
+    if (last == nullptr || !last->IsActive())
+    {
+        HandleTileSpawn();
+        return;
+    }
+    
+    float lastFrontZ = last->m_transform.position.z + 1.f / 2.f;
+    // float offset = 0.02f;
+    if (lastFrontZ <= m_spawnZ)
+    {
+        HandleTileSpawn();
+    }
+
+    
+}
+
+void Runner3D::HandleTileSpawn()
+{
+    int8 colIndex = 0;
+    int8 tileIndex = 0;
+    Tile* tile = m_vectTiles[m_currentTile];
+
+    while (colIndex < 3)
+    {
+        if (tileIndex > tile->m_floorPos.size()) continue;
+        
+        gce::Vector3f32 pos = tile->m_floorPos[tileIndex];
+        if (pos.z != (float32)tile->m_currentRow)
         {
-            SpawnBlock(i);
+            tileIndex++;
             continue;
         }
-        
-        float lastFrontZ = last->m_transform.position.z + 1 / 2.f;
-        float offset = 0.02f;
-        if (lastFrontZ <= m_spawnZ + offset)
+
+        if (pos == gce::Vector3f32((float32)colIndex, 0.0f, (float32)tile->m_currentRow) )
         {
-            SpawnBlock(i);
+            colIndex++;
+            tileIndex++;
+            SpawnBlock<Grass>(colIndex);
+        }
+        else
+        {
+            colIndex++;
+            SpawnBlock<Lava>(colIndex);
         }
     }
 }
 
+template <class BlockClass>
 void Runner3D::SpawnBlock(uint8 col)
 {
+    if (std::is_base_of<Block, BlockClass>::value == false ) return;
+    
     for (Block* block : m_vectBlocks)
     {
-        if (!block->IsActive())
-        {
-            if (m_tiles[m_currentTile][m_currentLine][col] == 1)
-            {
-                if (dynamic_cast<Grass*>(block))
-                {
-                    block->m_transform.SetPosition({(float)col, 1.f, m_spawnZ});
-                    block->SetActive(true);
-                    block->SetIsSpawning(true);
-                    m_lastBlockInCol[col] = block;
+        if (block->IsActive()) continue;
 
-                    if (m_currentLine == 3 && col == 2)
-                    {
-                        m_currentLine = 0;
-                        m_currentTile = rand() % 5;
-                        return;
-                    }
-                    if (col == 2)
-                    {
-                        m_currentLine++;
-                    }
-                    return;
-                }
-            }
-            if (m_tiles[m_currentTile][m_currentLine][col] == 0)
-            {
-                if (dynamic_cast<Lava*>(block))
-                {
-                    block->m_transform.SetPosition({(float)col, 1.f, m_spawnZ});
-                    block->SetActive(true);
-                    block->SetIsSpawning(true);
-                    m_lastBlockInCol[col] = block;
+        BlockClass* casted = dynamic_cast<BlockClass*>(block);
+        if (casted == nullptr) return;
 
-                    if (m_currentLine == 3 && col == 2)
-                    {
-                        m_currentLine = 0;
-                        m_currentTile = rand() % 5;
-                        return;
-                    }
-                    if (col == 2) m_currentLine++;
-                    return;
-                }
-            }
-        }
+        block->Start(col);
     }
+}
+
+void Runner3D::InitTiles()
+{
+    Tile* tile1 = new Tile();
+    tile1->AddObject({ 1.0f, 0.0f, 0.0f }, Tile::ObjectType::Floor);
+    
+    tile1->AddObject({ 0.0f, 0.0f, 1.0f }, Tile::ObjectType::Floor);
+    tile1->AddObject({ 1.0f, 0.0f, 1.0f }, Tile::ObjectType::Floor);
+    tile1->AddObject({ 2.0f, 0.0f, 1.0f }, Tile::ObjectType::Floor);
+    
+    tile1->AddObject({ 0.0f, 0.0f, 2.0f }, Tile::ObjectType::Floor);
+    tile1->AddObject({ 2.0f, 0.0f, 2.0f }, Tile::ObjectType::Floor);
+    
+    tile1->AddObject({ 0.0f, 0.0f, 3.0f }, Tile::ObjectType::Floor);
+    tile1->AddObject({ 1.0f, 0.0f, 3.0f }, Tile::ObjectType::Floor);
+    tile1->AddObject({ 2.0f, 0.0f, 3.0f }, Tile::ObjectType::Floor);
+
+    Tile* tile2 = new Tile();
+    tile2->AddObject({ 0.0f, 0.0f, 0.0f }, Tile::ObjectType::Floor);
+    tile2->AddObject({ 0.0f, 0.0f, 1.0f }, Tile::ObjectType::Floor);
+    tile2->AddObject({ 0.0f, 0.0f, 2.0f }, Tile::ObjectType::Floor);
+    
+    tile2->AddObject({ 0.0f, 0.0f, 3.0f }, Tile::ObjectType::Floor);
+    tile2->AddObject({ 1.0f, 0.0f, 3.0f }, Tile::ObjectType::Floor);
+    tile2->AddObject({ 2.0f, 0.0f, 3.0f }, Tile::ObjectType::Floor);
+
+    Tile* tile3 = new Tile();
+    tile3->AddObject({ 2.0f, 0.0f, 0.0f }, Tile::ObjectType::Floor);
+    tile3->AddObject({ 2.0f, 0.0f, 1.0f }, Tile::ObjectType::Floor);
+    tile3->AddObject({ 2.0f, 0.0f, 2.0f }, Tile::ObjectType::Floor);
+   
+    tile3->AddObject({ 0.0f, 0.0f, 3.0f }, Tile::ObjectType::Floor);
+    tile3->AddObject({ 1.0f, 0.0f, 3.0f }, Tile::ObjectType::Floor);
+    tile3->AddObject({ 2.0f, 0.0f, 3.0f }, Tile::ObjectType::Floor);
+
+    Tile* tile4 = new Tile();
+    tile4->m_isPlain = true;
+
+    Tile* tile5 = new Tile();
+    tile5->AddObject({ 0.0f, 0.0f, 0.0f }, Tile::ObjectType::Floor);
+    tile5->AddObject({ 2.0f, 0.0f, 0.0f }, Tile::ObjectType::Floor);
+
+    tile5->AddObject({ 0.0f, 0.0f, 1.0f }, Tile::ObjectType::Floor);
+    tile5->AddObject({ 2.0f, 0.0f, 1.0f }, Tile::ObjectType::Floor);
+
+    tile5->AddObject({ 0.0f, 0.0f, 2.0f }, Tile::ObjectType::Floor);
+    tile5->AddObject({ 2.0f, 0.0f, 2.0f }, Tile::ObjectType::Floor);
+
+    tile5->AddObject({ 0.0f, 0.0f, 3.0f }, Tile::ObjectType::Floor);
+    tile5->AddObject({ 2.0f, 0.0f, 3.0f }, Tile::ObjectType::Floor);
 }
 
 

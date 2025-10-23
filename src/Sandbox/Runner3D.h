@@ -5,6 +5,7 @@
 #include "Core/Scene.h"
 
 class Player;
+class Tile;
 
 class Runner3D: public Scene
 {
@@ -19,21 +20,27 @@ private:
     Player* player = nullptr;
     gce::Vector<Block*> m_vectBlocks;
 
-    Block* m_lastBlockInCol[3] = { nullptr, nullptr, nullptr };
+    Block* m_lastBlockInCol =  nullptr;
 
-    int32 const m_tiles[5][4][3] = {{{0, 1, 0},{ 1, 1, 1}, {1, 0, 1}, {1, 1, 1}},
+    int8 const m_tiles[5][4][3] = {{{0, 1, 0},{ 1, 1, 1}, {1, 0, 1}, {1, 1, 1}},
         {{1, 0, 0}, {1, 0, 0}, {1, 0, 0}, {1, 1, 1}},
         {{0, 0, 1}, {0, 0, 1}, {0, 0, 1}, {1, 1, 1}},
         {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}, {1, 1, 1}},
         {{1, 0, 1}, {1, 0, 1}, {1, 0, 1}, {1, 0, 1}}};
 
-    int32 m_currentLine = 0.f;
-    int32 m_currentTile = 0.f;
+    std::vector<Tile*> m_vectTiles;
+
+    int8 m_currentLine = 0;
+    int8 m_currentTile = 0;
     
     float m_spawnZ = 20.f;
     float m_blockLength = 1.f;
 
+    void HandleTileSpawn();
+    template <class BlockClass>
     void SpawnBlock(uint8 col);
+    
+    void InitTiles();
 };
 
 #endif
