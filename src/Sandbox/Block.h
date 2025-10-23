@@ -22,8 +22,10 @@ private:
     Chrono* m_endAnim = nullptr;
     Chrono* m_startAnim = nullptr;
 
+    Tween* transitionTween = nullptr;
+    
     gce::Vector3f32 m_firstPos;
-    float32 m_col = 0.f;
+    int8 m_col = 0;
 
     float32 m_speed = 0.f;
     

@@ -73,8 +73,8 @@ void Runner3D::Update(float32 deltaTime)
             continue;
         }
         
-        float lastFrontZ = last->m_transform.position.z + 1 / 2.f;
-        float offset = 0.02f;
+        float lastFrontZ = last->m_transform.position.z + 1.f;
+        float offset = 0.3f;
         if (lastFrontZ <= m_spawnZ + offset)
         {
             SpawnBlock(i);

@@ -4,8 +4,6 @@
 
 #include "Block.h"
 
-Tween* transitionTween = nullptr;
-
 Block::Block() : BoxCollider(gce::Vector3f32(), gce::Vector3f32(1.0f, 1.0f, 1.f))
 {
 }
@@ -20,7 +18,7 @@ void Block::Init(gce::Vector3f32 const& pos, float32 speed)
 
     m_speed = speed;
     
-    m_col = pos.x;
+    m_col = (int8)pos.x;
     m_firstPos = pos;
     
     m_pOwner = this;
