@@ -100,8 +100,8 @@ int main()
         
     }*/
     GameManager::Get()->Init(L"3D Runner", 1280, 720, CameraType::PERSPECTIVE);
-    GameManager::Get()->AddScene<TestScene>();
-    GameManager::Get()->SetCurrentScene<TestScene>();
+    GameManager::Get()->AddScene<Runner3D>();
+    GameManager::Get()->SetCurrentScene<Runner3D>();
     GameManager::Get()->GameLoop();
     return 0;
 }

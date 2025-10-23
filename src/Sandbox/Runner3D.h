@@ -1,10 +1,9 @@
 ﻿#ifndef RUNNER3D_H_DEFINED
 #define RUNNER3D_H_DEFINED
 
-#include "Block.h"
 #include "Core/Scene.h"
-
-class Player;
+#include "Character.h"
+#include "Controller.h"
 
 class Runner3D: public Scene
 {
@@ -16,7 +15,8 @@ public:
     void Update(float32 deltaTime);
 
 private:
-    Player* player = nullptr;
+    Character* m_player = nullptr;
+    Controller* m_playerController = nullptr;
 };
 
 #endif

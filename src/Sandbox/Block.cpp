@@ -12,6 +12,7 @@ Block::Block() : BoxCollider(gce::Vector3f32(), gce::Vector3f32(1.0f, 1.0f, 1.f)
     m_transform.SetScale(gce::Vector3f32(1.0f, 1.0f, 1.f));
     m_rigidBody = false;
     m_pOwner = this;
+    m_isActiveCollider = false;
 }
 
 void Block::Init()
@@ -26,6 +27,7 @@ void Block::Uninit()
 void Block::Update(float32 deltatime)
 {
     GameObject::Update(deltatime);
+    centre = m_transform.position;
 }
 
 #endif
