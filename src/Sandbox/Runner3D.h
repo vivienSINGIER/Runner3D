@@ -5,6 +5,9 @@
 #include "Character.h"
 #include "Controller.h"
 #include <fstream>
+#include <nlohmann.hpp>
+
+class Block;
 
 class Runner3D: public Scene
 {
@@ -16,10 +19,13 @@ public:
     void Update(float32 deltaTime);
 
 private:
+    void ChangeTile();
+    
     Character* m_player = nullptr;
     Controller* m_playerController = nullptr;
-
+    
     std::ifstream m_file;
+    nlohmann::json data;
 };
 
 #endif

@@ -13,8 +13,6 @@ public:
     void Uninit();
     void Update(float32 deltaTime) override;
 
-private:
-    bool m_isActive;
 };
 
 #endif

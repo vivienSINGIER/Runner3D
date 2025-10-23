@@ -18,12 +18,29 @@ void Runner3D::Init()
     cam->SetFOV(gce::PI/3.0f);
     cam->SetFarPlane(500.0f);
     cam->SetNearPlane(0.001f);
+    
+    /*m_file = std::ifstream("../../res/JSON/tiles.json");
+    if (m_file.is_open()) data = nlohmann::json::parse(m_file);
+    int8 tile = 3;
 
-    m_file = std::ifstream("../../res/JSON/tiles.json");
-    if (m_file.is_open()) {
-        nlohmann::json data = nlohmann::json::parse(m_file);
+    if (data["Tiles"][tile]["full"] == true)
+    {
+        int16 totalBlocks = 12;
+        int16 blocksPerRow = 3;
 
-        int8 tile = 5;
+        for (int i = 0; i < totalBlocks; i++)
+        {
+            Block* block = CreateObject<Block>();
+            block->Init();
+            float32 x = (float32)(i % blocksPerRow);
+            float32 z = (float32)(i / blocksPerRow);
+            gce::Vector3f32 pos = gce::Vector3f32(x, 0.0f, z);
+            block->m_transform.SetPosition(pos);
+            block->SetName("Block");
+        }
+    }
+    else
+    {
         for (int i = 0; i < data["Tiles"][tile]["nbrBlock"]; i++)
         {
             Block* block1 = CreateObject<Block>();
@@ -34,7 +51,8 @@ void Runner3D::Init()
             block1->m_transform.SetPosition(pos);
             block1->SetName("Block");
         }
-    }
+    }*/
+    
 
     m_player = CreateObject<Character>();
     m_player->Init({1.f, 3.f, 0.f});
@@ -54,6 +72,5 @@ void Runner3D::Update(float32 deltaTime)
     Scene::Update(deltaTime);
     m_playerController->HandleInput();
 }
-
 
 #endif

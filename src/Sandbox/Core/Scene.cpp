@@ -30,10 +30,9 @@ void Scene::Update(float32 deltatime)
     if (GetKeyDown(Keyboard::Key::ESC)) m_isPaused = !m_isPaused;
     
     if (m_isPaused) return;
-    
     for (GameObject* object : m_gameObjects)
     {
-        object->Update(deltatime);
+        if (object->IsActive()) object->Update(deltatime);
     }
 
     for (int i = 0; i < m_gameObjects.size(); i++ )
@@ -51,7 +50,7 @@ void Scene::Draw(GameCamera* pGameCamera)
 {
     for (GameObject* object : m_gameObjects)
     {
-        object->Render(pGameCamera);
+        if (object->IsActive()) object->Render(pGameCamera);
     }
     for (Text* text : m_uiElements)
     {
