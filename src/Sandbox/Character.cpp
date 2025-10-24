@@ -18,7 +18,7 @@ void Character::Init(gce::Vector3f32 pos)
     m_pOwnerPhysics = this;
     m_isActiveCollider = true;
     m_useGravity = false;
-    m_gravity = -3.981f;
+    m_gravity = -4.981f;
 }
 
 void Character::Update(float32 deltaTime)
