@@ -16,6 +16,9 @@ SphereCollider::SphereCollider(gce::Vector3f32 aCentre, float32 aRadius) : centr
 
 void SphereCollider::RepulseBox(BoxCollider* o)
 {
+    float dt = GameManager::Get()->Deltatime();
+    if (dt == 0.0f) dt = 0.001f;
+    
     gce::Vector3f32 pos = centre;
     gce::Vector3f32 oPos = o->centre;
     PhysicsComponent* casted = dynamic_cast<PhysicsComponent*>(GetOwner());
@@ -37,7 +40,6 @@ void SphereCollider::RepulseBox(BoxCollider* o)
 
     PhysicsComponent* pC = dynamic_cast<PhysicsComponent*>(m_pOwner);
     PhysicsComponent* opC = dynamic_cast<PhysicsComponent*>(o->m_pOwner);
-    float32 dt = GameManager::Get()->Deltatime();
     
     if (o->m_rigidBody == true)
     {
@@ -55,6 +57,9 @@ void SphereCollider::RepulseBox(BoxCollider* o)
 
 void SphereCollider::RepulseSphere(SphereCollider* o)
 {
+    float dt = GameManager::Get()->Deltatime();
+    if (dt == 0.0f) dt = 0.001f;
+    
     gce::Vector3f32 pos = centre;
     gce::Vector3f32 oPos = o->centre;
     PhysicsComponent* casted = dynamic_cast<PhysicsComponent*>(GetOwner());
@@ -72,7 +77,6 @@ void SphereCollider::RepulseSphere(SphereCollider* o)
 
     PhysicsComponent* pC = dynamic_cast<PhysicsComponent*>(m_pOwner);
     PhysicsComponent* opC = dynamic_cast<PhysicsComponent*>(o->m_pOwner);
-    float32 dt = GameManager::Get()->Deltatime();
     
     if (o->m_rigidBody == true)
     {
