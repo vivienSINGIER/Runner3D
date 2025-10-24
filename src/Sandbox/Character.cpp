@@ -18,8 +18,8 @@ void Character::Init(gce::Vector3f32 pos)
     m_pOwnerPhysics = this;
     m_isActiveCollider = true;
     m_useGravity = false;
-    m_useMaxVelocityZ = false;
-    m_maxVelocities.z = 6.f;
+    m_useMaxVelocityZ = true;
+    m_maxVelocities.z = 0.f;
     m_gravity = -5.0f;
 }
 
