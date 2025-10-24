@@ -87,15 +87,18 @@ bool BoxCollider::BoxToSphere(SphereCollider* pOther)
 void BoxCollider::RepulseBox(BoxCollider* o)
 {
     if (o == nullptr) return;
+
+    float dt = GameManager::Get()->Deltatime();
+    if (dt == 0.0f) dt = 0.001f;
     
     gce::Vector3f32 pos = centre;
     gce::Vector3f32 oPos = o->centre;
     PhysicsComponent* casted = dynamic_cast<PhysicsComponent*>(GetOwner());
     PhysicsComponent* oCasted = dynamic_cast<PhysicsComponent*>(o->GetOwner());
     if (casted != nullptr)
-        pos += casted->m_velocity * GameManager::Get()->Deltatime();
+        pos += casted->m_velocity * dt;
     if (oCasted != nullptr)
-        oPos += oCasted->m_velocity * GameManager::Get()->Deltatime();
+        oPos += oCasted->m_velocity * dt;
     
     gce::Vector3f32 minA = gce::Vector3f32(pos.x - size.x / 2.f, pos.y - size.y / 2.f, pos.z - size.z / 2.f);
     gce::Vector3f32 maxA = gce::Vector3f32(pos.x + size.x / 2.f, pos.y + size.y / 2.f, pos.z + size.z / 2.f);
@@ -127,7 +130,6 @@ void BoxCollider::RepulseBox(BoxCollider* o)
 
     PhysicsComponent* pC = dynamic_cast<PhysicsComponent*>(m_pOwner);
     PhysicsComponent* opC = dynamic_cast<PhysicsComponent*>(o->m_pOwner);
-    float32 dt = GameManager::Get()->Deltatime();
     
     switch (overlapIndex)
     {
@@ -160,6 +162,8 @@ void BoxCollider::RepulseBox(BoxCollider* o)
             pC->m_velocity.y += push / dt;
         else
             m_pOwner->m_transform.Translate(gce::Vector3f32(0.0f, push, 0.0f));
+        if (pC->m_velocity.y > 1.0f)
+            int o = 0;
         break;
     case 2:
         push = (pos.z < oPos.z) ? -overlapZ : overlapZ;
@@ -172,7 +176,7 @@ void BoxCollider::RepulseBox(BoxCollider* o)
                 o->m_pOwner->m_transform.Translate(gce::Vector3f32(0.0f, 0.0f, -push));
         }
         if (pC != nullptr)
-            pC->m_velocity.z += push / dt;
+            pC->m_velocity.z += push / dt ;
         else
             m_pOwner->m_transform.Translate(gce::Vector3f32(0.0f, 0.0f, push));
         break;
@@ -182,15 +186,18 @@ void BoxCollider::RepulseBox(BoxCollider* o)
 void BoxCollider::RepulseSphere(SphereCollider* o)
 {
     if (o == nullptr) return;
+
+    float dt = GameManager::Get()->Deltatime();
+    if (dt == 0.0f) dt = 0.001f;
     
     gce::Vector3f32 pos = centre;
     gce::Vector3f32 oPos = o->centre;
     PhysicsComponent* casted = dynamic_cast<PhysicsComponent*>(GetOwner());
     PhysicsComponent* oCasted = dynamic_cast<PhysicsComponent*>(o->GetOwner());
     if (casted != nullptr)
-        pos += casted->m_velocity * GameManager::Get()->Deltatime();
+        pos += casted->m_velocity * dt;
     if (oCasted != nullptr)
-        oPos += oCasted->m_velocity * GameManager::Get()->Deltatime();
+        oPos += oCasted->m_velocity * dt;
     
     float32 closestX = gce::Clamp(oPos.x, pos.x - size.x / 2.f, pos.x + size.x / 2.f);
     float32 closestY = gce::Clamp(oPos.y, pos.y - size.y / 2.f, pos.y + size.y / 2.f);
@@ -204,8 +211,6 @@ void BoxCollider::RepulseSphere(SphereCollider* o)
 
     PhysicsComponent* pC = dynamic_cast<PhysicsComponent*>(m_pOwner);
     PhysicsComponent* opC = dynamic_cast<PhysicsComponent*>(o->m_pOwner);
-    float dt = GameManager::Get()->Deltatime();
-
     
     if (o->m_rigidBody == true)
     {

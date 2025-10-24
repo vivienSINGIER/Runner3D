@@ -50,7 +50,7 @@ void Runner3D::Init()
 
     InitTiles();
     
-    m_currentTile = rand() % 5;
+    m_currentTile = 3;
 }
 
 void Runner3D::Uninit()
