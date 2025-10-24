@@ -160,6 +160,8 @@ void BoxCollider::RepulseBox(BoxCollider* o)
             pC->m_velocity.y += push / dt;
         else
             m_pOwner->m_transform.Translate(gce::Vector3f32(0.0f, push, 0.0f));
+        if (pC->m_velocity.y > 1.0f)
+            int o = 0;
         break;
     case 2:
         push = (pos.z < oPos.z) ? -overlapZ : overlapZ;
