@@ -8,7 +8,7 @@ Character::Character() : BoxCollider(gce::Vector3f32(), gce::Vector3f32(0.5f, 0.
 
 void Character::Init(gce::Vector3f32 pos) 
 {
-    Geometry* cube = new Cube();
+    Geometry* cube = new Custom("res/Obj/player.obj");
     cube->SetColor(gce::Vector3f32(1.f, 1.f, 1.f));
     m_mesh = cube;
     m_transform.SetScale(gce::Vector3f32(0.5f, 0.5f, 0.5f));
@@ -27,6 +27,7 @@ void Character::Update(float32 deltaTime)
     if (m_isGrounded) { m_speed = 0.f; m_transform.rotation.x = 0; }
     centre = m_transform.position;
     m_transform.rotation.x = m_transform.rotation.x + deltaTime * m_speed ;
+    m_transform.position.z = 0;
 }
 
 void Character::Move(int8 dir)

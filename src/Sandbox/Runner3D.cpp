@@ -24,38 +24,6 @@ void Runner3D::Init()
     cam->SetFarPlane(500.0f);
     cam->SetNearPlane(0.001f);
     
-    /*m_file = std::ifstream("../../res/JSON/tiles.json");
-    if (m_file.is_open()) data = nlohmann::json::parse(m_file);
-    int8 tile = 3; 
-    if (data["Tiles"][tile]["full"] == true)
-    {
-        int16 totalBlocks = 12;
-        int16 blocksPerRow = 3;
-        for (int i = 0; i < totalBlocks; i++)
-        {
-            Block* block = CreateObject<Block>();
-            block->Init();
-            float32 x = (float32)(i % blocksPerRow);
-            float32 z = (float32)(i / blocksPerRow);
-            gce::Vector3f32 pos = gce::Vector3f32(x, 0.0f, z);
-            block->m_transform.SetPosition(pos);
-            block->SetName("Block");
-        }
-    }
-    else
-    {
-        for (int i = 0; i < data["Tiles"][tile]["nbrBlock"]; i++)
-        {
-            Block* block1 = CreateObject<Block>();
-            block1->Init();
-            gce::Vector3f32 pos = gce::Vector3f32(data["Tiles"][tile]["blocks"][i]["placement"][0],
-            data["Tiles"][tile]["blocks"][i]["placement"][1],
-            data["Tiles"][tile]["blocks"][i]["placement"][2]);
-            block1->m_transform.SetPosition(pos);
-            block1->SetName("Block");
-        }
-    }*/
-    
     m_player = CreateObject<Character>();
     m_player->Init({1.f, 3.f, 0.f});
     m_player->SetName("Player");
@@ -99,7 +67,7 @@ void Runner3D::Update(float32 deltaTime)
         m_player->Start();
     
     Tile* tile = m_vectTiles[m_currentTile];
-    if (tile->m_currentRow > 3)
+    if (tile->m_currentRow > 5)
     {
         m_currentTile = rand() % 5;
         m_vectTiles[m_currentTile]->m_currentRow = 0;
@@ -113,7 +81,7 @@ void Runner3D::Update(float32 deltaTime)
         return;
     }
     
-    float lastFrontZ = last->m_transform.position.z + 1.f;
+    float lastFrontZ = last->m_transform.position.z + .95f;
     if (lastFrontZ <= 20.f)
     {
         HandleTileSpawn();
@@ -191,58 +159,13 @@ void Runner3D::SpawnBlock(uint8 col)
 
 void Runner3D::InitTiles()
 {
-    Tile* tile1 = new Tile();
-    tile1->AddObject({ 1.0f, 0.0f, 0.0f }, Tile::ObjectType::Floor);
-    
-    tile1->AddObject({ 0.0f, 0.0f, 1.0f }, Tile::ObjectType::Floor);
-    tile1->AddObject({ 1.0f, 0.0f, 1.0f }, Tile::ObjectType::Floor);
-    tile1->AddObject({ 2.0f, 0.0f, 1.0f }, Tile::ObjectType::Floor);
-    
-    tile1->AddObject({ 0.0f, 0.0f, 2.0f }, Tile::ObjectType::Floor);
-    tile1->AddObject({ 2.0f, 0.0f, 2.0f }, Tile::ObjectType::Floor);
-    
-    tile1->AddObject({ 0.0f, 0.0f, 3.0f }, Tile::ObjectType::Floor);
-    tile1->AddObject({ 1.0f, 0.0f, 3.0f }, Tile::ObjectType::Floor);
-    tile1->AddObject({ 2.0f, 0.0f, 3.0f }, Tile::ObjectType::Floor);
-    m_vectTiles.push_back(tile1);
-
-    Tile* tile2 = new Tile();
-    tile2->AddObject({ 0.0f, 0.0f, 0.0f }, Tile::ObjectType::Floor);
-    tile2->AddObject({ 0.0f, 0.0f, 1.0f }, Tile::ObjectType::Floor);
-    tile2->AddObject({ 0.0f, 0.0f, 2.0f }, Tile::ObjectType::Floor);
-    
-    tile2->AddObject({ 0.0f, 0.0f, 3.0f }, Tile::ObjectType::Floor);
-    tile2->AddObject({ 1.0f, 0.0f, 3.0f }, Tile::ObjectType::Floor);
-    tile2->AddObject({ 2.0f, 0.0f, 3.0f }, Tile::ObjectType::Floor);
-    m_vectTiles.push_back(tile2);
-
-    Tile* tile3 = new Tile();
-    tile3->AddObject({ 2.0f, 0.0f, 0.0f }, Tile::ObjectType::Floor);
-    tile3->AddObject({ 2.0f, 0.0f, 1.0f }, Tile::ObjectType::Floor);
-    tile3->AddObject({ 2.0f, 0.0f, 2.0f }, Tile::ObjectType::Floor);
-   
-    tile3->AddObject({ 0.0f, 0.0f, 3.0f }, Tile::ObjectType::Floor);
-    tile3->AddObject({ 1.0f, 0.0f, 3.0f }, Tile::ObjectType::Floor);
-    tile3->AddObject({ 2.0f, 0.0f, 3.0f }, Tile::ObjectType::Floor);
-    m_vectTiles.push_back(tile3);
-
-    Tile* tile4 = new Tile();
-    tile4->m_isPlain = true;
-    m_vectTiles.push_back(tile4);
-
-    Tile* tile5 = new Tile();
-    tile5->AddObject({ 0.0f, 0.0f, 0.0f }, Tile::ObjectType::Floor);
-    tile5->AddObject({ 2.0f, 0.0f, 0.0f }, Tile::ObjectType::Floor);
-
-    tile5->AddObject({ 0.0f, 0.0f, 1.0f }, Tile::ObjectType::Floor);
-    tile5->AddObject({ 2.0f, 0.0f, 1.0f }, Tile::ObjectType::Floor);
-
-    tile5->AddObject({ 0.0f, 0.0f, 2.0f }, Tile::ObjectType::Floor);
-    tile5->AddObject({ 2.0f, 0.0f, 2.0f }, Tile::ObjectType::Floor);
-
-    tile5->AddObject({ 0.0f, 0.0f, 3.0f }, Tile::ObjectType::Floor);
-    tile5->AddObject({ 2.0f, 0.0f, 3.0f }, Tile::ObjectType::Floor);
-    m_vectTiles.push_back(tile5);
+    int nbrTiles = 6;
+    for (int8 i = 0; i < nbrTiles; i++)
+    {
+        Tile* tile = new Tile();
+        tile->Init(i, L"../../res/JSON/tiles.json");
+        m_vectTiles.push_back(tile);
+    }
 }
 
 
