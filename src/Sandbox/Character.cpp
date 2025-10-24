@@ -26,7 +26,9 @@ void Character::Init(gce::Vector3f32 pos)
 void Character::Update(float32 deltaTime)
 {
     GameObject::Update(deltaTime);
+    if (m_isGrounded) { m_speed = 0.f; m_transform.rotation.x = 0; }
     centre = m_transform.position;
+    m_transform.rotation.x = m_transform.rotation.x + deltaTime * m_speed ;
 }
 
 void Character::Move(int8 dir)
@@ -38,8 +40,21 @@ void Character::Move(int8 dir)
 
 void Character::Jump()
 {
-    if (m_useGravity == false) return;
-    AddForce({0.f, 2.f, 0.f}, Force::IMPULSE);
+    if (m_isGrounded)
+    {
+        AddForce({0.f, 4.f, 0.f}, Force::IMPULSE);
+        m_isGrounded = false;
+        m_speed = 200.f;
+    }
+}
+
+void Character::OnCollisionEnter(Collider* pOther)
+{
+    BoxCollider::OnCollisionEnter(pOther);
+    if (pOther->GetOwner()->GetName() == "Grass")
+    {
+        if (pOther->GetOwner()->m_transform.position.y < m_transform.position.y) m_isGrounded = true;
+    }
 }
 
 void Character::Start()

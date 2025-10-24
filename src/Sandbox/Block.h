@@ -3,10 +3,12 @@
 #include "Core/BoxCollider.h"
 #include "Core/Chrono.h"
 #include "Core/GameObject.h"
+#include "Core/PhysicsComponent.h"
+#include "Core/PhysicsSystem.h"
 
 #include "Core/Tween.hpp"
 
-class Block : public GameObject, public BoxCollider
+class Block : public GameObject, public BoxCollider, public PhysicsComponent
 {
     
 public:
