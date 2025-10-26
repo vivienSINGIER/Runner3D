@@ -65,9 +65,18 @@ void Character::OnCollisionEnter(Collider* pOther)
         m_isGrounded = false;
         m_speed = 200.f;
     }
-    if (pOther->GetOwner()->GetName() == "Spike") {m_isActive = false;}
-    if (pOther->GetOwner()->GetName() == "Cactus") {m_isActive = false;}
-    if (pOther->GetOwner()->GetName() == "Bush") {m_isActive = false;}
+    if (pOther->GetOwner()->GetName() == "Spike")
+    {
+        m_isActive = false;
+    }
+    if (pOther->GetOwner()->GetName() == "Cactus")
+    {
+        m_isActive = false;
+    }
+    if (pOther->GetOwner()->GetName() == "Bush")
+    {
+        m_isActive = false;
+    }
     
 }
 void Character::Start()

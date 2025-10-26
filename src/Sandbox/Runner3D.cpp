@@ -74,6 +74,14 @@ void Runner3D::Init()
         block->SetName("Bush");
         m_vectObject.PushBack(block);
     }
+
+    for (int i = 0; i < 5; i++)
+    {
+        Block* block = CreateObject<JumpPad>();
+        block->Init(5.f);
+        block->SetName("JumpPad");
+        m_vectObject.PushBack(block);
+    }
     
     InitTiles();
     m_currentTile = 3;
@@ -195,7 +203,7 @@ void Runner3D::SpawnBlock(uint8 col)
 
 void Runner3D::SpawnObj(uint8 col)
 {
-    int8 random = rand() % 3;
+    int8 random = rand() % 4;
     
     for (Block* obj : m_vectObject)
     {
@@ -212,6 +220,9 @@ void Runner3D::SpawnObj(uint8 col)
             break;
         case 2:
             casted = dynamic_cast<Spike*>(obj);
+            break;
+        case 3:
+            casted = dynamic_cast<JumpPad*>(obj);
             break;
         }
 
