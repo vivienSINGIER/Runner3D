@@ -20,14 +20,15 @@ public:
     bool IsActive() { return m_isActive;}
     void SetActive(bool active) { m_isActive = active;}
     void SetName(std::string newName);
+    bool IsActive() const { return m_isActive; };
     std::string GetName() { return m_name; }
 
 protected:
     Geometry* m_mesh = nullptr;
     Scene* m_pScene = nullptr;
 
-    bool toDestroy = false;
     bool m_isActive = true;
+    bool toDestroy = false;
     std::string m_name;
 
 private:

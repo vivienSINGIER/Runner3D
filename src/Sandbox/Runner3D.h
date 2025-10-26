@@ -6,6 +6,10 @@
 #include "Core/Scene.h"
 #include "Character.h"
 #include "Controller.h"
+#include <fstream>
+#include <nlohmann.hpp>
+
+class Block;
 
 class Player;
 class Tile;
@@ -23,6 +27,9 @@ public:
 private:
     Character* m_player = nullptr;
     Controller* m_playerController = nullptr;
+
+    std::ifstream m_file;
+    nlohmann::json data;
     
     Player* player = nullptr;
     gce::Vector<Block*> m_vectBlocks;

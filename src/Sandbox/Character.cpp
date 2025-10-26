@@ -8,7 +8,7 @@ Character::Character() : BoxCollider(gce::Vector3f32(), gce::Vector3f32(0.5f, 0.
 
 void Character::Init(gce::Vector3f32 pos) 
 {
-    Geometry* cube = new Cube();
+    Geometry* cube = new Custom("res/Obj/player.obj");
     cube->SetColor(gce::Vector3f32(1.f, 1.f, 1.f));
     m_mesh = cube;
     m_transform.SetScale(gce::Vector3f32(0.5f, 0.5f, 0.5f));

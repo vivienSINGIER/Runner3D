@@ -1,5 +1,6 @@
 #ifndef TILE_H_DEFINED
 #define TILE_H_DEFINED
+#include <format>
 #include <vector>
 #include <Maths/Vector3.h>
 
@@ -27,6 +28,7 @@ public:
     Tile() = default;
     ~Tile() = default;
 
+    void Init(int8 tile, std::wstring path);
     void AddObject(gce::Vector3f32 pos, ObjectType type);
 
 };
