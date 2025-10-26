@@ -42,7 +42,7 @@ void Block::Update(float32 deltatime)
     centre = m_transform.position;
     
     gce::Vector3f32 pos = m_transform.position;
-    if (pos.z <= -1.f)
+    if (pos.z <= -3.f)
     {
         m_isActive = false;
     }

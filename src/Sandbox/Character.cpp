@@ -4,14 +4,14 @@
 
 #include "Character.h"
 
-Character::Character() : BoxCollider(gce::Vector3f32(), gce::Vector3f32(0.75f, 0.75f, 0.75f)) {}
+Character::Character() : BoxCollider(gce::Vector3f32(), gce::Vector3f32(0.5f, 0.5f, 0.5f)) {}
 
 void Character::Init(gce::Vector3f32 pos) 
 {
     Geometry* cube = new Cube();
     cube->SetColor(gce::Vector3f32(1.f, 1.f, 1.f));
     m_mesh = cube;
-    m_transform.SetScale(gce::Vector3f32(0.75f, 0.75f, 0.75f));
+    m_transform.SetScale(gce::Vector3f32(0.5f, 0.5f, 0.5f));
     m_transform.SetPosition(pos);
     m_rigidBody = true;
     m_pOwner = this;
@@ -20,7 +20,10 @@ void Character::Init(gce::Vector3f32 pos)
     m_useGravity = false;
     m_useMaxVelocityZ = true;
     m_maxVelocities.z = 0.f;
+    m_useMaxVelocityY = true;
+    m_maxVelocities.y = 10.f;
     m_gravity = -5.0f;
+    m_mass = 1.5f;
 }
 
 void Character::Update(float32 deltaTime)
