@@ -9,6 +9,7 @@ public:
     Lava() = default;
     ~Lava() = default;
     void Init(float32 speed) override;
+    void Start(uint8 col) override;
 };
 
 #endif

@@ -10,4 +10,10 @@ void Lava::Init(float32 speed)
     m_mesh = nullptr;
     size = {0.0f, 0.0f, 0.0f};
 }
+
+void Lava::Start(uint8 col)
+{
+    Block::Start(col);
+    m_transform.position = gce::Vector3f32((float32)col, 0.f, 20.f);
+}
 #endif

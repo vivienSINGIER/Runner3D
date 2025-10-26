@@ -8,9 +8,12 @@ Character::Character() : BoxCollider(gce::Vector3f32(), gce::Vector3f32(0.5f, 0.
 
 void Character::Init(gce::Vector3f32 pos) 
 {
+    Texture* text = new Texture("res/Obj/player.png");
     Geometry* cube = new Custom("res/Obj/player.obj");
+    cube->SetTexture(*text);
     cube->SetColor(gce::Vector3f32(1.f, 1.f, 1.f));
     m_mesh = cube;
+    m_mesh->SetTexture(*text);
     m_transform.SetScale(gce::Vector3f32(0.5f, 0.5f, 0.5f));
     m_transform.SetPosition(pos);
     m_rigidBody = true;
@@ -56,11 +59,27 @@ void Character::OnCollisionEnter(Collider* pOther)
     {
         if (pOther->GetOwner()->m_transform.position.y < m_transform.position.y) m_isGrounded = true;
     }
+    if (pOther->GetOwner()->GetName() == "JumpPad")
+    {
+        AddForce({0.f, 4.f, 0.f}, Force::IMPULSE);
+        m_isGrounded = false;
+        m_speed = 200.f;
+    }
+    if (pOther->GetOwner()->GetName() == "Spike") {m_isActive = false;}
+    if (pOther->GetOwner()->GetName() == "Cactus") {m_isActive = false;}
+    if (pOther->GetOwner()->GetName() == "Bush") {m_isActive = false;}
+    
 }
-
 void Character::Start()
 {
     m_useGravity = true;
 }
 
+void Character::Respawn()
+{
+    m_transform.position = {1.f, 3.f, 0.f};
+    m_velocity = {0.f, 0.f, 0.f};
+    m_isGrounded = false;
+    m_speed = 200.f;
+}
 #endif

@@ -21,6 +21,11 @@ void Tile::Init(int8 tile, std::wstring path)
             data["Tiles"][tile]["blocks"][i]["placement"][1],
             data["Tiles"][tile]["blocks"][i]["placement"][2]);
         AddObject(pos, ObjectType::Floor);
+        if (data["Tiles"][tile]["blocks"][i]["HasObject"] == true)
+        {
+            int8 random = (int8) rand() % 2;
+            if (random == 1) AddObject(pos, ObjectType::Object);
+        }
     }
 }
 
@@ -28,7 +33,7 @@ void Tile::AddObject(gce::Vector3f32 pos, ObjectType type)
 {
     if (type == ObjectType::Floor)      m_floorPos.push_back(pos);
     if (type == ObjectType::JumpPad)    m_jumpPadPos.push_back(pos);
-    if (type == ObjectType::Spike)      m_spikePos.push_back(pos);
+    if (type == ObjectType::Object)      m_objectPos.push_back(pos);
     if (type == ObjectType::Teleport)   m_teleportPos.push_back(pos);
 }
 

@@ -16,6 +16,7 @@ public:
     void Move(int8 dir);
     void Jump();
     void Start();
+    void Respawn();
 private:
     int8 col = 0.f;
     float32 m_speed = 100.f;
