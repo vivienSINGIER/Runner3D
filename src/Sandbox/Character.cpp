@@ -9,7 +9,7 @@ Character::Character() : BoxCollider(gce::Vector3f32(), gce::Vector3f32(0.5f, 0.
 void Character::Init(gce::Vector3f32 pos) 
 {
     Texture* text = new Texture("res/Obj/player.png");
-    Geometry* cube = new Custom("res/Obj/playerFesse.obj");
+    Geometry* cube = new Custom("res/Obj/player.obj");
     cube->SetTexture(*text);
     cube->SetColor(gce::Vector3f32(1.f, 1.f, 1.f));
     m_mesh = cube;
