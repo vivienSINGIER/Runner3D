@@ -29,6 +29,10 @@ void Runner3D::Init()
     cam->SetFOV(gce::PI/3.0f);
     cam->SetFarPlane(500.0f);
     cam->SetNearPlane(0.001f);
+
+    m_scoreText = CreateText(L"Score : 0");
+    m_scoreText->SetPosition({20.0f, 20.0f});
+    m_scoreText->SetColor(gce::Color(0, 0, 0, 255));
     
     m_player = CreateObject<Character>();
     m_player->Init({1.f, 3.f, 0.f});
@@ -40,7 +44,6 @@ void Runner3D::Init()
     {
         Block* block = CreateObject<Grass>();
         block->Init(5.f);
-        block->SetName("Block");
         m_vectBlocks.PushBack(block);
     }
 
@@ -50,7 +53,6 @@ void Runner3D::Init()
     {
         Block* block = CreateObject<Lava>();
         block->Init(5.f);
-        block->SetName("Block");
         m_vectBlocks.PushBack(block);
     }
 
@@ -110,6 +112,11 @@ void Runner3D::Update(float32 deltaTime)
 { 
     Scene::Update(deltaTime);
     m_playerController->HandleInput();
+
+    // Text Update
+    std::wstring newText = L"Score : ";
+    newText.append(std::to_wstring(m_score));
+    m_scoreText->SetText(newText);
 
     if (m_firstBlock->m_transform.position.z < m_player->m_transform.position.z)
         m_player->Start();

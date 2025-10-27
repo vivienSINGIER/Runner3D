@@ -31,6 +31,7 @@ private:
     Controller* m_playerController = nullptr;
 
     int32 m_score = 0;
+    
     std::ifstream m_file;
     nlohmann::json data;
     
@@ -45,6 +46,8 @@ private:
     bool m_hasStarted = false;
     Block* m_firstBlock = nullptr;
 
+    Text* m_scoreText = nullptr;
+    
     void HandleTileSpawn();
     template <class BlockClass>
     void SpawnBlock(uint8 col);

@@ -33,7 +33,14 @@ void Collider::OnCollisionEnter(Collider* pOther)
 
 void Collider::OnCollisionStay(Collider* pOther)
 {
-    if (m_rigidBody == true) Repulse(pOther);
+    if (pOther->m_pOwner->GetName() == "JumpPad")
+    {
+        int i = 0;
+    }
+    if (pOther->m_isTrigger == true)
+        return;
+    if (m_rigidBody == true)
+        Repulse(pOther);
 }
 
 void Collider::OnCollisionExit(Collider* pOther)

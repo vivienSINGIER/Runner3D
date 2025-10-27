@@ -88,6 +88,9 @@ void BoxCollider::RepulseBox(BoxCollider* o)
 {
     if (o == nullptr) return;
 
+    if (o->m_pOwner->GetName() == "JumpPad")
+        int i = 0;
+
     float dt = GameManager::Get()->Deltatime();
     if (dt == 0.0f) dt = 0.001f;
     
@@ -123,13 +126,16 @@ void BoxCollider::RepulseBox(BoxCollider* o)
         minOverlap = overlapZ;
         overlapIndex = 2;
     }
+    
+    PhysicsComponent* pC = dynamic_cast<PhysicsComponent*>(m_pOwner);
+    PhysicsComponent* opC = dynamic_cast<PhysicsComponent*>(o->m_pOwner);
 
+    if (pC != nullptr && pC->m_prioritizedAxis != -1)
+        overlapIndex = pC->m_prioritizedAxis;
+    
     if (minOverlap < 0.0000001f) return;
     
     float push = 0.0f;
-
-    PhysicsComponent* pC = dynamic_cast<PhysicsComponent*>(m_pOwner);
-    PhysicsComponent* opC = dynamic_cast<PhysicsComponent*>(o->m_pOwner);
     
     switch (overlapIndex)
     {
@@ -162,8 +168,9 @@ void BoxCollider::RepulseBox(BoxCollider* o)
             pC->m_velocity.y += push / dt;
         else
             m_pOwner->m_transform.Translate(gce::Vector3f32(0.0f, push, 0.0f));
-        if (pC->m_velocity.y > 1.0f)
-            int o = 0;
+        if (pC != nullptr)
+            if (pC->m_velocity.y > 5.0f)
+                int o = 0;
         break;
     case 2:
         push = (pos.z < oPos.z) ? -overlapZ : overlapZ;

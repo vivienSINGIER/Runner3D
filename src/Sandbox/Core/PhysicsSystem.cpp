@@ -49,7 +49,7 @@ void PhysicsSystem::PhysicsUpdate(float deltaTime)
         if (pC->m_useMaxVelocityY)
             pC->m_velocity.y = gce::Clamp(pC->m_velocity.y, -pC->m_maxVelocities.y, pC->m_maxVelocities.y);
         if (pC->m_useMaxVelocityZ)
-            pC->m_velocity.z = gce::Clamp(pC->m_velocity.y, -pC->m_maxVelocities.z, pC->m_maxVelocities.z);
+            pC->m_velocity.z = gce::Clamp(pC->m_velocity.z, -pC->m_maxVelocities.z, pC->m_maxVelocities.z);
         
         pC->m_appliedForces.clear();
     }

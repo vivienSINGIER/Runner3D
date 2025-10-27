@@ -11,7 +11,10 @@ void JumpPad::Init(float32 speed)
     m_mesh->SetColor(gce::Vector3f32(0.0f, 0.87f, 0.52f));
     m_transform.SetScale({0.9f, 0.1f, 0.9f});
     size = {0.9f, 0.1f, 0.9f};
-}
+
+    m_isTrigger = true;
+    m_value = 15;
+}   
 
 void JumpPad::Start(uint8 col)
 {

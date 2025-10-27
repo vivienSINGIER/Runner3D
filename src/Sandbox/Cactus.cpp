@@ -14,6 +14,7 @@ void Cactus::Init(float32 speed)
     m_transform.rotation = {0.f, 90.f, 0.f};
     size = {1.f, 1.5f, 1.f};
     centre = m_transform.position;
+    m_value = 25;
 }
 
 void Cactus::Start(uint8 col)

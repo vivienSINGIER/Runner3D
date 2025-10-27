@@ -23,20 +23,28 @@ void Character::Init(gce::Vector3f32 pos)
     m_useGravity = false;
     m_useMaxVelocityZ = true;
     m_maxVelocities.z = 0.f;
+    m_useMaxVelocityY = true;
+    m_maxVelocities.y = 6.f;
     m_gravity = -5.0f;
+    m_mass = 1.5f;
 }
 
 void Character::Update(float32 deltaTime)
 {
     GameObject::Update(deltaTime);
-    if (m_isGrounded) { m_speed = 0.f; m_transform.rotation.x = 0; }
+    
+    if (m_isGrounded) { m_rotationSpeed = 0.f; m_transform.rotation.x = 0; }
     centre = m_transform.position;
-    m_transform.rotation.x = m_transform.rotation.x + deltaTime * m_speed ;
-    m_transform.position.z = 0;
+    m_transform.rotation.x = m_transform.rotation.x + deltaTime * m_rotationSpeed ;
+
+    if (m_transform.position.y - 0.5f < 0.20f)
+        m_isGrounded = false;
 }
 
 void Character::Move(int8 dir)
 {
+    if (m_isGrounded == false) return;
+    
     gce::Vector3f32 pos = m_transform.position;
     if (pos.x + (float32)dir < 0.f || pos.x + (float32)dir > 2.f) return;
     m_transform.SetPosition({pos.x + (float32)dir, pos.y, pos.z});
@@ -46,24 +54,25 @@ void Character::Jump()
 {
     if (m_isGrounded)
     {
-        AddForce({0.f, 4.f, 0.f}, Force::IMPULSE);
+        AddForce({0.f, 6.f, 0.f}, Force::IMPULSE);
         m_isGrounded = false;
-        m_speed = 200.f;
+        m_rotationSpeed = 200.f;
     }
 }
 
 void Character::OnCollisionEnter(Collider* pOther)
 {
     BoxCollider::OnCollisionEnter(pOther);
-    if (pOther->GetOwner()->GetName() == "Block")
+    if (pOther->GetOwner()->GetName() == "Grass")
     {
-        if (pOther->GetOwner()->m_transform.position.y < m_transform.position.y) m_isGrounded = true;
+        if (pOther->GetOwner()->m_transform.position.y < m_transform.position.y)
+            m_isGrounded = true;
     }
     if (pOther->GetOwner()->GetName() == "JumpPad")
     {
-        AddForce({0.f, 4.f, 0.f}, Force::IMPULSE);
+        AddForce({0.f, 12.f, 0.f}, Force::IMPULSE);
         m_isGrounded = false;
-        m_speed = 200.f;
+        m_rotationSpeed = 200.f;
     }
     if (pOther->GetOwner()->GetName() == "Spike")
     {

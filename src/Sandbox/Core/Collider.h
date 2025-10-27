@@ -26,6 +26,7 @@ protected:
     bool m_isActiveCollider = true;
     
     bool m_rigidBody = true;
+    bool m_isTrigger = false;
     std::vector<Collider*> m_collidingEntities;
     bool IsAlreadyColliding(Collider* pOther);
     

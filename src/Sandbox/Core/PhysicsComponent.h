@@ -25,6 +25,8 @@ protected:
     float32 m_gravity = -0.981f;
     float32 m_mass = 1.0f;
 
+    int8 m_prioritizedAxis = -1;
+    
     bool m_useMaxVelocityGlobal  = false;
     bool m_useMaxVelocityX       = false;
     bool m_useMaxVelocityY       = false;

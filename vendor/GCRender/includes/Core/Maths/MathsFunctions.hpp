@@ -31,6 +31,8 @@ constexpr float32 PhysicsEPSILON = 0.01f;
         return (a ^ mask) - mask;
     }
 
+    static float32 Sign(float32 a) { return ( a >= 0.0f ) ? 1.0f : -1.0f; }
+    
     static bool IsZero(float32 a, bool isForPhysic = false)
     {
         float32 epsilon = isForPhysic ? PhysicsEPSILON : EPSILON;
