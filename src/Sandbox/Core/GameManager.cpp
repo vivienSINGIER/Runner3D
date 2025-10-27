@@ -35,10 +35,10 @@ GameManager* GameManager::Get()
     return s_pInstance;
 }
 
-void GameManager::Init(std::wstring_view title, uint32 width, uint32 height, CameraType type)
+void GameManager::Init(std::wstring_view title, uint32 width, uint32 height)
 {   
     m_pGameCamera = new GameCamera();
-    m_pGameCamera->Init(title, width, height, type);
+    m_pGameCamera->Init(title, width, height);
 
     srand(time(NULL));
 }

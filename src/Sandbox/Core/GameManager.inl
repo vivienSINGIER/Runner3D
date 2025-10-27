@@ -22,10 +22,11 @@ bool GameManager::SetCurrentScene()
     for (Scene* scene : Get()->m_scenes)
     {
         SceneClass* casted = dynamic_cast<SceneClass*>(scene);
-        if (casted == nullptr) return false;
+        if (casted == nullptr) continue;
         Get()->m_pCurrentScene = scene;
+        return true;
     }
-    return true;
+    return false;
 }
 
 #endif

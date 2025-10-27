@@ -14,7 +14,7 @@ class GameManager
 public:
     Chrono chrono;
         
-    void Init(std::wstring_view title, uint32 width, uint32 height, CameraType type);
+    void Init(std::wstring_view title, uint32 width, uint32 height);
     void GameLoop();
     
     template <class SceneClass> static SceneClass* AddScene();
@@ -25,6 +25,7 @@ public:
     float32 Deltatime();
     Window* GetWindow();
     GameCamera* GetGameCamera() { return m_pGameCamera; }
+    void SetGameCamera(GameCamera* pGameCamera) { m_pGameCamera = pGameCamera; }
     
 private:
     static GameManager* s_pInstance;
