@@ -98,9 +98,6 @@ void Runner3D::Init()
     
     InitTiles();
     m_currentTile = 3;
-    skybox = new gce::CubeMap();
-    skybox->Create("res/Textures/cubemap.dds",{100.0f,100.0f,100.0f});
-    gce::RenderTarget = cam->GetRenderTarget();
 }
 
 void Runner3D::Uninit()
