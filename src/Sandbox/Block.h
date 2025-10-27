@@ -15,9 +15,9 @@ public:
     Block();
     ~Block() = default;
     virtual void Init(float32 speed);
+    virtual void Start(uint8 col);
     void Uninit();
     void Update(float32 deltaTime) override;
-    void Start(uint8 col);
     bool IsSpawning() const { return m_isSpawning; }
     void SetIsSpawning(bool isSpawning) { m_isSpawning = isSpawning; };
 private:

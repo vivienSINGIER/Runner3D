@@ -6,10 +6,13 @@
 #include "Block.h"
 #include "Grass.h"
 #include "Lava.h"
+#include "JumpPad.h"
 #include "Spike.h"
+#include "Cactus.h"
 #include "Tile.h"
 
 #define SPEED 5.f
+#include "Bush.h"
 #include "Core/GameCamera.h"
 #include "Core/GameManager.h"
 
@@ -46,8 +49,39 @@ void Runner3D::Init()
         m_vectBlocks.PushBack(block);
     }
 
-    InitTiles();
+    for (int i = 0; i < 5; i++)
+    {
+        Block* block = CreateObject<Spike>();
+        block->Init(5.f);
+        block->SetName("Spike");
+        m_vectObject.PushBack(block);
+    }
+
+    for (int i = 0; i < 5; i++)
+    {
+        Block* block = CreateObject<Cactus>();
+        block->Init(5.f);
+        block->SetName("Cactus");
+        m_vectObject.PushBack(block);
+    }
+
+    for (int i = 0; i < 5; i++)
+    {
+        Block* block = CreateObject<Bush>();
+        block->Init(5.f);
+        block->SetName("Bush");
+        m_vectObject.PushBack(block);
+    }
+
+    for (int i = 0; i < 5; i++)
+    {
+        Block* block = CreateObject<JumpPad>();
+        block->Init(5.f);
+        block->SetName("JumpPad");
+        m_vectObject.PushBack(block);
+    }
     
+    InitTiles();
     m_currentTile = 3;
 }
 
@@ -108,6 +142,7 @@ void Runner3D::HandleTileSpawn()
         if (tileIndex >= tile->m_floorPos.size()) break;
         
         gce::Vector3f32 pos = tile->m_floorPos[tileIndex];
+        
         if (pos.z < (float32)tile->m_currentRow)
         {
             tileIndex++;
@@ -116,6 +151,14 @@ void Runner3D::HandleTileSpawn()
 
         if (pos == gce::Vector3f32((float32)colIndex, 0.0f, (float32)tile->m_currentRow) )
         {
+            for (gce::Vector3f32 objPos : tile->m_objectPos)
+            {
+                if (pos == objPos)
+                {
+                    SpawnObj(colIndex);
+                    break;
+                }
+            }
             SpawnBlock<Grass>(colIndex);
             colIndex++;
             tileIndex++;
@@ -125,6 +168,7 @@ void Runner3D::HandleTileSpawn()
             SpawnBlock<Lava>(colIndex);
             colIndex++;
         }
+
     }
 
     tile->m_currentRow++;
@@ -152,6 +196,37 @@ void Runner3D::SpawnBlock(uint8 col)
     {
         selected->Start(col);
         if (col == 0) m_lastBlockInCol = selected;
+    }
+}
+
+void Runner3D::SpawnObj(uint8 col)
+{
+    int8 random = rand() % 4;
+    
+    for (Block* obj : m_vectObject)
+    {
+        if (obj->IsActive()) continue;
+
+        Block* casted = nullptr;
+        switch (random)
+        {
+        case 0:
+            casted = dynamic_cast<Cactus*>(obj);
+            break;
+        case 1:
+            casted = dynamic_cast<Bush*>(obj);
+            break;
+        case 2:
+            casted = dynamic_cast<Spike*>(obj);
+            break;
+        case 3:
+            casted = dynamic_cast<JumpPad*>(obj);
+            break;
+        }
+
+        if (casted == nullptr) continue;
+        casted->Start(col);
+        return;
     }
 }
 

@@ -52,7 +52,6 @@ void Block::Update(float32 deltatime)
 
 void Block::Start(uint8 col)
 {
-    m_transform.position = gce::Vector3f32((float32)col, 0.f, 20.f);
     m_isActive = true;
 }
 

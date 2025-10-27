@@ -33,6 +33,7 @@ private:
     
     Player* player = nullptr;
     gce::Vector<Block*> m_vectBlocks;
+    gce::Vector<Block*> m_vectObject;
 
     Block* m_lastBlockInCol =  nullptr;
     std::vector<Tile*> m_vectTiles;
@@ -44,7 +45,8 @@ private:
     void HandleTileSpawn();
     template <class BlockClass>
     void SpawnBlock(uint8 col);
-    
+    void SpawnObj(uint8 col);
+
     void InitTiles();
 };
 
