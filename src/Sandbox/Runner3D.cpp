@@ -10,16 +10,18 @@
 #include "Spike.h"
 #include "Cactus.h"
 #include "Tile.h"
-
-#define SPEED 5.f
 #include "Bush.h"
 #include "Core/GameCamera.h"
 #include "Core/GameManager.h"
+
+#define SPEED 5.f
 
 void Runner3D::Init()
 {
     m_isPaused = false;
     GameCamera* cam = GameManager::Get()->GetGameCamera();
+
+    m_isReversed = true;
     
     cam->SetPosition({5.0f, 5.0f, -5.0f});
     cam->SetRotation({30.0f, -45.0f, 0.0f});
@@ -130,12 +132,18 @@ void Runner3D::Update(float32 deltaTime)
 
 }
 
+void Runner3D::AddScore(int32 score)
+{
+    if (m_player->GetIsAlive() == true)
+        m_score += score;
+}
+
 void Runner3D::HandleTileSpawn()
 {
     int8 colIndex = 0;
     int8 tileIndex = 0;
     Tile* tile = m_vectTiles[m_currentTile];
-
+    
     if (tile->m_isPlain)
     {
         for (int i = 0; i < 3; i++)
@@ -189,6 +197,8 @@ void Runner3D::SpawnBlock(uint8 col)
     if (std::is_base_of<Block, BlockClass>::value == false ) return;
 
     Block* selected = nullptr;
+
+    float32 yPos = (m_isReversed) ? 5.0f : 0.0f;
     
     for (Block* block : m_vectBlocks)
     {
@@ -203,7 +213,7 @@ void Runner3D::SpawnBlock(uint8 col)
 
     if (selected != nullptr)
     {
-        selected->Start(col);
+        selected->Start(col, yPos);
         if (col == 0) m_lastBlockInCol = selected;
     }
 }
@@ -211,6 +221,8 @@ void Runner3D::SpawnBlock(uint8 col)
 void Runner3D::SpawnObj(uint8 col)
 {
     int8 random = rand() % 4;
+
+    float32 yPos = (m_isReversed) ? 5.0f : 0.0f;
     
     for (Block* obj : m_vectObject)
     {
@@ -234,7 +246,7 @@ void Runner3D::SpawnObj(uint8 col)
         }
 
         if (casted == nullptr) continue;
-        casted->Start(col);
+        casted->Start(col, yPos);
         return;
     }
 }
@@ -248,6 +260,12 @@ void Runner3D::InitTiles()
         tile->Init(i, L"../../res/JSON/tiles.json");
         m_vectTiles.push_back(tile);
     }
+
+    Tile* tile = new Tile();
+    tile->m_isDownToUp = true;
+
+    Tile* tile2 = new Tile();
+    tile->m_isUpToDown = true;
 }
 
 

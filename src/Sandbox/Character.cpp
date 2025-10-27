@@ -24,8 +24,8 @@ void Character::Init(gce::Vector3f32 pos)
     m_useMaxVelocityZ = true;
     m_maxVelocities.z = 0.f;
     m_useMaxVelocityY = true;
-    m_maxVelocities.y = 6.f;
-    m_gravity = -5.0f;
+    m_maxVelocities.y = 7.f;
+    m_gravity = -6.0f;
     m_mass = 1.5f;
 }
 
@@ -39,6 +39,11 @@ void Character::Update(float32 deltaTime)
 
     if (m_transform.position.y - 0.5f < 0.20f)
         m_isGrounded = false;
+    if (m_transform.position.y < -3.0f)
+    {
+        m_isAlive = false;
+        m_isActive = false;
+    }
 }
 
 void Character::Move(int8 dir)
@@ -60,6 +65,11 @@ void Character::Jump()
     }
 }
 
+void Character::Crouch()
+{
+    AddForce({0.0f, -15.0f, 0.0f}, PhysicsComponent::Force::FORCE);
+}
+
 void Character::OnCollisionEnter(Collider* pOther)
 {
     BoxCollider::OnCollisionEnter(pOther);
@@ -77,14 +87,17 @@ void Character::OnCollisionEnter(Collider* pOther)
     if (pOther->GetOwner()->GetName() == "Spike")
     {
         m_isActive = false;
+        m_isAlive = false;
     }
     if (pOther->GetOwner()->GetName() == "Cactus")
     {
         m_isActive = false;
+        m_isAlive = false;
     }
     if (pOther->GetOwner()->GetName() == "Bush")
     {
         m_isActive = false;
+        m_isAlive = false;
     }
     
 }
@@ -99,5 +112,7 @@ void Character::Respawn()
     m_velocity = {0.f, 0.f, 0.f};
     m_isGrounded = false;
     m_speed = 200.f;
+    m_isActive = true;
+    m_isAlive = true;
 }
 #endif

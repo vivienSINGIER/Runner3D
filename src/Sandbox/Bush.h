@@ -8,7 +8,7 @@ public:
     Bush() = default;
     ~Bush() = default;
     void Init(float32 speed) override;
-    void Start(uint8 col) override;
+    void Start(uint8 col, float32 yPos) override;
     void Update(float32 deltaTime) override { Block::Update(deltaTime); };
 };
 

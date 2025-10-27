@@ -14,10 +14,19 @@ void Bush::Init(float32 speed)
     m_value = 20;
 }
 
-void Bush::Start(uint8 col)
+void Bush::Start(uint8 col, float32 yPos)
 {
-    Block::Start(col);
-    m_transform.position = gce::Vector3f32((float32)col, 0.90f, 20.f);
+    Block::Start(col, yPos);
+    if (yPos == 5.0f)
+        yPos -= 0.90f;
+    else
+        yPos += 0.90f;
+    
+    m_transform.position = gce::Vector3f32((float32)col, yPos, 20.f);
+    if (yPos == 4.1f)
+        m_transform.rotation.x = 180.f;
+    else
+        m_transform.rotation.x = 0.f;
 }
 
 

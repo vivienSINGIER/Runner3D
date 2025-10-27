@@ -23,7 +23,7 @@ public:
     void Init();
     void Uninit();
     void Update(float32 deltaTime);
-    void AddScore(int32 score) { m_score += score; }
+    void AddScore(int32 score);
 
 private:
     Character* m_player = nullptr;
@@ -46,6 +46,8 @@ private:
     Block* m_firstBlock = nullptr;
 
     Text* m_scoreText = nullptr;
+
+    bool m_isReversed = false;
     
     void HandleTileSpawn();
     template <class BlockClass>

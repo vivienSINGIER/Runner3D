@@ -13,9 +13,9 @@ void Lava::Init(float32 speed)
     m_value = 0;
 }
 
-void Lava::Start(uint8 col)
+void Lava::Start(uint8 col, float yPos)
 {
-    Block::Start(col);
-    m_transform.position = gce::Vector3f32((float32)col, 0.f, 20.f);
+    Block::Start(col, yPos);
+    m_transform.position = gce::Vector3f32((float32)col, yPos, 20.f);
 }
 #endif

@@ -16,10 +16,15 @@ void JumpPad::Init(float32 speed)
     m_value = 15;
 }   
 
-void JumpPad::Start(uint8 col)
+void JumpPad::Start(uint8 col, float32 yPos)
 {
-    Block::Start(col);
-    m_transform.position = gce::Vector3f32((float32)col, 0.5f, 20.f);
+    Block::Start(col, yPos);
+    if (yPos == 5.0f)
+        yPos -= 0.5f;
+    else
+        yPos += 0.5f;
+    
+    m_transform.position = gce::Vector3f32((float32)col, yPos, 20.f);
 }
 
 #endif

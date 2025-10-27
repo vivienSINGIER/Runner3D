@@ -18,12 +18,17 @@ public:
     
     void Move(int8 dir);
     void Jump();
+    void Crouch();
     void Start();
     void Respawn();
+
+    bool GetIsAlive() { return m_isAlive; }
 private:
     int8 col = 0.f;
     float32 m_rotationSpeed = 100.f;
+    
     bool m_isGrounded = false;
+    bool m_isAlive = true;
 };
 
 #endif

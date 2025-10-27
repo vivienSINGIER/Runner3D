@@ -19,6 +19,9 @@ public:
     bool m_useTeleports = false;
     bool m_useJumpPads = false;
 
+    bool m_isUpToDown = false;
+    bool m_isDownToUp = false;
+
     std::vector<gce::Vector3f32> m_floorPos;
     std::vector<gce::Vector3f32> m_objectPos;
     
