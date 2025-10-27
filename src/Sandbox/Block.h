@@ -6,6 +6,8 @@
 
 #include "Core/Tween.hpp"
 
+class Runner3D;
+
 class Block : public GameObject, public BoxCollider
 {
     

@@ -23,11 +23,14 @@ public:
     void Init();
     void Uninit();
     void Update(float32 deltaTime);
+    void AddScore(int32 score) { m_score += score; }
 
 private:
+    gce::CubeMap* skybox = nullptr;
     Character* m_player = nullptr;
     Controller* m_playerController = nullptr;
 
+    int32 m_score = 0;
     std::ifstream m_file;
     nlohmann::json data;
     

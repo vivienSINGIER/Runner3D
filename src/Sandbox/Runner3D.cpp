@@ -10,9 +10,12 @@
 #include "Spike.h"
 #include "Cactus.h"
 #include "Tile.h"
+#include <CubeMap.h>
+#include <RenderTarget.h>
 
 #define SPEED 5.f
 #include "Bush.h"
+#include "Three.h"
 #include "Core/GameCamera.h"
 #include "Core/GameManager.h"
 
@@ -77,6 +80,14 @@ void Runner3D::Init()
 
     for (int i = 0; i < 5; i++)
     {
+        Block* block = CreateObject<Three>();
+        block->Init(5.f);
+        block->SetName("Three");
+        m_vectObject.PushBack(block);
+    }
+
+    for (int i = 0; i < 5; i++)
+    {
         Block* block = CreateObject<JumpPad>();
         block->Init(5.f);
         block->SetName("JumpPad");
@@ -85,6 +96,9 @@ void Runner3D::Init()
     
     InitTiles();
     m_currentTile = 3;
+    skybox = new gce::CubeMap();
+    skybox->Create("res/Textures/cubemap.dds",{100.0f,100.0f,100.0f});
+    gce::RenderTarget = cam->GetRenderTarget();
 }
 
 void Runner3D::Uninit()
@@ -203,7 +217,7 @@ void Runner3D::SpawnBlock(uint8 col)
 
 void Runner3D::SpawnObj(uint8 col)
 {
-    int8 random = rand() % 4;
+    int8 random = rand() % 5;
     
     for (Block* obj : m_vectObject)
     {
@@ -223,6 +237,9 @@ void Runner3D::SpawnObj(uint8 col)
             break;
         case 3:
             casted = dynamic_cast<JumpPad*>(obj);
+            break;
+        case 4:
+            casted = dynamic_cast<Three*>(obj);
             break;
         }
 
