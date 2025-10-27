@@ -4,6 +4,7 @@
 
 #include "Block.h"
 
+#include "Runner3D.h"
 #include "Core/GameManager.h"
 
 Block::Block() : BoxCollider(gce::Vector3f32(), gce::Vector3f32(1.0f, 1.0f, 1.f))
@@ -15,7 +16,8 @@ void Block::Init(float32 speed)
     Geometry* mesh = new Cube();
     m_mesh = mesh;
     m_mesh->SetColor({1.f, 1.f, 1.f});
-    m_transform.SetPosition({0.0f, 0.0f, 0.0f});
+    m_transform.SetPosition({0.0f, 0.0f, 20.0f});
+    centre = m_transform.position;
     m_transform.SetScale(gce::Vector3f32(1.0f, 1.0f, 1.f));
 
     m_speed = speed;
@@ -45,6 +47,7 @@ void Block::Update(float32 deltatime)
     if (pos.z <= -3.f)
     {
         m_isActive = false;
+        dynamic_cast<Runner3D*>(m_pScene)->AddScore(m_value);
     }
     else
         AddForce({0.0f, 0.0f, -5.0f}, PhysicsComponent::Force::IMPULSE);

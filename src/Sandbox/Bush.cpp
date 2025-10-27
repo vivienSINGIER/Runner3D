@@ -11,6 +11,7 @@ void Bush::Init(float32 speed)
     Custom* mesh = new Custom("res/Obj/bush.obj");
     m_mesh = mesh;
     m_mesh->SetTexture(*texture);
+    m_value = 20;
 }
 
 void Bush::Start(uint8 col)

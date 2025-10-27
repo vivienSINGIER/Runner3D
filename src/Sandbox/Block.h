@@ -20,6 +20,8 @@ public:
     void Update(float32 deltaTime) override;
     bool IsSpawning() const { return m_isSpawning; }
     void SetIsSpawning(bool isSpawning) { m_isSpawning = isSpawning; };
+protected:
+    int32 m_value = 10;
 private:
     float32 m_speed = 0.f;
     

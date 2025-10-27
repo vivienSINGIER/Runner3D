@@ -9,6 +9,8 @@ void Lava::Init(float32 speed)
     Block::Init(speed);
     m_mesh = nullptr;
     size = {0.0f, 0.0f, 0.0f};
+
+    m_value = 0;
 }
 
 void Lava::Start(uint8 col)

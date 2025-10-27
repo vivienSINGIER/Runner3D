@@ -88,6 +88,9 @@ void BoxCollider::RepulseBox(BoxCollider* o)
 {
     if (o == nullptr) return;
 
+    if (o->m_pOwner->GetName() == "JumpPad")
+        int i = 0;
+
     float dt = GameManager::Get()->Deltatime();
     if (dt == 0.0f) dt = 0.001f;
     
