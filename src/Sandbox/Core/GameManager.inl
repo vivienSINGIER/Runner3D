@@ -11,7 +11,7 @@ SceneClass* GameManager::AddScene()
     if (casted == nullptr) return nullptr;
 
     Get()->m_scenes.push_back(casted);
-    casted->Init();
+    
     
     return newScene;
 }
@@ -23,7 +23,9 @@ bool GameManager::SetCurrentScene()
     {
         SceneClass* casted = dynamic_cast<SceneClass*>(scene);
         if (casted == nullptr) continue;
+        if (Get()->m_pCurrentScene != nullptr ) Get()->m_pCurrentScene->Uninit();
         Get()->m_pCurrentScene = scene;
+        Get()->m_pCurrentScene->Init();
         return true;
     }
     return false;

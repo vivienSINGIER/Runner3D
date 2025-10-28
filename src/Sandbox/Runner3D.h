@@ -26,7 +26,6 @@ public:
     void AddScore(int32 score) { m_score += score; }
 
 private:
-    gce::CubeMap* skybox = nullptr;
     Character* m_player = nullptr;
     Controller* m_playerController = nullptr;
 

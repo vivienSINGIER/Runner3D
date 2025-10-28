@@ -18,7 +18,10 @@ GameCamera::~GameCamera()
 
 void GameCamera::Init(std::wstring_view title, uint32 width, uint32 height, CameraType type)
 {
-    if (m_pWindow == nullptr) m_pWindow = new Window(title, width, height);
+    if (m_pWindow == nullptr)
+    {
+        m_pWindow = new Window(title, width, height);
+    }
     
     m_pCamera = new Camera(type);
     m_pCamera->SetPosition({0.0f, 20.0f, -20.0f});

@@ -16,7 +16,7 @@ public:
     void Draw(GameCamera* pGameCamera);
 
     virtual void Init() = 0;
-    virtual void Uninit() = 0;
+    virtual void Uninit();
 
     template <class ObjectClass> ObjectClass* CreateObject();
     template <class ObjectClass> std::vector<GameObject*> GetAllObjects();

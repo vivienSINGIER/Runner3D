@@ -38,7 +38,7 @@ ObjectClass* Scene::CreateObject()
     casted->m_pScene = this;
     m_gameObjects.push_back(casted);
     return newObject;
-}
 
+}
 
 #endif

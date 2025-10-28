@@ -21,13 +21,11 @@ void Runner3D::Init()
 {
     m_isPaused = false;
     GameCamera* cam = GameManager::Get()->GetGameCamera();
-    cam->Init(L"3D Runner", 1280, 720, CameraType::PERSPECTIVE);
     cam->SetPosition({5.0f, 5.0f, -5.0f});
     cam->SetRotation({30.0f, -45.0f, 0.0f});
     cam->SetFOV(gce::PI/3.0f);
     cam->SetFarPlane(500.0f);
     cam->SetNearPlane(0.001f);
-    GameManager::Get()->SetGameCamera(cam);
 
     m_scoreText = CreateText(L"Score : 0");
     m_scoreText->SetPosition({20.0f, 20.0f});
@@ -101,7 +99,12 @@ void Runner3D::Init()
 
 void Runner3D::Uninit()
 {
+    Scene::Uninit();
+    delete m_playerController;
     
+    m_vectBlocks.Clear();
+    m_vectObject.Clear();
+    m_vectTiles.clear();
 }
 
 void Runner3D::Update(float32 deltaTime)

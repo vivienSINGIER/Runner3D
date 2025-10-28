@@ -38,6 +38,7 @@ GameManager* GameManager::Get()
 void GameManager::Init(std::wstring_view title, uint32 width, uint32 height)
 {   
     m_pGameCamera = new GameCamera();
+    m_windowSize = gce::Vector2i32(width, height);
     m_pGameCamera->Init(title, width, height);
 
     srand(time(NULL));
@@ -46,7 +47,7 @@ void GameManager::Init(std::wstring_view title, uint32 width, uint32 height)
 void GameManager::GameLoop()
 {
     chrono.Start();
-    while (m_pGameCamera->IsWindowOpen())
+    while (m_pGameCamera->IsWindowOpen() && m_isOpen)
     {
         m_deltatime = chrono.Reset();
 
@@ -64,6 +65,8 @@ void GameManager::GameLoop()
         TweenSystem::Update(m_deltatime);
 
     }
+    m_pCurrentScene->Uninit();
+    return;
 }
 
 float32 GameManager::Deltatime() { return m_deltatime; }

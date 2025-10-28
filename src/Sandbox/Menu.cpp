@@ -4,36 +4,61 @@
 
 #include "Menu.h"
 
-#include "Block.h"
-#include "Grass.h"
+#include "Button.h"
 #include "Core/GameCamera.h"
 #include "Core/GameManager.h"
+#include "Runner3D.h"
 
 void Menu::Init()
 {
     m_isPaused = false;
-    GameCamera* cam = new GameCamera();
-    cam->Init(L"3D Runner", 1280, 720, CameraType::ORTHOGRAPHIC);
-    cam->SetPosition({5.0f, 5.0f, -5.0f});
-    cam->SetRotation({30.0f, -45.0f, 0.0f});
+    GameCamera* cam = GameManager::Get()->GetGameCamera();
+    cam->Init(L"3D Runner", 1280, 720, CameraType::PERSPECTIVE);
+    cam->SetPosition({0.0f, 0.0f, -50.0f});
+    cam->SetRotation({0.0f, 0.0f, 0.0f});
     cam->SetFOV(gce::PI/3.0f);
     cam->SetFarPlane(500.0f);
     cam->SetNearPlane(0.001f);
-    GameManager::Get()->SetGameCamera(cam);
 
-    Block* block = CreateObject<Grass>();
-    block->Init(5.f);
-    block->m_transform.position = {0.0f, 0.0f, 0.0f};
-}
-
-void Menu::Uninit()
-{
+    Button* playBtn = CreateObject<Button>();
+    playBtn->Init(L"PLAY");
+    playBtn->m_transform.position = {0.0f, 0.0f, 0.0f};
+    playBtn->m_transform.scale = {30.0f, 10.0f, 1.0f};
+    playBtn->SetTextPos(-70, -37);
+    playBtn->SetName("play");
+    m_vectButtons.PushBack(playBtn);
+    
+    Button* exitBtn = CreateObject<Button>();
+    exitBtn->Init(L"EXIT");
+    exitBtn->m_transform.position = {0.0f, -12.5f, 0.0f};
+    exitBtn->m_transform.scale = {30.0f, 10.0f, 1.0f};
+    exitBtn->SetTextPos(-67, 125);
+    exitBtn->SetName("exit");
+    m_vectButtons.PushBack(exitBtn);
 }
 
 void Menu::Update(float32 deltaTime)
 {
     Scene::Update(deltaTime);
-    
+    if (GetKeyDown(Keyboard::UP_ARROW))
+    {
+        m_indexBtn++;
+        m_selectedBtn->UnSelect();
+    } if (GetKeyDown(Keyboard::DOWN_ARROW))
+    {
+        m_indexBtn--;
+        m_selectedBtn->UnSelect();
+    }
+    if (m_indexBtn == m_vectButtons.Size()) { m_indexBtn = 0; }
+    if (m_indexBtn == -1) {m_indexBtn = m_vectButtons.Size() - 1;}
+    m_selectedBtn = m_vectButtons[m_indexBtn];
+    m_selectedBtn->Select();
+
+    if (GetKeyDown(Keyboard::ENTER))
+    {
+        if (m_selectedBtn->GetName() == "play") {GameManager::Get()->SetCurrentScene<Runner3D>(); return;}
+        if (m_selectedBtn->GetName() == "exit") {GameManager::Get()->CloseWindow(); return;}
+    }
 }
 
 

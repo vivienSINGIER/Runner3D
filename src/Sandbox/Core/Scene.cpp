@@ -12,17 +12,7 @@
 
 Scene::~Scene()
 {
-    for (GameObject* pGameObject : m_gameObjects)
-    {
-        delete pGameObject;
-    }
-    for (Text* pText : m_uiElements)
-    {
-        delete pText;
-    }
-
-    m_gameObjects.clear();
-    m_uiElements.clear();
+    Uninit();
 }
 
 void Scene::Update(float32 deltatime)
@@ -58,6 +48,21 @@ void Scene::Draw(GameCamera* pGameCamera)
         if (text == nullptr) continue;
         pGameCamera->DrawText(*text);
     }
+}
+
+void Scene::Uninit()
+{
+    for (GameObject* pGameObject : m_gameObjects)
+    {
+        delete pGameObject;
+    }
+    /*for (Text* pText : m_uiElements)
+    {
+        delete pText;
+    }*/
+
+    m_gameObjects.clear();
+    m_uiElements.clear();
 }
 
 Text* Scene::CreateText(std::wstring const& text)
