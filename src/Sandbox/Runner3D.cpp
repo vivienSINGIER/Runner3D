@@ -61,7 +61,7 @@ void Runner3D::Init()
 
     m_isReversed = true;
     RotateCamera(-1);
-    m_player->Reverse();
+    m_player->Reverse(nullptr);
     
     for (int i = 0; i < 100; i++)
     {

@@ -23,7 +23,7 @@ public:
     void Start();
     void Respawn();
 
-    void Reverse(Block* firstReversed);
+    void Reverse();
 
     bool GetIsAlive() { return m_isAlive; }
 private:

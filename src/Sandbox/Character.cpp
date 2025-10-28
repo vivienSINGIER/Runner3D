@@ -134,6 +134,8 @@ void Character::OnCollisionEnter(Collider* pOther)
         m_isActive = false;
         m_isAlive = false;
     }
+
+    
     
 }
 
@@ -152,9 +154,8 @@ void Character::Respawn()
     m_isAlive = true;
 }
 
-void Character::Reverse(Block* firstReversed)
+void Character::Reverse()
 {
-    m_firstReversedBlock = firstReversed;
     m_isReversed = true;
     m_gravity = -m_gravity;
 }
