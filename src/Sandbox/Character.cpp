@@ -33,7 +33,28 @@ void Character::Update(float32 deltaTime)
 {
     GameObject::Update(deltaTime);
     
-    if (m_isGrounded) { m_rotationSpeed = 0.f; m_transform.rotation.x = 0; }
+    if (m_isGrounded)
+    {
+        m_transform.rotation.x = 0.f;
+        
+        m_rotationSpeed = 0.0f;
+    }
+
+    if (m_isReversed)
+    {
+        if (m_transform.rotation.z < 180.f)
+            m_transform.rotation.z += 100 * deltaTime;
+        if (m_transform.rotation.z > 180.f)
+            m_transform.rotation.z = 180.f;
+    }
+    else
+    {
+        if (m_transform.rotation.z > 0.f)
+            m_transform.rotation.z -= 100 * deltaTime;
+        if (m_transform.rotation.z < 0.f)
+            m_transform.rotation.z = 0.f;
+    }
+    
     centre = m_transform.position;
     m_transform.rotation.x = m_transform.rotation.x + deltaTime * m_rotationSpeed ;
 
@@ -43,6 +64,14 @@ void Character::Update(float32 deltaTime)
     {
         m_isAlive = false;
         m_isActive = false;
+    }
+
+    if (m_firstReversedBlock == nullptr)
+        return;
+    if (m_firstReversedBlock->m_transform.position.z < m_transform.position.z)
+    {
+        m_firstReversedBlock == nullptr;
+        m_isReversed = !m_isReversed;
     }
 }
 
@@ -57,9 +86,10 @@ void Character::Move(int8 dir)
 
 void Character::Jump()
 {
+    float32 mult = (m_gravity > 0.0f) ? -1.f : 1.f;
     if (m_isGrounded)
     {
-        AddForce({0.f, 6.f, 0.f}, Force::IMPULSE);
+        AddForce({0.f, 6.f * mult, 0.f}, Force::IMPULSE);
         m_isGrounded = false;
         m_rotationSpeed = 200.f;
     }
@@ -67,20 +97,25 @@ void Character::Jump()
 
 void Character::Crouch()
 {
-    AddForce({0.0f, -15.0f, 0.0f}, PhysicsComponent::Force::FORCE);
+    float32 mult = (m_gravity > 0.0f) ? -1.f : 1.f;
+    AddForce({0.0f, -15.0f * mult, 0.0f}, PhysicsComponent::Force::FORCE);
 }
 
 void Character::OnCollisionEnter(Collider* pOther)
 {
+    float32 mult = (m_gravity > 0.0f) ? -1.f : 1.f;
+    
     BoxCollider::OnCollisionEnter(pOther);
     if (pOther->GetOwner()->GetName() == "Grass")
     {
-        if (pOther->GetOwner()->m_transform.position.y < m_transform.position.y)
+        if (pOther->GetOwner()->m_transform.position.y < m_transform.position.y && m_isReversed == false)
+            m_isGrounded = true;
+        if (pOther->GetOwner()->m_transform.position.y > m_transform.position.y && m_isReversed == true)
             m_isGrounded = true;
     }
     if (pOther->GetOwner()->GetName() == "JumpPad")
     {
-        AddForce({0.f, 12.f, 0.f}, Force::IMPULSE);
+        AddForce({0.f, 12.f * mult, 0.f}, Force::IMPULSE);
         m_isGrounded = false;
         m_rotationSpeed = 200.f;
     }
@@ -101,6 +136,7 @@ void Character::OnCollisionEnter(Collider* pOther)
     }
     
 }
+
 void Character::Start()
 {
     m_useGravity = true;
@@ -114,5 +150,12 @@ void Character::Respawn()
     m_speed = 200.f;
     m_isActive = true;
     m_isAlive = true;
+}
+
+void Character::Reverse(Block* firstReversed)
+{
+    m_firstReversedBlock = firstReversed;
+    m_isReversed = true;
+    m_gravity = -m_gravity;
 }
 #endif

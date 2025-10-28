@@ -1,5 +1,6 @@
 #ifndef CHARACTER_H_DEFINED
 #define CHARACTER_H_DEFINED
+#include "Block.h"
 #include "Core/BoxCollider.h"
 #include "Core/GameObject.h"
 #include "Core/PhysicsComponent.h"
@@ -22,6 +23,8 @@ public:
     void Start();
     void Respawn();
 
+    void Reverse(Block* firstReversed);
+
     bool GetIsAlive() { return m_isAlive; }
 private:
     int8 col = 0.f;
@@ -29,6 +32,9 @@ private:
     
     bool m_isGrounded = false;
     bool m_isAlive = true;
+    bool m_isReversed = false;
+
+    Block* m_firstReversedBlock = nullptr;
 };
 
 #endif

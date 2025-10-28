@@ -3,6 +3,9 @@
 #define RUNNER3D_CPP_DEFINED
 
 #include "Runner3D.h"
+
+#include <LightManager.h>
+
 #include "Block.h"
 #include "Grass.h"
 #include "Lava.h"
@@ -20,15 +23,31 @@ void Runner3D::Init()
 {
     m_isPaused = false;
     GameCamera* cam = GameManager::Get()->GetGameCamera();
-
-    m_isReversed = true;
     
     cam->SetPosition({5.0f, 5.0f, -5.0f});
     cam->SetRotation({30.0f, -45.0f, 0.0f});
     cam->SetFOV(gce::PI/3.0f);
     cam->SetFarPlane(500.0f);
     cam->SetNearPlane(0.001f);
+    
+    Light light = Light::CreatePointLight(
+        {0.0f, 0.0f, 0.0f},
+        {1.0f, 1.0f, 1.0f, 1.0f},
+        100.0f, 1.0f, 1.0f);
+    light.AddLight(light);
 
+    Light light2 = Light::CreatePointLight(
+        {0.0f, 0.0f, 10.0f},
+        {1.0f, 1.0f, 1.0f, 1.0f},
+        100.0f, 1.0f, 1.0f);
+    light.AddLight(light2);
+
+    Light light3 = Light::CreatePointLight(
+        {0.0f, 0.0f, 20.0f},
+        {1.0f, 1.0f, 1.0f, 1.0f},
+        100.0f, 1.0f, 1.0f);
+    light.AddLight(light3);
+    
     m_scoreText = CreateText(L"Score : 0");
     m_scoreText->SetPosition({20.0f, 20.0f});
     m_scoreText->SetColor(gce::Color(0, 0, 0, 255));
@@ -36,9 +55,14 @@ void Runner3D::Init()
     m_player = CreateObject<Character>();
     m_player->Init({1.f, 3.f, 0.f});
     m_player->SetName("Player");
-
+    
     m_playerController = new Controller();
     m_playerController->Init(m_player);
+
+    m_isReversed = true;
+    RotateCamera(-1);
+    m_player->Reverse();
+    
     for (int i = 0; i < 100; i++)
     {
         Block* block = CreateObject<Grass>();
@@ -137,6 +161,15 @@ void Runner3D::AddScore(int32 score)
     if (m_player->GetIsAlive() == true)
         m_score += score;
 }
+
+void Runner3D::RotateCamera(int8 dir)
+{
+    GameCamera* cam = GameManager::Get()->GetGameCamera();
+    
+    cam->SetPosition({5.0f, 5.0f + 5.0f * (float32)dir, -5.0f});
+    cam->SetRotation({30.0f + 60.0f * (float32)dir, -45.0f, 0.0f});
+}
+
 
 void Runner3D::HandleTileSpawn()
 {

@@ -41,14 +41,16 @@ private:
     Block* m_lastBlockInCol =  nullptr;
     std::vector<Tile*> m_vectTiles;
     int8 m_currentTile = 0;
-
     bool m_hasStarted = false;
     Block* m_firstBlock = nullptr;
 
     Text* m_scoreText = nullptr;
 
     bool m_isReversed = false;
-    
+
+    Light* m_light = nullptr;
+
+    void RotateCamera(int8 dir = 0);
     void HandleTileSpawn();
     template <class BlockClass>
     void SpawnBlock(uint8 col);
