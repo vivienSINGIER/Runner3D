@@ -1,14 +1,14 @@
 ﻿#include "pch.h"
-#ifndef THREE_CPP_DEFINED
-#define THREE_CPP_DEFINED
+#ifndef TREE_CPP_DEFINED
+#define TREE_CPP_DEFINED
 
-#include "Three.h"
+#include "Tree.h"
 
-void Three::Init()
+void Tree::Init()
 {
     Block::Init();
-    Texture* text = new Texture("res/Obj/three.png");
-    Custom* mesh = new Custom("res/Obj/three.obj");
+    Texture* text = new Texture("res/Obj/tree.png");
+    Custom* mesh = new Custom("res/Obj/tree.obj");
     m_mesh = mesh;
     m_mesh->SetTexture(*text);
     m_transform.scale = {1.f, 1.5f, 1.f};
@@ -16,7 +16,7 @@ void Three::Init()
     centre = m_transform.position;
 }
 
-void Three::Start(uint8 col, float32 yPos)
+void Tree::Start(uint8 col, float32 yPos)
 {
     Block::Start(col, yPos);
     if (yPos == 5.0f)

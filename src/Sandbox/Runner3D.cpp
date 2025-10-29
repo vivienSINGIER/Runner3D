@@ -20,7 +20,7 @@
 #include "Snow.h"
 #include "Snowball.h"
 #include "Snowman.h"
-#include "Three.h"
+#include "Tree.h"
 #include "Toaster.h"
 #include "Core/GameCamera.h"
 #include "Core/GameManager.h"
@@ -124,7 +124,7 @@ void Runner3D::Init()
 
         for (int i = 0; i < 5; i++)
         {
-            Block* block = CreateObject<Three>();
+            Block* block = CreateObject<Tree>();
             block->Init();
             block->SetName("Three");
             m_vectObject.PushBack(block);
@@ -526,7 +526,7 @@ Block* Runner3D::ObjBiomeSnow(Block* obj, int8 const& random)
         casted = dynamic_cast<Snowman*>(obj);
         break;
     case 1:
-        casted = dynamic_cast<Three*>(obj);
+        casted = dynamic_cast<Tree*>(obj);
         break;
     case 2:
         casted = dynamic_cast<JumpPad*>(obj);

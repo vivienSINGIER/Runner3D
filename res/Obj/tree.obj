@@ -1,6 +1,6 @@
-# Blender 4.5.0
+# Blender 4.5.3 LTS
 # www.blender.org
-mtllib three.mtl
+mtllib tree.mtl
 o Cube.003
 v -0.111066 -0.495947 0.111066
 v -0.111066 -0.273814 0.111066
