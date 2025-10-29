@@ -28,6 +28,12 @@ public:
     void RotateCamera(int8 dir = 0);
     
 private:
+    enum BIOME
+    {
+        SNOW,
+        DESERT,
+        PLAINS
+    };
     Character* m_player = nullptr;
     Controller* m_playerController = nullptr;
 
@@ -53,12 +59,16 @@ private:
     int8 m_tileCount = 0;
 
     Light* m_light = nullptr;
+
+    BIOME m_biome = BIOME::PLAINS;
     
     void HandleTileSpawn();
     template <class BlockClass>
     void SpawnBlock(uint8 col);
     void SpawnObj(uint8 col);
-
+    Block* ObjBiomeDesert(Block* obj);
+    Block* ObjBiomeSnow(Block* obj);
+    Block* ObjBiomePlains(Block* obj);
     void InitTiles();
     void WriteScore();
 };

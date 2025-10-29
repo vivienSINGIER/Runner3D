@@ -36,7 +36,7 @@ void Menu::Init()
     exitBtn->Init(L"EXIT");
     exitBtn->m_transform.position = {0.0f, -12.5f, 0.0f};
     exitBtn->m_transform.scale = {30.0f, 10.0f, 1.0f};
-    exitBtn->SetTextPos(-67, 125);
+    exitBtn->SetTextPos(-67, 200);
     exitBtn->SetName("exit");
     m_vectButtons.PushBack(exitBtn);
 }

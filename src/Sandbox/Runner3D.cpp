@@ -14,7 +14,11 @@
 #include "Cactus.h"
 #include "Tile.h"
 #include "Bush.h"
+#include "Chene.h"
 #include "GameOver.h"
+#include "Sand.h"
+#include "Snow.h"
+#include "Snowman.h"
 #include "Three.h"
 #include "Core/GameCamera.h"
 #include "Core/GameManager.h"
@@ -67,6 +71,18 @@ void Runner3D::Init()
         block->Init(5.f);
         m_vectBlocks.PushBack(block);
     }
+    for (int i = 0; i < 100; i++)
+    {
+        Block* block = CreateObject<Snow>();
+        block->Init(5.f);
+        m_vectBlocks.PushBack(block);
+    }
+    for (int i = 0; i < 100; i++)
+    {
+        Block* block = CreateObject<Sand>();
+        block->Init(5.f);
+        m_vectBlocks.PushBack(block);
+    }
 
     m_firstBlock = m_vectBlocks[0];
 
@@ -77,48 +93,68 @@ void Runner3D::Init()
         m_vectBlocks.PushBack(block);
     }
 
-    for (int i = 0; i < 5; i++)
+    // Objects
     {
-        Block* block = CreateObject<Spike>();
-        block->Init(5.f);
-        block->SetName("Spike");
-        m_vectObject.PushBack(block);
-    }
+        for (int i = 0; i < 5; i++)
+        {
+            Block* block = CreateObject<Spike>();
+            block->Init(5.f);
+            block->SetName("Spike");
+            m_vectObject.PushBack(block);
+        }
 
-    for (int i = 0; i < 5; i++)
-    {
-        Block* block = CreateObject<Cactus>();
-        block->Init(5.f);
-        block->SetName("Cactus");
-        m_vectObject.PushBack(block);
-    }
+        for (int i = 0; i < 5; i++)
+        {
+            Block* block = CreateObject<Cactus>();
+            block->Init(5.f);
+            block->SetName("Cactus");
+            m_vectObject.PushBack(block);
+        }
 
-    for (int i = 0; i < 5; i++)
-    {
-        Block* block = CreateObject<Bush>();
-        block->Init(5.f);
-        block->SetName("Bush");
-        m_vectObject.PushBack(block);
-    }
+        for (int i = 0; i < 5; i++)
+        {
+            Block* block = CreateObject<Bush>();
+            block->Init(5.f);
+            block->SetName("Bush");
+            m_vectObject.PushBack(block);
+        }
 
-    for (int i = 0; i < 5; i++)
-    {
-        Block* block = CreateObject<Three>();
-        block->Init(5.f);
-        block->SetName("Three");
-        m_vectObject.PushBack(block);
-    }
+        for (int i = 0; i < 5; i++)
+        {
+            Block* block = CreateObject<Three>();
+            block->Init(5.f);
+            block->SetName("Three");
+            m_vectObject.PushBack(block);
+        }
 
-    for (int i = 0; i < 5; i++)
-    {
-        Block* block = CreateObject<JumpPad>();
-        block->Init(5.f);
-        block->SetName("JumpPad");
-        m_vectObject.PushBack(block);
+        for (int i = 0; i < 5; i++)
+        {
+            Block* block = CreateObject<Snowman>();
+            block->Init(5.f);
+            block->SetName("Snowman");
+            m_vectObject.PushBack(block);   
+        }
+
+        for (int i = 0; i < 5; i++)
+        {
+            Block* block = CreateObject<Chene>();
+            block->Init(5.f);
+            block->SetName("Chene");
+            m_vectObject.PushBack(block);
+        }
+
+        for (int i = 0; i < 5; i++)
+        {
+            Block* block = CreateObject<JumpPad>();
+            block->Init(5.f);
+            block->SetName("JumpPad");
+            m_vectObject.PushBack(block);
+        }
     }
     
     InitTiles();
     m_currentTile = 3;
+    m_tileCount = 0;
 }
 
 void Runner3D::Uninit()
@@ -130,6 +166,7 @@ void Runner3D::Uninit()
     m_vectObject.Clear();
     m_vectTiles.Clear();
     m_score = 0;
+    m_tileCount = 0;
 }
 
 void Runner3D::Update(float32 deltaTime)
@@ -209,6 +246,21 @@ void Runner3D::HandleTileSpawn()
 
                 m_currentTile = 3;
                 m_vectTiles[m_currentTile]->m_currentRow = 0;
+
+                int random = rand() % 2;
+
+                switch (random)
+                {
+                case 0:
+                    m_biome = BIOME::DESERT;
+                    break;
+                case 1:
+                    m_biome = BIOME::SNOW;
+                    break;
+                case 2:
+                    m_biome = BIOME::DESERT;
+                    break;                  
+                }
             }
         }
     }
@@ -245,7 +297,18 @@ void Runner3D::HandleTileSpawn()
                     break;
                 }
             }
-            SpawnBlock<Grass>(colIndex);
+            switch (m_biome)
+            {
+            case BIOME::PLAINS:
+                SpawnBlock<Grass>(colIndex);
+                break;
+            case BIOME::DESERT:
+                SpawnBlock<Sand>(colIndex);
+                break;
+            case BIOME::SNOW:
+                SpawnBlock<Snow>(colIndex);
+                break;
+            }
             colIndex++;
             tileIndex++;
         }
@@ -295,8 +358,6 @@ void Runner3D::SpawnBlock(uint8 col)
 
 void Runner3D::SpawnObj(uint8 col)
 {
-    int8 random = rand() % 8;
-
     float32 yPos = (m_isReversed) ? 5.0f : 0.0f;
     
     for (Block* obj : m_vectObject)
@@ -304,25 +365,18 @@ void Runner3D::SpawnObj(uint8 col)
         if (obj->IsActive()) continue;
 
         Block* casted = nullptr;
-        switch (random)
+        switch (m_biome)
         {
-        case 0:
-            casted = dynamic_cast<Cactus*>(obj);
+        case BIOME::PLAINS:
+            casted = ObjBiomePlains(obj);
             break;
-        case 1:
-            casted = dynamic_cast<Bush*>(obj);
+        case BIOME::DESERT:
+            casted = ObjBiomeDesert(obj);
             break;
-        case 2:
-            casted = dynamic_cast<Spike*>(obj);
-            break;
-        case 3:
-            casted = dynamic_cast<JumpPad*>(obj);
-            break;
-        case 4:
-            casted = dynamic_cast<Three*>(obj);
+        case BIOME::SNOW:
+            casted = ObjBiomeSnow(obj);
             break;
         }
-
         if (casted == nullptr) continue;
         casted->Start(col, yPos);
         return;
@@ -367,5 +421,63 @@ void Runner3D::WriteScore()
         }
     }
 }
+
+Block* Runner3D::ObjBiomeDesert(Block* obj)
+{
+    Block* casted = nullptr;
+    int random = rand() % 8;
+    switch (random)
+    {
+    case 0:
+        casted = dynamic_cast<Cactus*>(obj);
+        break;
+    case 1:
+        casted = dynamic_cast<Spike*>(obj);
+        break;
+    case 2:
+        casted = dynamic_cast<JumpPad*>(obj);
+        break;
+    }
+    return casted;
+}
+
+Block* Runner3D::ObjBiomePlains(Block* obj)
+{
+    Block* casted = nullptr;
+    int random = rand() % 8;
+    switch (random)
+    {
+    case 0:
+        casted = dynamic_cast<Bush*>(obj);
+        break;
+    case 1:
+        casted = dynamic_cast<Chene*>(obj);
+        break;
+    case 2:
+        casted = dynamic_cast<JumpPad*>(obj);
+        break;
+    }
+    return casted;
+}
+
+Block* Runner3D::ObjBiomeSnow(Block* obj)
+{
+    Block* casted = nullptr;
+    int random = rand() % 8;
+    switch (random)
+    {
+    case 0:
+        casted = dynamic_cast<Snowman*>(obj);
+        break;
+    case 1:
+        casted = dynamic_cast<Three*>(obj);
+        break;
+    case 2:
+        casted = dynamic_cast<JumpPad*>(obj);
+        break;
+    }
+    return casted;
+}
+
 
 #endif

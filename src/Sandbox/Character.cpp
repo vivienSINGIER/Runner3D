@@ -127,7 +127,7 @@ void Character::OnCollisionEnter(Collider* pOther)
     float32 mult = (m_gravity > 0.0f) ? -1.f : 1.f;
     
     BoxCollider::OnCollisionEnter(pOther);
-    if (pOther->GetOwner()->GetName() == "Grass")
+    if (pOther->GetOwner()->GetName() == "Grass" || pOther->GetOwner()->GetName() == "Snow" || pOther->GetOwner()->GetName() == "Sand")
     {
         if (pOther->GetOwner()->m_transform.position.y < m_transform.position.y && m_isReversed == false)
             m_isGrounded = true;
