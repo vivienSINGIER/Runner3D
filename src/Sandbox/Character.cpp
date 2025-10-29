@@ -36,7 +36,7 @@ void Character::Update(float32 deltaTime)
     if (m_isGrounded) { m_rotationSpeed = 0.f; m_transform.rotation.x = 0; }
     centre = m_transform.position;
     m_transform.rotation.x = m_transform.rotation.x + deltaTime * m_rotationSpeed ;
-
+    
     if (m_transform.position.y - 0.5f < 0.20f)
         m_isGrounded = false;
 }

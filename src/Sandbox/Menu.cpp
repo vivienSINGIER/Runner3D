@@ -8,6 +8,7 @@
 #include "Core/GameCamera.h"
 #include "Core/GameManager.h"
 #include "Runner3D.h"
+#include <nlohmann.hpp>
 
 void Menu::Init()
 {
@@ -20,6 +21,7 @@ void Menu::Init()
     cam->SetFarPlane(500.0f);
     cam->SetNearPlane(0.001f);
 
+    
     Button* playBtn = CreateObject<Button>();
     playBtn->Init(L"PLAY");
     playBtn->m_transform.position = {0.0f, 0.0f, 0.0f};
@@ -27,6 +29,8 @@ void Menu::Init()
     playBtn->SetTextPos(-70, -37);
     playBtn->SetName("play");
     m_vectButtons.PushBack(playBtn);
+
+    m_selectedBtn = playBtn;
     
     Button* exitBtn = CreateObject<Button>();
     exitBtn->Init(L"EXIT");
@@ -35,6 +39,12 @@ void Menu::Init()
     exitBtn->SetTextPos(-67, 125);
     exitBtn->SetName("exit");
     m_vectButtons.PushBack(exitBtn);
+}
+
+void Menu::Uninit()
+{
+    Scene::Uninit();
+    m_vectButtons.Clear();
 }
 
 void Menu::Update(float32 deltaTime)
@@ -52,13 +62,17 @@ void Menu::Update(float32 deltaTime)
     if (m_indexBtn == m_vectButtons.Size()) { m_indexBtn = 0; }
     if (m_indexBtn == -1) {m_indexBtn = m_vectButtons.Size() - 1;}
     m_selectedBtn = m_vectButtons[m_indexBtn];
-    m_selectedBtn->Select();
 
-    if (GetKeyDown(Keyboard::ENTER))
+    if (m_selectedBtn != nullptr)
     {
-        if (m_selectedBtn->GetName() == "play") {GameManager::Get()->SetCurrentScene<Runner3D>(); return;}
-        if (m_selectedBtn->GetName() == "exit") {GameManager::Get()->CloseWindow(); return;}
+        m_selectedBtn->Select();
+        if (GetKeyDown(Keyboard::ENTER))
+        {
+            if (m_selectedBtn->GetName() == "play") {GameManager::Get()->SetCurrentScene<Runner3D>(); return;}
+            if (m_selectedBtn->GetName() == "exit") {GameManager::Get()->CloseWindow(); return;}
+        }
     }
+
 }
 
 

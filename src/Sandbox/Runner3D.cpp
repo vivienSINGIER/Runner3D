@@ -11,6 +11,7 @@
 #include "Cactus.h"
 #include "Tile.h"
 #include "Bush.h"
+#include "GameOver.h"
 #include "Three.h"
 #include "Core/GameCamera.h"
 #include "Core/GameManager.h"
@@ -104,7 +105,8 @@ void Runner3D::Uninit()
     
     m_vectBlocks.Clear();
     m_vectObject.Clear();
-    m_vectTiles.clear();
+    m_vectTiles.Clear();
+    m_score = 0;
 }
 
 void Runner3D::Update(float32 deltaTime)
@@ -140,7 +142,11 @@ void Runner3D::Update(float32 deltaTime)
     {
         HandleTileSpawn();
     }
-
+    if (m_player->IsActive() == false)
+    {
+        WriteScore();
+        GameManager::Get()->SetCurrentScene<GameOver>();
+    }
 }
 
 void Runner3D::HandleTileSpawn()
@@ -262,9 +268,30 @@ void Runner3D::InitTiles()
     {
         Tile* tile = new Tile();
         tile->Init(i, L"../../res/JSON/tiles.json");
-        m_vectTiles.push_back(tile);
+        m_vectTiles.PushBack(tile);
     }
 }
 
+void Runner3D::WriteScore()
+{
+    std::ifstream in("../../res/JSON/score.json");
+    if (in.is_open())
+    {
+        nlohmann::json personnes;
+        in >> personnes;
+        in.close();
+    
+        personnes["score"] = m_score;
+
+        if (personnes["bestScore"] < m_score) personnes["bestScore"] = m_score;
+
+        std::ofstream out("../../res/JSON/score.json");
+        if (out.is_open())
+        {
+            out << personnes.dump(3);
+            out.close();
+        }
+    }
+}
 
 #endif

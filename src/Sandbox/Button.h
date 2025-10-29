@@ -11,11 +11,10 @@ public:
     void Init(std::wstring const& text = L"");
     void Update(float32 deltaTime) override;
     void SetTextPos(int32 x, int32 y);
-    void Select() { m_mesh->SetColor({.5f, .5f, .5f}); }
-    void UnSelect() { m_mesh->SetColor({0.0f, 0.0f, 0.0f}); }
+    void Select();
+    void UnSelect();
 private:
     Text* m_text = nullptr;
 };
-
 
 #endif 

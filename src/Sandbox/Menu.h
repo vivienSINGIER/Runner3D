@@ -12,7 +12,7 @@ public:
     Menu() = default;
     ~Menu() = default;
     void Init();
-    void Uninit() { Scene::Uninit(); };
+    void Uninit();
     void Update(float32 deltaTime);
 
 private:
