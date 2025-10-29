@@ -50,6 +50,8 @@ void Menu::Uninit()
 void Menu::Update(float32 deltaTime)
 {
     Scene::Update(deltaTime);
+
+    // Handle button selection
     if (GetKeyDown(Keyboard::UP_ARROW))
     {
         m_indexBtn++;

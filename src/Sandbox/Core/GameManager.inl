@@ -12,7 +12,6 @@ SceneClass* GameManager::AddScene()
 
     Get()->m_scenes.push_back(casted);
     
-    
     return newScene;
 }
 

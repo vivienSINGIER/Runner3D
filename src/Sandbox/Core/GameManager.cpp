@@ -52,13 +52,15 @@ void GameManager::GameLoop()
         m_deltatime = chrono.Reset();
 
         if (m_pCurrentScene == nullptr) continue;
-        
+
+        // Render logic
         m_pGameCamera->Begin();
         m_pCurrentScene->Draw(m_pGameCamera);
         m_pGameCamera->End();
 
         m_pGameCamera->Display();
-        
+
+        // Update logic
         if (m_pCurrentScene->m_isPaused == false) m_physicsSystem.PhysicsUpdate(m_deltatime);
         m_pCurrentScene->Update(m_deltatime);
         

@@ -22,6 +22,7 @@ void GameOver::Init()
     cam->SetFarPlane(500.0f);
     cam->SetNearPlane(0.001f);
     
+    // Reads the best score from a json files and displays it
     std::ifstream in("../../res/JSON/score.json");
     if (in.is_open())
     {

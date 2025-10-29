@@ -30,6 +30,8 @@ void Runner3D::Init()
     cam->SetNearPlane(0.001f);
 
     m_isReversed = false;
+
+    // Adds lights to light up the upside down portions
     Light light = Light::CreatePointLight(
         {0.0f, 0.0f, 0.0f},
         {1.0f, 1.0f, 1.0f, 1.0f},
@@ -58,7 +60,8 @@ void Runner3D::Init()
     
     m_playerController = new Controller();
     m_playerController->Init(m_player);
-    
+
+    // Creates all the needed blocks and objects for the game in advance
     for (int i = 0; i < 100; i++)
     {
         Block* block = CreateObject<Grass>();
@@ -140,6 +143,7 @@ void Runner3D::Update(float32 deltaTime)
     newText.append(std::to_wstring(m_score));
     m_scoreText->SetText(newText);
 
+    // Increases the game's speed relative to the current score
     if (m_score > m_scoreLimit)
     {
         m_scoreLimit += 500;
@@ -159,10 +163,12 @@ void Runner3D::Update(float32 deltaTime)
         m_objectOdds -= 3;
         if (m_objectOdds < 8) m_objectOdds = 8;
     }
-    
+
+    // Handles the starting position
     if (m_firstBlock->m_transform.position.z < m_player->m_transform.position.z)
         m_player->Start();
-    
+
+    // Handle the spawning of the tiles line by line
     Tile* tile = m_vectTiles[m_currentTile];
     if (tile->m_currentRow > 5)
     {
@@ -186,6 +192,8 @@ void Runner3D::Update(float32 deltaTime)
     {
         HandleTileSpawn();
     }
+
+    // Swap scenes when the player dies
     if (m_player->IsActive() == false)
     {
         WriteScore();
@@ -230,6 +238,7 @@ void Runner3D::HandleTileSpawn()
             }
         }
     }
+
     
     if (tile->m_isPlain)
     {
@@ -240,7 +249,8 @@ void Runner3D::HandleTileSpawn()
         tile->m_currentRow++;
         return;
     }
-    
+
+    // Spawns a row of blocks and objects according to the tile's mapping
     while (colIndex < 3)
     {
         if (tileIndex >= tile->m_floorPos.size()) break;
@@ -283,6 +293,8 @@ void Runner3D::SpawnBlock(uint8 col)
 {
     if (std::is_base_of<Block, BlockClass>::value == false ) return;
 
+    // Checks if there is an innactive block to use for the next one
+    
     Block* selected = nullptr;
 
     float32 yPos = (m_isReversed) ? 5.0f : 0.0f;
@@ -313,6 +325,8 @@ void Runner3D::SpawnBlock(uint8 col)
 
 void Runner3D::SpawnObj(uint8 col)
 {
+    // Choose for next placed object/obstacle
+    
     int8 random = rand() % m_objectOdds;
 
     float32 yPos = (m_isReversed) ? 5.0f : 0.0f;
@@ -349,6 +363,8 @@ void Runner3D::SpawnObj(uint8 col)
 
 void Runner3D::InitTiles()
 {
+    // Reads a json file to init tile mappings
+    
     int nbrTiles = 6;
     for (int8 i = 0; i < nbrTiles; i++)
     {
@@ -366,6 +382,8 @@ void Runner3D::InitTiles()
 
 void Runner3D::WriteScore()
 {
+    // Saves the best score inside of a json file
+    
     std::ifstream in("../../res/JSON/score.json");
     if (in.is_open())
     {

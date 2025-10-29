@@ -12,7 +12,9 @@
 
 BoxCollider::BoxCollider(gce::Vector3f32 centre, gce::Vector3f32 size) : centre(centre), size(size) {}
 
-
+////////////////////////////////////////////////////////////
+/// @brief Calls the approriate collision resolution method
+////////////////////////////////////////////////////////////
 bool BoxCollider::IsColliding(Collider* pOther)
 {
     BoxCollider* oB = dynamic_cast<BoxCollider*>(pOther);
@@ -24,11 +26,15 @@ bool BoxCollider::IsColliding(Collider* pOther)
     return false;
 }
 
+////////////////////////////////////////////////////////////
+/// @brief Box to Box collision resolution
+////////////////////////////////////////////////////////////
 bool BoxCollider::BoxToBox(BoxCollider* pOther)
 {
     BoxCollider* o = pOther;
     if (o == nullptr) return false;
 
+    // Adapts resolutions to PhysicsComponents using the next frame
     gce::Vector3f32 pos = centre;
     gce::Vector3f32 oPos = o->centre;
     PhysicsComponent* casted = dynamic_cast<PhysicsComponent*>(GetOwner());
@@ -38,6 +44,7 @@ bool BoxCollider::BoxToBox(BoxCollider* pOther)
     if (oCasted != nullptr)
         oPos += oCasted->m_velocity * GameManager::Get()->Deltatime();
     
+    // Verify the other box is close enough for a possible collision
     float32 minRadius = gce::Sqrt(gce::Pow(size.x / 2.0f, 2) + gce::Pow(size.y / 2.0f, 2) + gce::Pow(size.z / 2.0f, 2));
     
     float32 oMinRadius = gce::Sqrt(gce::Pow(o->size.x / 2.0f, 2) + gce::Pow(o->size.y / 2.0f, 2) + gce::Pow(o->size.z / 2.0f, 2));
@@ -49,6 +56,7 @@ bool BoxCollider::BoxToBox(BoxCollider* pOther)
     gce::Vector3f32 half(size.x / 2.f, size.y / 2.f, size.z / 2.f);
     gce::Vector3f32 oHalf(o->size.x / 2.f, o->size.y / 2.f, o->size.z / 2.f);
 
+    // Verify the other box intersects on every axes
     int intersectTotal = 0;
     intersectTotal += (gce::Abs(pos.x - oPos.x) <= half.x + oHalf.x) ? 1 : 0;
     intersectTotal += (gce::Abs(pos.y - oPos.y) <= half.y + oHalf.y) ? 1 : 0;
@@ -57,11 +65,15 @@ bool BoxCollider::BoxToBox(BoxCollider* pOther)
     return intersectTotal == 3;
 }
 
+////////////////////////////////////////////////////////////
+/// @brief Box to Sphere collision resolution
+////////////////////////////////////////////////////////////
 bool BoxCollider::BoxToSphere(SphereCollider* pOther)
 {
     SphereCollider* o = pOther;
     if (o == nullptr) return false;
 
+    // Adapts resolutions to PhysicsComponents using the next frame
     gce::Vector3f32 pos = centre;
     gce::Vector3f32 oPos = o->centre;
     PhysicsComponent* casted = dynamic_cast<PhysicsComponent*>(GetOwner());
@@ -70,30 +82,35 @@ bool BoxCollider::BoxToSphere(SphereCollider* pOther)
         pos += casted->m_velocity * GameManager::Get()->Deltatime();
     if (oCasted != nullptr)
         oPos += oCasted->m_velocity * GameManager::Get()->Deltatime();
-    
+
+    // Verify the sphere is close enough for a possible collision
     float32 minRadius = gce::Sqrt(gce::Pow(size.x / 2.0f, 2) + gce::Pow(size.y / 2.0f, 2) + gce::Pow(size.z / 2.0f, 2));
     float32 distance = gce::Sqrt(gce::Pow(pos.x - oPos.x, 2) + gce::Pow(pos.y - oPos.y, 2) + gce::Pow(pos.z - oPos.z, 2));
-
+    
     if (distance > minRadius + o->radius) return false;
+
+    // Calculate the closest point to the sphere
     float32 closestX = gce::Clamp(oPos.x, pos.x - size.x / 2.f, pos.x + size.x / 2.f);
     float32 closestY = gce::Clamp(oPos.y, pos.y - size.y / 2.f, pos.y + size.y / 2.f);
     float32 closestZ = gce::Clamp(oPos.z, pos.z - size.z / 2.f, pos.z + size.z / 2.f);
 
+    // Calculate whether the closest point is close enough to the sphere
     distance = gce::Sqrt(gce::Pow(closestX - oPos.x, 2) + gce::Pow(closestY - oPos.y, 2) + gce::Pow(closestZ - oPos.z, 2));
     
     return distance < o->radius;
 }
 
+////////////////////////////////////////////////////////////
+/// @brief Box repulsion resolution
+////////////////////////////////////////////////////////////
 void BoxCollider::RepulseBox(BoxCollider* o)
 {
     if (o == nullptr) return;
 
-    if (o->m_pOwner->GetName() == "JumpPad")
-        int i = 0;
-
     float dt = GameManager::Get()->Deltatime();
     if (dt == 0.0f) dt = 0.001f;
-    
+
+    // Adapts resolution to PhysicsComponents using the next frame
     gce::Vector3f32 pos = centre;
     gce::Vector3f32 oPos = o->centre;
     PhysicsComponent* casted = dynamic_cast<PhysicsComponent*>(GetOwner());
@@ -102,7 +119,8 @@ void BoxCollider::RepulseBox(BoxCollider* o)
         pos += casted->m_velocity * dt;
     if (oCasted != nullptr)
         oPos += oCasted->m_velocity * dt;
-    
+
+    // Calculate the total overlaps between the two boxes
     gce::Vector3f32 minA = gce::Vector3f32(pos.x - size.x / 2.f, pos.y - size.y / 2.f, pos.z - size.z / 2.f);
     gce::Vector3f32 maxA = gce::Vector3f32(pos.x + size.x / 2.f, pos.y + size.y / 2.f, pos.z + size.z / 2.f);
 
@@ -113,6 +131,7 @@ void BoxCollider::RepulseBox(BoxCollider* o)
     float32 overlapY = gce::Min(maxA.y, maxB.y) - gce::Max(minA.y, minB.y);
     float32 overlapZ = gce::Min(maxA.z, maxB.z) - gce::Max(minA.z, minB.z);
 
+    // Choose the smallest overlap
     float minOverlap = abs(overlapX);
     int overlapIndex = 0;
 
@@ -136,7 +155,8 @@ void BoxCollider::RepulseBox(BoxCollider* o)
     if (minOverlap < 0.0000001f) return;
     
     float push = 0.0f;
-    
+
+    // Resolve the smallest overlap
     switch (overlapIndex)
     {
     case 0:
@@ -190,13 +210,16 @@ void BoxCollider::RepulseBox(BoxCollider* o)
     }
 }
 
+////////////////////////////////////////////////////////////
+/// @brief Sphere repulsion resolution
+////////////////////////////////////////////////////////////
 void BoxCollider::RepulseSphere(SphereCollider* o)
 {
     if (o == nullptr) return;
 
     float dt = GameManager::Get()->Deltatime();
     if (dt == 0.0f) dt = 0.001f;
-    
+    // Adapts resolution to PhysicsComponents using the next frame
     gce::Vector3f32 pos = centre;
     gce::Vector3f32 oPos = o->centre;
     PhysicsComponent* casted = dynamic_cast<PhysicsComponent*>(GetOwner());
@@ -205,7 +228,8 @@ void BoxCollider::RepulseSphere(SphereCollider* o)
         pos += casted->m_velocity * dt;
     if (oCasted != nullptr)
         oPos += oCasted->m_velocity * dt;
-    
+
+    // Calculate the closest point to the sphere
     float32 closestX = gce::Clamp(oPos.x, pos.x - size.x / 2.f, pos.x + size.x / 2.f);
     float32 closestY = gce::Clamp(oPos.y, pos.y - size.y / 2.f, pos.y + size.y / 2.f);
     float32 closestZ = gce::Clamp(oPos.z, pos.z - size.z / 2.f, pos.z + size.z / 2.f);
@@ -218,7 +242,8 @@ void BoxCollider::RepulseSphere(SphereCollider* o)
 
     PhysicsComponent* pC = dynamic_cast<PhysicsComponent*>(m_pOwner);
     PhysicsComponent* opC = dynamic_cast<PhysicsComponent*>(o->m_pOwner);
-    
+
+    // Apply the push
     if (o->m_rigidBody == true)
     {
         push /= 2.0f;

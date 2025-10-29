@@ -34,7 +34,8 @@ void Character::Init(gce::Vector3f32 pos)
 void Character::Update(float32 deltaTime)
 {
     GameObject::Update(deltaTime);
-    
+
+    // Apply z-rotation when switching side
     if (m_isReversed)
     {
         if (m_transform.rotation.z < 180.f)
@@ -49,7 +50,8 @@ void Character::Update(float32 deltaTime)
         if (m_transform.rotation.z < 0.f)
             m_transform.rotation.z = 0.f;
     }
-    
+
+    // Snap x-rotation when grounded
     if (m_isGrounded)
     {
         m_transform.rotation.x = 0.f;
@@ -60,20 +62,25 @@ void Character::Update(float32 deltaTime)
         
         m_rotationSpeed = 0.0f;
     }
-    
+
+    // Update the collider's position from the object's position
     centre = m_transform.position;
+    
     m_transform.rotation.x = m_transform.rotation.x + deltaTime * m_rotationSpeed ;
     
     if (m_transform.position.y - 0.5f < 0.25f)
         m_isGrounded = false;
     if (m_transform.position.y + 0.5f > 5.25f)
         m_isGrounded = false;
+
+    // Detects whether the player is out of bounds
     if (m_transform.position.y < -3.0f || m_transform.position.y > 8.0f)
     {
         m_isAlive = false;
         m_isActive = false;
     }
 
+    // Reverse gravity when needed
     if (m_firstReversedBlock == nullptr)
         return;
     if (m_firstReversedBlock->m_transform.position.z < m_transform.position.z)
@@ -88,7 +95,8 @@ void Character::Move(int8 dir)
     
     gce::Vector3f32 pos = m_transform.position;
     if (pos.x + (float32)dir < 0.f || pos.x + (float32)dir > 2.f) return;
-    
+
+    // Small transition between side movements
     if (dir == -1)
     {
         leftTransitionTween = TweenSystem::Create(pos, 
@@ -179,6 +187,7 @@ void Character::Respawn()
 
 void Character::UpdateFromSpeed(float32 factor)
 {
+    // Updates the gravity and jump intensity according to the game speed
     m_gravity = -6.0f * factor;
     if (m_isReversed)
         m_gravity = -m_gravity;
