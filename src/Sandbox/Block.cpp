@@ -19,7 +19,7 @@ void Block::Init(float32 speed)
     m_transform.position = {0.0f, 0.0f, 20.0f};
     centre = m_transform.position;
     m_transform.SetScale(gce::Vector3f32(1.0f, 1.0f, 1.f));
-
+    centre = m_transform.position;
     m_speed = speed;
     
     m_pOwner = this;

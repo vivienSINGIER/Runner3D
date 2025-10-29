@@ -4,6 +4,8 @@
 
 #include "GameCamera.h"
 
+Window* GameCamera::m_pWindow = nullptr;
+
 GameCamera::GameCamera()
 {
     
@@ -16,9 +18,12 @@ GameCamera::~GameCamera()
 
 void GameCamera::Init(std::wstring_view title, uint32 width, uint32 height, CameraType type)
 {
-    m_pWindow = new Window(title, width, height);
-    
-    m_pCamera = new Camera(type);
+    if (m_pWindow == nullptr)
+    {
+        m_pWindow = new Window(title, width, height);
+    }
+
+    if (m_pCamera == nullptr) { m_pCamera = new Camera(type);}
     m_pCamera->SetPosition({0.0f, 20.0f, -20.0f});
     m_pCamera->SetRotation({45.0f, 0.0f, 0.0f});
     m_pCamera->SetFOV(gce::PI/4.0f);

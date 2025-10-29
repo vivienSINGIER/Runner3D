@@ -14,6 +14,8 @@
 #include "Cactus.h"
 #include "Tile.h"
 #include "Bush.h"
+#include "GameOver.h"
+#include "Three.h"
 #include "Core/GameCamera.h"
 #include "Core/GameManager.h"
 
@@ -23,7 +25,6 @@ void Runner3D::Init()
 {
     m_isPaused = false;
     GameCamera* cam = GameManager::Get()->GetGameCamera();
-    
     cam->SetPosition({5.0f, 5.0f, -5.0f});
     cam->SetRotation({30.0f, -45.0f, 0.0f});
     cam->SetFOV(gce::PI/3.0f);
@@ -101,6 +102,14 @@ void Runner3D::Init()
 
     for (int i = 0; i < 5; i++)
     {
+        Block* block = CreateObject<Three>();
+        block->Init(5.f);
+        block->SetName("Three");
+        m_vectObject.PushBack(block);
+    }
+
+    for (int i = 0; i < 5; i++)
+    {
         Block* block = CreateObject<JumpPad>();
         block->Init(5.f);
         block->SetName("JumpPad");
@@ -113,7 +122,13 @@ void Runner3D::Init()
 
 void Runner3D::Uninit()
 {
+    Scene::Uninit();
+    delete m_playerController;
     
+    m_vectBlocks.Clear();
+    m_vectObject.Clear();
+    m_vectTiles.Clear();
+    m_score = 0;
 }
 
 void Runner3D::Update(float32 deltaTime)
@@ -152,7 +167,11 @@ void Runner3D::Update(float32 deltaTime)
     {
         HandleTileSpawn();
     }
-
+    if (m_player->IsActive() == false)
+    {
+        WriteScore();
+        GameManager::Get()->SetCurrentScene<GameOver>();
+    }
 }
 
 void Runner3D::AddScore(int32 score)
@@ -298,6 +317,9 @@ void Runner3D::SpawnObj(uint8 col)
         case 3:
             casted = dynamic_cast<JumpPad*>(obj);
             break;
+        case 4:
+            casted = dynamic_cast<Three*>(obj);
+            break;
         }
 
         if (casted == nullptr) continue;
@@ -313,7 +335,7 @@ void Runner3D::InitTiles()
     {
         Tile* tile = new Tile();
         tile->Init(i, L"../../res/JSON/tiles.json");
-        m_vectTiles.push_back(tile);
+        m_vectTiles.PushBack(tile);
     }
 
     Tile* tile = new Tile();
@@ -323,5 +345,26 @@ void Runner3D::InitTiles()
     tile->m_isUpToDown = true;
 }
 
+void Runner3D::WriteScore()
+{
+    std::ifstream in("../../res/JSON/score.json");
+    if (in.is_open())
+    {
+        nlohmann::json personnes;
+        in >> personnes;
+        in.close();
+    
+        personnes["score"] = m_score;
+
+        if (personnes["bestScore"] < m_score) personnes["bestScore"] = m_score;
+
+        std::ofstream out("../../res/JSON/score.json");
+        if (out.is_open())
+        {
+            out << personnes.dump(3);
+            out.close();
+        }
+    }
+}
 
 #endif

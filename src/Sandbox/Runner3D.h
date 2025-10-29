@@ -14,6 +14,7 @@ class Block;
 class Player;
 class Tile;
 class Block;
+class GameOver;
 
 class Runner3D: public Scene
 {
@@ -40,7 +41,7 @@ private:
     gce::Vector<Block*> m_vectObject;
 
     Block* m_lastBlockInCol =  nullptr;
-    std::vector<Tile*> m_vectTiles;
+    gce::Vector<Tile*> m_vectTiles;
     int8 m_currentTile = 0;
     bool m_hasStarted = false;
     Block* m_firstBlock = nullptr;
@@ -59,6 +60,7 @@ private:
     void SpawnObj(uint8 col);
 
     void InitTiles();
+    void WriteScore();
 };
 
 #endif

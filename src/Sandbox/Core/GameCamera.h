@@ -7,7 +7,7 @@ public:
     GameCamera();
     ~GameCamera();
 
-    void Init(std::wstring_view title, uint32 width, uint32 height, CameraType type);
+    void Init(std::wstring_view title, uint32 width, uint32 height, CameraType type = CameraType::PERSPECTIVE);
     void UnInit();
     
     void Draw(Geometry& geometry);
@@ -31,6 +31,6 @@ public:
     
 private:
     Camera* m_pCamera = nullptr;
-    Window* m_pWindow = nullptr;
+    static Window* m_pWindow;
 };
 #endif

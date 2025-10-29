@@ -63,7 +63,7 @@ void Character::Update(float32 deltaTime)
     
     centre = m_transform.position;
     m_transform.rotation.x = m_transform.rotation.x + deltaTime * m_rotationSpeed ;
-
+    
     if (m_transform.position.y - 0.5f < 0.25f)
         m_isGrounded = false;
     if (m_transform.position.y + 0.5f > 5.25f)
@@ -141,6 +141,10 @@ void Character::OnCollisionEnter(Collider* pOther)
     {
         m_isActive = false;
         m_isAlive = false;
+    }
+    if (pOther->GetOwner()->GetName() == "Three")
+    {
+        m_isActive = false;
     }
 }
 

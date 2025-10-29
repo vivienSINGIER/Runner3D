@@ -198,7 +198,7 @@ struct Vector
     // ===================================================
     /// @brief Erases all elements from the container.
     // ===================================================
-    void Clear() { std.clear(); }
+    void    Clear() { std.clear(); }
 
     // ==================================================================
     /// @brief Inserts a copy of 'value' before 'pos'.
