@@ -88,7 +88,21 @@ void Character::Move(int8 dir)
     
     gce::Vector3f32 pos = m_transform.position;
     if (pos.x + (float32)dir < 0.f || pos.x + (float32)dir > 2.f) return;
-    m_transform.SetPosition({pos.x + (float32)dir, pos.y, pos.z});
+    
+    if (dir == -1)
+    {
+        leftTransitionTween = TweenSystem::Create(pos, 
+            gce::Vector3f32(pos.x - 1.f, pos.y, pos.z), 
+            Interpolation::easingIn_linear);
+        leftTransitionTween->StartDuration(0.075f, Function::Position, &m_transform, false);
+    }
+    else
+    {
+        rightTransitionTween = TweenSystem::Create(pos, 
+            gce::Vector3f32(pos.x + 1.f, pos.y, pos.z), 
+            Interpolation::easingIn_linear);
+        rightTransitionTween->StartDuration(0.075f, Function::Position, &m_transform, false);
+    }
 }
 
 void Character::Jump()
@@ -105,7 +119,7 @@ void Character::Jump()
 void Character::Crouch()
 {
     float32 mult = (m_gravity > 0.0f) ? -1.f : 1.f;
-    AddForce({0.0f, -15.0f * mult, 0.0f}, PhysicsComponent::Force::FORCE);
+    AddForce({0.0f, -20.0f * mult, 0.0f}, PhysicsComponent::Force::FORCE);
 }
 
 void Character::OnCollisionEnter(Collider* pOther)

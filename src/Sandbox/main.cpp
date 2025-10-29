@@ -10,7 +10,7 @@
 
 int main()
 {
-    GameManager::Get()->Init(L"3D Runner", 1280, 720);
+    GameManager::Get()->Init(L"3D Runner", 1920, 1080);
     GameManager::Get()->AddScene<Runner3D>();
     GameManager::Get()->AddScene<Menu>();
     GameManager::Get()->AddScene<GameOver>();
