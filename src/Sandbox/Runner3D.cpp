@@ -23,7 +23,7 @@ void Runner3D::Init()
 {
     m_isPaused = false;
     GameCamera* cam = GameManager::Get()->GetGameCamera();
-    cam->SetPosition({5.0f, 5.0f, -5.0f});
+    cam->SetPosition({6.0f, 5.0f, -4.0f});
     cam->SetRotation({30.0f, -45.0f, 0.0f});
     cam->SetFOV(gce::PI/3.0f);
     cam->SetFarPlane(500.0f);

@@ -38,6 +38,9 @@ private:
     bool m_isAlive = true;
     bool m_isReversed = false;
 
+    Tween* leftTransitionTween = nullptr;
+    Tween* rightTransitionTween = nullptr;
+    
     Block* m_firstReversedBlock = nullptr;
 };
 
