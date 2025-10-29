@@ -51,7 +51,7 @@ void GameOver::Init()
     menuBtn->m_transform.scale = {30.0f, 10.0f, 1.0f};
     menuBtn->SetTextPos(-67, 200);
     menuBtn->SetName("exit");
-    
+    menuBtn->Select();    
 }
 
 void GameOver::Uninit()

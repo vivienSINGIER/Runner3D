@@ -4,9 +4,9 @@
 
 #include "Chene.h"
 
-void Chene::Init(float32 speed)
+void Chene::Init()
 {
-    Block::Init(speed);
+    Block::Init();
     Texture* text = new Texture("res/Obj/chene.png");
     Custom* mesh = new Custom("res/Obj/chene.obj");
     m_mesh = mesh;

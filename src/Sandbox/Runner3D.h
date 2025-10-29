@@ -40,7 +40,7 @@ private:
     int32 m_score = 0;
     float32 m_speed = 5.0f;
     int32 m_scoreLimit = 500;
-    int8 m_objectOdds = 50;
+    int8 m_objectOdds = 25;
     
     std::ifstream m_file;
     nlohmann::json data;
@@ -69,9 +69,9 @@ private:
     template <class BlockClass>
     void SpawnBlock(uint8 col);
     void SpawnObj(uint8 col);
-    Block* ObjBiomeDesert(Block* obj);
-    Block* ObjBiomeSnow(Block* obj);
-    Block* ObjBiomePlains(Block* obj);
+    Block* ObjBiomeDesert(Block* obj, int8 const& random);
+    Block* ObjBiomeSnow(Block* obj, int8 const& random);
+    Block* ObjBiomePlains(Block* obj, int8 const& random);
     void InitTiles();
     void WriteScore();
 };

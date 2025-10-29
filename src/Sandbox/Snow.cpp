@@ -4,9 +4,9 @@
 
 #include "Snow.h"
 
-void Snow::Init(float32 speed)
+void Snow::Init()
 {
-    Block::Init(speed);
+    Block::Init();
     SetName("Snow");
     m_mesh->SetColor(gce::Vector3f32(1.0f, 1.0f, 1.0f));
 }

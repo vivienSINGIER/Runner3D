@@ -37,19 +37,19 @@ void Runner3D::Init()
     Light light = Light::CreatePointLight(
         {0.0f, 0.0f, 0.0f},
         {1.0f, 1.0f, 1.0f, 1.0f},
-        100.0f, 1.0f, 1.0f);
+        100.0f, 1.5f, 1.0f);
     light.AddLight(light);
 
     Light light2 = Light::CreatePointLight(
         {0.0f, 0.0f, 10.0f},
         {1.0f, 1.0f, 1.0f, 1.0f},
-        100.0f, 1.0f, 1.0f);
+        100.0f, 1.5f, 1.0f);
     light.AddLight(light2);
 
     Light light3 = Light::CreatePointLight(
         {0.0f, 0.0f, 20.0f},
         {1.0f, 1.0f, 1.0f, 1.0f},
-        100.0f, 1.0f, 1.0f);
+        100.0f, 1.5f, 1.0f);
     light.AddLight(light3);
     
     m_scoreText = CreateText(L"Score : 0");
@@ -72,13 +72,13 @@ void Runner3D::Init()
     for (int i = 0; i < 100; i++)
     {
         Block* block = CreateObject<Snow>();
-        block->Init(5.f);
+        block->Init();
         m_vectBlocks.PushBack(block);
     }
     for (int i = 0; i < 100; i++)
     {
         Block* block = CreateObject<Sand>();
-        block->Init(5.f);
+        block->Init();
         m_vectBlocks.PushBack(block);
     }
 
@@ -96,7 +96,7 @@ void Runner3D::Init()
         for (int i = 0; i < 5; i++)
         {
             Block* block = CreateObject<Spike>();
-            block->Init(5.f);
+            block->Init();
             block->SetName("Spike");
             m_vectObject.PushBack(block);
         }
@@ -104,7 +104,7 @@ void Runner3D::Init()
         for (int i = 0; i < 5; i++)
         {
             Block* block = CreateObject<Cactus>();
-            block->Init(5.f);
+            block->Init();
             block->SetName("Cactus");
             m_vectObject.PushBack(block);
         }
@@ -112,7 +112,7 @@ void Runner3D::Init()
         for (int i = 0; i < 5; i++)
         {
             Block* block = CreateObject<Bush>();
-            block->Init(5.f);
+            block->Init();
             block->SetName("Bush");
             m_vectObject.PushBack(block);
         }
@@ -120,7 +120,7 @@ void Runner3D::Init()
         for (int i = 0; i < 5; i++)
         {
             Block* block = CreateObject<Three>();
-            block->Init(5.f);
+            block->Init();
             block->SetName("Three");
             m_vectObject.PushBack(block);
         }
@@ -128,7 +128,7 @@ void Runner3D::Init()
         for (int i = 0; i < 5; i++)
         {
             Block* block = CreateObject<Snowman>();
-            block->Init(5.f);
+            block->Init();
             block->SetName("Snowman");
             m_vectObject.PushBack(block);   
         }
@@ -136,7 +136,7 @@ void Runner3D::Init()
         for (int i = 0; i < 5; i++)
         {
             Block* block = CreateObject<Chene>();
-            block->Init(5.f);
+            block->Init();
             block->SetName("Chene");
             m_vectObject.PushBack(block);
         }
@@ -144,7 +144,7 @@ void Runner3D::Init()
         for (int i = 0; i < 5; i++)
         {
             Block* block = CreateObject<JumpPad>();
-            block->Init(5.f);
+            block->Init();
             block->SetName("JumpPad");
             m_vectObject.PushBack(block);
         }
@@ -388,13 +388,13 @@ void Runner3D::SpawnObj(uint8 col)
         switch (m_biome)
         {
         case BIOME::PLAINS:
-            casted = ObjBiomePlains(obj);
+            casted = ObjBiomePlains(obj, random);
             break;
         case BIOME::DESERT:
-            casted = ObjBiomeDesert(obj);
+            casted = ObjBiomeDesert(obj, random);
             break;
         case BIOME::SNOW:
-            casted = ObjBiomeSnow(obj);
+            casted = ObjBiomeSnow(obj, random);
             break;
         }
         if (casted == nullptr) continue;
@@ -442,10 +442,9 @@ void Runner3D::WriteScore()
     }
 }
 
-Block* Runner3D::ObjBiomeDesert(Block* obj)
+Block* Runner3D::ObjBiomeDesert(Block* obj, int8 const& random)
 {
     Block* casted = nullptr;
-    int random = rand() % 8;
     switch (random)
     {
     case 0:
@@ -461,10 +460,9 @@ Block* Runner3D::ObjBiomeDesert(Block* obj)
     return casted;
 }
 
-Block* Runner3D::ObjBiomePlains(Block* obj)
+Block* Runner3D::ObjBiomePlains(Block* obj, int8 const& random)
 {
     Block* casted = nullptr;
-    int random = rand() % 8;
     switch (random)
     {
     case 0:
@@ -480,10 +478,9 @@ Block* Runner3D::ObjBiomePlains(Block* obj)
     return casted;
 }
 
-Block* Runner3D::ObjBiomeSnow(Block* obj)
+Block* Runner3D::ObjBiomeSnow(Block* obj, int8 const& random)
 {
     Block* casted = nullptr;
-    int random = rand() % 8;
     switch (random)
     {
     case 0:

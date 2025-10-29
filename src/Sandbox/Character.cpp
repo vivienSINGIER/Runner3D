@@ -141,24 +141,11 @@ void Character::OnCollisionEnter(Collider* pOther)
         m_isGrounded = false;
         m_rotationSpeed = 200.f;
     }
-    if (pOther->GetOwner()->GetName() == "Spike")
+    if (pOther->GetOwner()->GetName() != "JumpPad" && pOther->GetOwner()->GetName() != "Grass"
+        && pOther->GetOwner()->GetName() != "Snow" && pOther->GetOwner()->GetName() != "Sand")
     {
         m_isActive = false;
         m_isAlive = false;
-    }
-    if (pOther->GetOwner()->GetName() == "Cactus")
-    {
-        m_isActive = false;
-        m_isAlive = false;
-    }
-    if (pOther->GetOwner()->GetName() == "Bush")
-    {
-        m_isActive = false;
-        m_isAlive = false;
-    }
-    if (pOther->GetOwner()->GetName() == "Three")
-    {
-        m_isActive = false;
     }
 }
 

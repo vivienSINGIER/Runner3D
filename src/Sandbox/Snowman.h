@@ -8,7 +8,7 @@ class Snowman : public Block
 public:
     Snowman() = default;
     ~Snowman() = default;
-    void Init(float32 speed) override;
+    void Init() override;
     void Start(uint8 col, float32 yPos) override;
 };
 

@@ -4,9 +4,9 @@
 
 #include "Snowman.h"
 
-void Snowman::Init(float32 speed)
+void Snowman::Init()
 {
-    Block::Init(speed);
+    Block::Init();
     Texture* text = new Texture("res/Obj/snowman.png");
     Custom* mesh = new Custom("res/Obj/snowman.obj");
     m_mesh = mesh;
@@ -27,10 +27,9 @@ void Snowman::Start(uint8 col, float32 yPos)
     
     m_transform.position = gce::Vector3f32((float32)col, yPos, 20.f);
     if (yPos == 3.75f) {
-        m_transform.rotation.x = 180.0f;
-        m_transform.rotation.y = 180.0f;
+        m_transform.rotation.z = 180.0f;
     }
     else
-        m_transform.rotation.x = 0.f;
+        m_transform.rotation.z = 0.f;
 }
 #endif

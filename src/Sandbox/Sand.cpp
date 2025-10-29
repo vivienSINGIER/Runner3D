@@ -4,9 +4,9 @@
 
 #include "Sand.h"
 
-void Sand::Init(float32 speed)
+void Sand::Init()
 {
-    Block::Init(speed);
+    Block::Init();
     SetName("Sand");
     m_mesh->SetColor(gce::Vector3f32(0.9f, 0.83f, 0.52f));
 }

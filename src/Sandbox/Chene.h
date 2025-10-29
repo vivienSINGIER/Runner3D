@@ -8,7 +8,7 @@ class Chene : public Block
 public:
     Chene() = default;
     ~Chene() = default;
-    void Init(float32 speed) override;
+    void Init() override;
     void Start(uint8 col, float32 yPos) override;
 };
 
