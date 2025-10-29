@@ -28,13 +28,19 @@ public:
     void RotateCamera(int8 dir = 0);
     
 private:
+    enum BIOME
+    {
+        SNOW,
+        DESERT,
+        PLAINS
+    };
     Character* m_player = nullptr;
     Controller* m_playerController = nullptr;
 
     int32 m_score = 0;
     float32 m_speed = 5.0f;
     int32 m_scoreLimit = 500;
-    int8 m_objectOdds = 50;
+    int8 m_objectOdds = 25;
     
     std::ifstream m_file;
     nlohmann::json data;
@@ -56,12 +62,16 @@ private:
     int8 m_tileCount = 0;
 
     Light* m_light = nullptr;
+
+    BIOME m_biome = BIOME::PLAINS;
     
     void HandleTileSpawn();
     template <class BlockClass>
     void SpawnBlock(uint8 col);
     void SpawnObj(uint8 col);
-
+    Block* ObjBiomeDesert(Block* obj, int8 const& random);
+    Block* ObjBiomeSnow(Block* obj, int8 const& random);
+    Block* ObjBiomePlains(Block* obj, int8 const& random);
     void InitTiles();
     void WriteScore();
 };

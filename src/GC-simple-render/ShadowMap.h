@@ -5,7 +5,7 @@
 #include "Camera.h"
 
 #define LIGHT_DIR gce::Vector3f32(0.0f, -1.0f, 1.0f)
-#define LIGHT_POS gce::Vector3f32(0.0f, 10.0, -10.0f)
+#define LIGHT_POS gce::Vector3f32(0.0f, 2.5f, 0.0f)
 
 class Renderer;
 
