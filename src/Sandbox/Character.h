@@ -24,6 +24,7 @@ public:
     void Respawn();
 
     void Reverse();
+    void SetFirstReversedBlock(Block* block);
 
     bool GetIsAlive() { return m_isAlive; }
 private:

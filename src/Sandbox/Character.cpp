@@ -4,6 +4,8 @@
 
 #include "Character.h"
 
+#include "Runner3D.h"
+
 Character::Character() : BoxCollider(gce::Vector3f32(), gce::Vector3f32(0.5f, 0.5f, 0.5f)) {}
 
 void Character::Init(gce::Vector3f32 pos) 
@@ -33,34 +35,40 @@ void Character::Update(float32 deltaTime)
 {
     GameObject::Update(deltaTime);
     
-    if (m_isGrounded)
-    {
-        m_transform.rotation.x = 0.f;
-        
-        m_rotationSpeed = 0.0f;
-    }
-
     if (m_isReversed)
     {
         if (m_transform.rotation.z < 180.f)
-            m_transform.rotation.z += 100 * deltaTime;
+            m_transform.rotation.z += 150 * deltaTime;
         if (m_transform.rotation.z > 180.f)
             m_transform.rotation.z = 180.f;
     }
     else
     {
         if (m_transform.rotation.z > 0.f)
-            m_transform.rotation.z -= 100 * deltaTime;
+            m_transform.rotation.z -= 150 * deltaTime;
         if (m_transform.rotation.z < 0.f)
             m_transform.rotation.z = 0.f;
+    }
+    
+    if (m_isGrounded)
+    {
+        m_transform.rotation.x = 0.f;
+        if (m_isReversed)
+            m_transform.rotation.z = 180.0f;
+        else
+            m_transform.rotation.z = 0.0f;
+        
+        m_rotationSpeed = 0.0f;
     }
     
     centre = m_transform.position;
     m_transform.rotation.x = m_transform.rotation.x + deltaTime * m_rotationSpeed ;
 
-    if (m_transform.position.y - 0.5f < 0.20f)
+    if (m_transform.position.y - 0.5f < 0.25f)
         m_isGrounded = false;
-    if (m_transform.position.y < -3.0f)
+    if (m_transform.position.y + 0.5f > 5.25f)
+        m_isGrounded = false;
+    if (m_transform.position.y < -3.0f || m_transform.position.y > 8.0f)
     {
         m_isAlive = false;
         m_isActive = false;
@@ -70,8 +78,7 @@ void Character::Update(float32 deltaTime)
         return;
     if (m_firstReversedBlock->m_transform.position.z < m_transform.position.z)
     {
-        m_firstReversedBlock == nullptr;
-        m_isReversed = !m_isReversed;
+        Reverse();
     }
 }
 
@@ -115,6 +122,7 @@ void Character::OnCollisionEnter(Collider* pOther)
     }
     if (pOther->GetOwner()->GetName() == "JumpPad")
     {
+        m_velocity.y = 0.0f;
         AddForce({0.f, 12.f * mult, 0.f}, Force::IMPULSE);
         m_isGrounded = false;
         m_rotationSpeed = 200.f;
@@ -134,9 +142,6 @@ void Character::OnCollisionEnter(Collider* pOther)
         m_isActive = false;
         m_isAlive = false;
     }
-
-    
-    
 }
 
 void Character::Start()
@@ -156,7 +161,22 @@ void Character::Respawn()
 
 void Character::Reverse()
 {
-    m_isReversed = true;
+    m_isReversed = !m_isReversed;
+    m_firstReversedBlock = nullptr;
     m_gravity = -m_gravity;
+    m_isGrounded = false;
+
+    Runner3D* scene = dynamic_cast<Runner3D*>(m_pScene);
+    if ( scene == nullptr )
+        return;
+
+    scene->RotateCamera(m_isReversed);
+}
+
+void Character::SetFirstReversedBlock(Block* block)
+{
+    if (m_firstReversedBlock != nullptr)
+        return;
+    m_firstReversedBlock = block;
 }
 #endif

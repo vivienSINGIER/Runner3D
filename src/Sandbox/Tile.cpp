@@ -23,8 +23,7 @@ void Tile::Init(int8 tile, std::wstring path)
         AddObject(pos, ObjectType::Floor);
         if (data["Tiles"][tile]["blocks"][i]["HasObject"] == true)
         {
-            int8 random = (int8) rand() % 2;
-            if (random == 1) AddObject(pos, ObjectType::Object);
+            AddObject(pos, ObjectType::Object);
         }
     }
 }

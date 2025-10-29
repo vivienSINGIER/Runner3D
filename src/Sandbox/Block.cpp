@@ -16,6 +16,7 @@ void Block::Init(float32 speed)
     Geometry* mesh = new Cube();
     m_mesh = mesh;
     m_mesh->SetColor({1.f, 1.f, 1.f});
+    m_transform.position = {0.0f, 0.0f, 20.0f};
     centre = m_transform.position;
     m_transform.SetScale(gce::Vector3f32(1.0f, 1.0f, 1.f));
 

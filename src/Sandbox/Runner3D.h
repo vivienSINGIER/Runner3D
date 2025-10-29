@@ -24,7 +24,8 @@ public:
     void Uninit();
     void Update(float32 deltaTime);
     void AddScore(int32 score);
-
+    void RotateCamera(int8 dir = 0);
+    
 private:
     Character* m_player = nullptr;
     Controller* m_playerController = nullptr;
@@ -46,11 +47,12 @@ private:
 
     Text* m_scoreText = nullptr;
 
+    bool m_isReversing = false;
     bool m_isReversed = false;
+    int8 m_tileCount = 0;
 
     Light* m_light = nullptr;
-
-    void RotateCamera(int8 dir = 0);
+    
     void HandleTileSpawn();
     template <class BlockClass>
     void SpawnBlock(uint8 col);

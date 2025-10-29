@@ -58,10 +58,6 @@ void Runner3D::Init()
     
     m_playerController = new Controller();
     m_playerController->Init(m_player);
-
-    m_isReversed = true;
-    RotateCamera(-1);
-    m_player->Reverse(nullptr);
     
     for (int i = 0; i < 100; i++)
     {
@@ -136,7 +132,10 @@ void Runner3D::Update(float32 deltaTime)
     Tile* tile = m_vectTiles[m_currentTile];
     if (tile->m_currentRow > 5)
     {
-        m_currentTile = rand() % 5;
+        if (m_tileCount < 2)
+            m_currentTile = 3;
+        else
+            m_currentTile = rand() % 5;
         m_vectTiles[m_currentTile]->m_currentRow = 0;
     }
     
@@ -166,16 +165,33 @@ void Runner3D::RotateCamera(int8 dir)
 {
     GameCamera* cam = GameManager::Get()->GetGameCamera();
     
-    cam->SetPosition({5.0f, 5.0f + 5.0f * (float32)dir, -5.0f});
-    cam->SetRotation({30.0f + 60.0f * (float32)dir, -45.0f, 0.0f});
+    cam->SetPosition({5.0f, 5.0f - 5.0f * (float32)dir, -5.0f});
+    cam->SetRotation({30.0f - 60.0f * (float32)dir, -45.0f, 0.0f});
 }
-
 
 void Runner3D::HandleTileSpawn()
 {
     int8 colIndex = 0;
     int8 tileIndex = 0;
     Tile* tile = m_vectTiles[m_currentTile];
+
+    if ( tile->m_currentRow == 0 )
+    {
+        m_tileCount++;
+        if (m_tileCount > 8)
+        {
+            int r = rand() % 2;
+            if (r == 0)
+            {
+                m_tileCount = 0;
+                m_isReversing = true;
+                m_isReversed = !m_isReversed;
+
+                m_currentTile = 3;
+                m_vectTiles[m_currentTile]->m_currentRow = 0;
+            }
+        }
+    }
     
     if (tile->m_isPlain)
     {
@@ -248,12 +264,18 @@ void Runner3D::SpawnBlock(uint8 col)
     {
         selected->Start(col, yPos);
         if (col == 0) m_lastBlockInCol = selected;
+
+        if (m_isReversing == true)
+        {
+            m_player->SetFirstReversedBlock(selected);
+            m_isReversing = false;
+        }
     }
 }
 
 void Runner3D::SpawnObj(uint8 col)
 {
-    int8 random = rand() % 4;
+    int8 random = rand() % 8;
 
     float32 yPos = (m_isReversed) ? 5.0f : 0.0f;
     
