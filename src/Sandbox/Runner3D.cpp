@@ -23,8 +23,6 @@
 #include "Core/GameCamera.h"
 #include "Core/GameManager.h"
 
-#define SPEED 5.f
-
 void Runner3D::Init()
 {
     m_isPaused = false;
@@ -68,7 +66,7 @@ void Runner3D::Init()
     for (int i = 0; i < 100; i++)
     {
         Block* block = CreateObject<Grass>();
-        block->Init(5.f);
+        block->Init();
         m_vectBlocks.PushBack(block);
     }
     for (int i = 0; i < 100; i++)
@@ -89,7 +87,7 @@ void Runner3D::Init()
     for (int i = 0; i < 30; i++)
     {
         Block* block = CreateObject<Lava>();
-        block->Init(5.f);
+        block->Init();
         m_vectBlocks.PushBack(block);
     }
 
@@ -179,6 +177,26 @@ void Runner3D::Update(float32 deltaTime)
     newText.append(std::to_wstring(m_score));
     m_scoreText->SetText(newText);
 
+    if (m_score > m_scoreLimit)
+    {
+        m_scoreLimit += 500;
+        m_speed *= 1.02f;
+        for (Block* block : m_vectBlocks)
+        {
+            block->SetSpeed(m_speed);
+        }
+        for (Block* block : m_vectObject)
+        {
+            block->SetSpeed(m_speed);
+        }
+
+        float32 factor = m_speed / 5.0f;
+        m_player->UpdateFromSpeed(factor);
+
+        m_objectOdds -= 3;
+        if (m_objectOdds < 8) m_objectOdds = 8;
+    }
+    
     if (m_firstBlock->m_transform.position.z < m_player->m_transform.position.z)
         m_player->Start();
     
@@ -358,6 +376,8 @@ void Runner3D::SpawnBlock(uint8 col)
 
 void Runner3D::SpawnObj(uint8 col)
 {
+    int8 random = rand() % m_objectOdds;
+
     float32 yPos = (m_isReversed) ? 5.0f : 0.0f;
     
     for (Block* obj : m_vectObject)

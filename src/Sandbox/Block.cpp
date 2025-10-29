@@ -11,7 +11,7 @@ Block::Block() : BoxCollider(gce::Vector3f32(), gce::Vector3f32(1.0f, 1.0f, 1.f)
 {
 }
 
-void Block::Init(float32 speed)
+void Block::Init()
 {
     Geometry* mesh = new Cube();
     m_mesh = mesh;
@@ -19,8 +19,8 @@ void Block::Init(float32 speed)
     m_transform.position = {0.0f, 0.0f, 20.0f};
     centre = m_transform.position;
     m_transform.SetScale(gce::Vector3f32(1.0f, 1.0f, 1.f));
-    centre = m_transform.position;
-    m_speed = speed;
+
+    m_speed = 5.0f;
     
     m_pOwner = this;
     m_pOwnerPhysics = this;
@@ -50,10 +50,16 @@ void Block::Update(float32 deltatime)
         dynamic_cast<Runner3D*>(m_pScene)->AddScore(m_value);
     }
     else
-        AddForce({0.0f, 0.0f, -5.0f}, PhysicsComponent::Force::IMPULSE);
+        AddForce({0.0f, 0.0f, -m_speed}, PhysicsComponent::Force::IMPULSE);
 }
 
-void Block::Start(uint8 col, float32 yPos)
+void Block::SetSpeed(float32 speed)
+{
+    m_speed = speed;
+    m_maxVelocities.z = speed;
+}
+
+ void Block::Start(uint8 col, float32 yPos)
 {
     m_isActive = true;
 }

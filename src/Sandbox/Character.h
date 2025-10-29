@@ -23,6 +23,7 @@ public:
     void Start();
     void Respawn();
 
+    void UpdateFromSpeed(float32 factor);
     void Reverse();
     void SetFirstReversedBlock(Block* block);
 
@@ -30,6 +31,8 @@ public:
 private:
     int8 col = 0.f;
     float32 m_rotationSpeed = 100.f;
+
+    float32 m_JumpIntensity = 6.0f;
     
     bool m_isGrounded = false;
     bool m_isAlive = true;
