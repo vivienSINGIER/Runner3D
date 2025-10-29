@@ -39,6 +39,10 @@ void Menu::Init()
     exitBtn->SetTextPos(-67, 200);
     exitBtn->SetName("exit");
     m_vectButtons.PushBack(exitBtn);
+
+    Text* titleText = CreateText(L"POLY RUN");
+    titleText->SetPosition({830, 200});
+    titleText->SetColor(gce::Color::White);
 }
 
 void Menu::Uninit()
