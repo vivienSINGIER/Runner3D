@@ -52,7 +52,6 @@ private:
     Block* m_lastBlockInCol =  nullptr;
     gce::Vector<Tile*> m_vectTiles;
     int8 m_currentTile = 0;
-    bool m_hasStarted = false;
     Block* m_firstBlock = nullptr;
 
     Text* m_scoreText = nullptr;
@@ -63,7 +62,7 @@ private:
 
     Light* m_light = nullptr;
 
-    BIOME m_biome = BIOME::PLAINS;
+    BIOME m_biome;
     
     void HandleTileSpawn();
     template <class BlockClass>

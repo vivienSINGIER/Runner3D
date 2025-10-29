@@ -18,8 +18,10 @@
 #include "GameOver.h"
 #include "Sand.h"
 #include "Snow.h"
+#include "Snowball.h"
 #include "Snowman.h"
 #include "Three.h"
+#include "Toaster.h"
 #include "Core/GameCamera.h"
 #include "Core/GameManager.h"
 
@@ -151,8 +153,24 @@ void Runner3D::Init()
             block->SetName("JumpPad");
             m_vectObject.PushBack(block);
         }
+
+        for (int i = 0; i < 5; i++)
+        {
+            Block* block = CreateObject<Toaster>();
+            block->Init();
+            block->SetName("Toaster");
+            m_vectObject.PushBack(block);
+        }
+
+        for (int i = 0; i < 5; i++)
+        {
+            Block* block = CreateObject<Snowball>();
+            block->Init();
+            block->SetName("Snowball");
+            m_vectObject.PushBack(block);
+        }
     }
-    
+    m_biome = BIOME::PLAINS;
     InitTiles();
     m_currentTile = 3;
     m_tileCount = 0;
@@ -492,6 +510,9 @@ Block* Runner3D::ObjBiomePlains(Block* obj, int8 const& random)
     case 2:
         casted = dynamic_cast<JumpPad*>(obj);
         break;
+    case 3:
+        casted = dynamic_cast<Toaster*>(obj);
+        break;
     }
     return casted;
 }
@@ -509,6 +530,9 @@ Block* Runner3D::ObjBiomeSnow(Block* obj, int8 const& random)
         break;
     case 2:
         casted = dynamic_cast<JumpPad*>(obj);
+        break;
+    case 3:
+        casted = dynamic_cast<Snowball*>(obj);
         break;
     }
     return casted;

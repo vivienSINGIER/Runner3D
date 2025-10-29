@@ -126,6 +126,8 @@ void Character::Jump()
 
 void Character::Crouch()
 {
+    if (m_hasStarted == false) return;
+    
     float32 mult = (m_gravity > 0.0f) ? -1.f : 1.f;
     AddForce({0.0f, -20.0f * mult, 0.0f}, PhysicsComponent::Force::FORCE);
 }
@@ -160,6 +162,7 @@ void Character::OnCollisionEnter(Collider* pOther)
 void Character::Start()
 {
     m_useGravity = true;
+    m_hasStarted = true;
 }
 
 void Character::Respawn()

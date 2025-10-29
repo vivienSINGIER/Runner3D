@@ -37,6 +37,7 @@ private:
     bool m_isGrounded = false;
     bool m_isAlive = true;
     bool m_isReversed = false;
+    bool m_hasStarted = false;
 
     Tween* leftTransitionTween = nullptr;
     Tween* rightTransitionTween = nullptr;
