@@ -16,12 +16,13 @@ class Block : public GameObject, public BoxCollider, public PhysicsComponent
 public:
     Block();
     ~Block() = default;
-    virtual void Init(float32 speed);
+    virtual void Init();
     virtual void Start(uint8 col, float32 yPos);
     void Uninit();
     void Update(float32 deltaTime) override;
     bool IsSpawning() const { return m_isSpawning; }
     void SetIsSpawning(bool isSpawning) { m_isSpawning = isSpawning; };
+    void SetSpeed(float32 speed);
 protected:
     int32 m_value = 10;
 private:

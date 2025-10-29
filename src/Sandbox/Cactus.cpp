@@ -4,9 +4,9 @@
 
 #include "Cactus.h"
 
-void Cactus::Init(float32 speed)
+void Cactus::Init()
 {
-    Block::Init(speed);
+    Block::Init();
     Custom* mesh = new Custom("res/Obj/cactus.obj");
     m_mesh = mesh;
     m_mesh->SetColor({0.f, 0.8f, 0.f});

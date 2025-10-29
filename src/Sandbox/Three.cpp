@@ -4,9 +4,9 @@
 
 #include "Three.h"
 
-void Three::Init(float32 speed)
+void Three::Init()
 {
-    Block::Init(speed);
+    Block::Init();
     Texture* text = new Texture("res/Obj/three.png");
     Custom* mesh = new Custom("res/Obj/three.obj");
     m_mesh = mesh;

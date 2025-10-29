@@ -4,9 +4,9 @@
 
 #include "Bush.h"
 
-void Bush::Init(float32 speed)
+void Bush::Init()
 {
-    Block::Init(speed);
+    Block::Init();
     Texture* texture = new Texture("res/Obj/bush.png");
     Custom* mesh = new Custom("res/Obj/bush.obj");
     m_mesh = mesh;

@@ -32,6 +32,9 @@ private:
     Controller* m_playerController = nullptr;
 
     int32 m_score = 0;
+    float32 m_speed = 5.0f;
+    int32 m_scoreLimit = 500;
+    int8 m_objectOdds = 50;
     
     std::ifstream m_file;
     nlohmann::json data;

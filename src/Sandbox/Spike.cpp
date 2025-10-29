@@ -4,9 +4,9 @@
 
 #include "Spike.h"
 
-void Spike::Init(float32 speed)
+void Spike::Init()
 {
-    Block::Init(speed);
+    Block::Init();
     SetName("Spike");
 
     size = gce::Vector3f32(1.0f, 1.0f, 1.0f);

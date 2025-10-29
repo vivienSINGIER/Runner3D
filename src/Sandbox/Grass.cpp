@@ -4,9 +4,9 @@
 
 #include "Grass.h"
 
-void Grass::Init(float32 speed)
+void Grass::Init()
 {
-    Block::Init(speed);
+    Block::Init();
     SetName("Grass");
     //m_mesh = nullptr;
     m_mesh->SetColor(gce::Vector3f32(0.51f, 0.87f, 0.52f));

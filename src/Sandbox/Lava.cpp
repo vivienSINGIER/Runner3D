@@ -4,9 +4,9 @@
 
 #include "Lava.h"
 
-void Lava::Init(float32 speed)
+void Lava::Init()
 {
-    Block::Init(speed);
+    Block::Init();
     m_mesh = nullptr;
     size = {0.0f, 0.0f, 0.0f};
 

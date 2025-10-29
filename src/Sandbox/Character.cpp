@@ -96,7 +96,7 @@ void Character::Jump()
     float32 mult = (m_gravity > 0.0f) ? -1.f : 1.f;
     if (m_isGrounded)
     {
-        AddForce({0.f, 6.f * mult, 0.f}, Force::IMPULSE);
+        AddForce({0.f, m_JumpIntensity * mult, 0.f}, Force::IMPULSE);
         m_isGrounded = false;
         m_rotationSpeed = 200.f;
     }
@@ -123,7 +123,7 @@ void Character::OnCollisionEnter(Collider* pOther)
     if (pOther->GetOwner()->GetName() == "JumpPad")
     {
         m_velocity.y = 0.0f;
-        AddForce({0.f, 12.f * mult, 0.f}, Force::IMPULSE);
+        AddForce({0.f, m_JumpIntensity * 2.0f * mult, 0.f}, Force::IMPULSE);
         m_isGrounded = false;
         m_rotationSpeed = 200.f;
     }
@@ -161,6 +161,15 @@ void Character::Respawn()
     m_speed = 200.f;
     m_isActive = true;
     m_isAlive = true;
+}
+
+void Character::UpdateFromSpeed(float32 factor)
+{
+    m_gravity = -6.0f * factor;
+    if (m_isReversed)
+        m_gravity = -m_gravity;
+    
+    m_JumpIntensity = 6.0f * gce::Sqrt(factor);
 }
 
 void Character::Reverse()
