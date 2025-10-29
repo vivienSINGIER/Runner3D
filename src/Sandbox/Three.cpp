@@ -16,9 +16,18 @@ void Three::Init(float32 speed)
     centre = m_transform.position;
 }
 
-void Three::Start(uint8 col)
+void Three::Start(uint8 col, float32 yPos)
 {
-    Block::Start(col);
-    m_transform.position = gce::Vector3f32((float32)col, 1.25f, 20.f);
+    Block::Start(col, yPos);
+    if (yPos == 5.0f)
+        yPos -= 1.25f;
+    else
+        yPos += 1.25f;
+    
+    m_transform.position = gce::Vector3f32((float32)col, yPos, 20.f);
+    if (yPos == 3.75f)
+        m_transform.rotation.x = 180.0f;
+    else
+        m_transform.rotation.x = 0.f;
 }
 #endif

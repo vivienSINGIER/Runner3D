@@ -30,7 +30,8 @@ void Runner3D::Init()
     cam->SetFOV(gce::PI/3.0f);
     cam->SetFarPlane(500.0f);
     cam->SetNearPlane(0.001f);
-    
+
+    m_isReversed = false;
     Light light = Light::CreatePointLight(
         {0.0f, 0.0f, 0.0f},
         {1.0f, 1.0f, 1.0f, 1.0f},
